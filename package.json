@@ -1,6 +1,6 @@
 {
   "name": "smooth-stream-text",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Smooth out bursty LLM text streams and reveal them as a left-to-right wave. Headless core with zero dependencies, plus React, Vue, Svelte and Web Component wrappers.",
   "author": "Maksim Zolotoi",
   "license": "MIT",
