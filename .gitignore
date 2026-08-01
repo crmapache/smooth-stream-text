@@ -33,3 +33,4 @@ yarn-error.log*
 # stray root images (pasted screenshots)
 /*.png
 /*.jpg
+.env*

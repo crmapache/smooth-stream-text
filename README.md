@@ -1,10 +1,16 @@
 # smooth-stream-text
 
 <p align="center">
+  <a href="https://smooth-stream-text.vercel.app">
   <img
     src="https://raw.githubusercontent.com/crmapache/smooth-stream-text/main/docs/demo.gif"
     alt="The same markdown answer streamed twice, side by side, through the same renderer. On the left chunks land as they arrive and the text stutters; on the right it flows at an even rate with new words fading in."
     width="760" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://smooth-stream-text.vercel.app"><b>Live playground →</b></a>
 </p>
 
 <p align="center">
@@ -358,6 +364,8 @@ stream.getState() // { text: 'hello world', phase: 'done', ... }
 ```
 
 ## Playground
+
+**[smooth-stream-text.vercel.app](https://smooth-stream-text.vercel.app)**
 
 Both panes run the **same** markdown renderer, so the only difference between them
 is the stream: the left one is fed chunks as they arrive, the right one is paced

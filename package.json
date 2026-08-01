@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/crmapache/smooth-stream-text/issues"
   },
+  "homepage": "https://smooth-stream-text.vercel.app",
   "keywords": [
     "streaming-text",
     "smooth-streaming",
