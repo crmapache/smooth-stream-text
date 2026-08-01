@@ -23,7 +23,15 @@ function useStream(options: PacingOptions | undefined, seed?: string): SmoothStr
     return created
   })
 
-  useEffect(() => () => stream.destroy(), [stream])
+  // Pause rather than destroy: StrictMode mounts, unmounts and mounts again, and
+  // the stream itself lives in state across all three. Tearing it down on the
+  // first unmount would hand the second mount a dead engine, and the text would
+  // never move again. Paused it simply stops drawing while nothing is watching.
+  useEffect(() => {
+    stream.resume()
+    return () => stream.pause()
+  }, [stream])
+
   return stream
 }
 

@@ -24,6 +24,7 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
   let lastInputAt = clock.now()
   let lastTickAt = clock.now()
   let destroyed = false
+  let paused = false
 
   let cancelTick: (() => void) | null = null
   const listeners = new Set<(state: SmoothState) => void>()
@@ -52,7 +53,7 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
   }
 
   function schedule(): void {
-    if (destroyed || cancelTick) return
+    if (destroyed || paused || cancelTick) return
     cancelTick = clock.schedule(tick)
   }
 
@@ -143,8 +144,26 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     lastTickAt = lastInputAt
   }
 
+  /**
+   * The producer is talking again after saying it was finished.
+   *
+   * One stream per view is the normal shape - a chat panel keeps the same
+   * instance for every message it will ever show - so `end()` marks the end of an
+   * answer, not the end of the stream. Without this the settle deadline for the
+   * previous answer is long past, and everything after it would jump into place.
+   */
+  function reopen(): void {
+    if (!closed) return
+    closed = false
+    closedAt = Number.POSITIVE_INFINITY
+  }
+
   function onInput(): void {
-    lastInputAt = clock.now()
+    const now = clock.now()
+    // Time spent asleep is not a frame that went slowly: without this the first
+    // tick after a quiet spell would be charged for the whole silence.
+    if (!cancelTick) lastTickAt = now
+    lastInputAt = now
     emit()
     if (source.length > cursor) schedule()
   }
@@ -152,6 +171,7 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
   return {
     push(delta) {
       if (destroyed || !delta) return
+      reopen()
       source += delta
       onInput()
     },
@@ -162,6 +182,7 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
         // A shorter or different answer means a regeneration, not a continuation.
         resetTo()
       }
+      reopen()
       source = text
       onInput()
     },
@@ -185,6 +206,19 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       finish(clock.now())
       stopTicking()
       emit()
+    },
+
+    pause() {
+      if (destroyed || paused) return
+      paused = true
+      stopTicking()
+    },
+
+    resume() {
+      if (destroyed || !paused) return
+      paused = false
+      lastTickAt = clock.now()
+      if (source.length > cursor) schedule()
     },
 
     setOptions(next) {

@@ -306,3 +306,70 @@ describe('createSmoothStream', () => {
     expect(stream.getState().text).not.toContain('*')
   })
 })
+
+describe('a producer that speaks again', () => {
+  it('reopens the stream when text arrives after end, instead of dumping it', () => {
+    // One long-lived stream per view is the normal shape: a chat panel keeps the
+    // same instance across messages. Without reopening, everything after the
+    // first answer lands past the settle deadline and jumps into place.
+    const { stream, clock, frames } = run()
+    stream.push('first answer')
+    stream.end()
+    frames(200)
+    expect(stream.getState()).toMatchObject({ text: 'first answer', phase: 'done' })
+
+    clock.advance(5_000)
+    stream.push('second answer, streaming in')
+
+    expect(stream.getState().phase).toBe('streaming')
+    clock.advance(16)
+    const shown = stream.getState().cursor
+    expect(shown).toBeGreaterThan(0)
+    expect(shown).toBeLessThan('second answer, streaming in'.length)
+
+    frames(200)
+    expect(stream.getState().text).toBe('first answersecond answer, streaming in')
+  })
+
+  it('reopens on setSource too, so both inputs stay interchangeable', () => {
+    const { stream, frames, clock } = run()
+    stream.setSource('first answer')
+    stream.end()
+    frames(200)
+
+    clock.advance(5_000)
+    stream.setSource('first answer and more to come')
+    expect(stream.getState().phase).toBe('streaming')
+    clock.advance(16)
+    expect(stream.getState().pending).toBeGreaterThan(0)
+  })
+})
+
+describe('pause and resume', () => {
+  it('stops drawing while paused and picks up where it left off', () => {
+    const { stream, frames } = run()
+    stream.push('hello world')
+    frames(2)
+    const atPause = stream.getState().cursor
+    stream.pause()
+
+    frames(200)
+    expect(stream.getState().cursor).toBe(atPause)
+
+    stream.resume()
+    frames(200)
+    expect(stream.getState().text).toBe('hello world')
+  })
+
+  it('holds text fed while paused until it resumes', () => {
+    const { stream, frames } = run()
+    stream.pause()
+    stream.push('written while nobody was watching')
+    frames(200)
+    expect(stream.getState().cursor).toBe(0)
+
+    stream.resume()
+    frames(200)
+    expect(stream.getState().text).toBe('written while nobody was watching')
+  })
+})

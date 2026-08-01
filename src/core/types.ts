@@ -70,15 +70,30 @@ export interface SmoothStream {
   push(delta: string): void
   /** Hand over the growing full string. Interchangeable with `push`. */
   setSource(text: string): void
-  /** The producer closed the stream: drain the tail and stop. */
+  /**
+   * The producer closed the stream: drain the tail and stop. Text arriving after
+   * this reopens the stream, so one instance serves a whole conversation.
+   */
   end(): void
   /** Start over. With `text`, start fully revealed - use this for chat history. */
   reset(text?: string): void
   /** Reveal everything right now. */
   flush(): void
+  /**
+   * Stop drawing without losing anything: nothing is on screen to draw on right
+   * now. Text may still arrive while paused - it waits in the buffer.
+   *
+   * This is what a view detaching should call, rather than `destroy`, so that the
+   * same instance survives a remount - React's StrictMode, an `<Activity>` boundary,
+   * a kept-alive Vue component.
+   */
+  pause(): void
+  /** Draw again after `pause`, carrying on from wherever the cursor stopped. */
+  resume(): void
   /** Change the feel at runtime. `clock` is fixed at creation and is ignored here. */
   setOptions(next: Partial<PacingOptions>): void
   getState(): SmoothState
   subscribe(listener: (state: SmoothState) => void): () => void
+  /** Release the stream for good. A destroyed stream ignores everything. */
   destroy(): void
 }

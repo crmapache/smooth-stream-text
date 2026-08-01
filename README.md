@@ -346,6 +346,17 @@ only takes over after mount. A message that is already `done` on first render
 appears instantly, with no animation - which is what makes rendering an existing
 conversation cheap.
 
+**One stream, a whole conversation.** `end()` closes an answer, not the instance:
+text arriving afterwards reopens the stream and is paced normally. So a panel can
+hold a single hook for every message it will ever show, rather than one per
+message.
+
+**Detaching a view** calls `pause()`, not `destroy()`. A paused stream keeps its
+state and its buffer, draws nothing, and picks up where it stopped on `resume()` -
+which is what makes a remount harmless (React StrictMode, an `<Activity>`
+boundary, a kept-alive Vue component). `destroy()` is final and meant for a view
+that owns its stream outright. The React hooks do this for you.
+
 ## Testing your own pacing
 
 Time is injected, so anything built on this can be tested without waiting:

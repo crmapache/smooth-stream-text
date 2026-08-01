@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { act, render, cleanup } from '@testing-library/react'
+import { StrictMode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Reveal, RevealProvider, SmoothText, useSmoothStream, useSmoothStreamController } from '../src/react/index'
@@ -217,5 +218,63 @@ describe('SmoothText', () => {
     runFrames(clock, 5)
     const span = container.querySelector('.sst-word')
     expect(span?.classList.contains('sst-flat')).toBe(true)
+  })
+})
+
+describe('remounting', () => {
+  it('keeps pacing after a StrictMode double mount', () => {
+    // StrictMode mounts, unmounts and mounts again. A hook that tears its engine
+    // down on unmount but keeps it in state comes back holding a dead one - and
+    // the text never moves again.
+    const clock = createManualClock(0)
+    function Probe({ src }: { src: string }) {
+      const { text } = useSmoothStream(src, { clock, boundary: 'char' })
+      return <p data-testid="out">{text}</p>
+    }
+
+    const { getByTestId, rerender } = render(
+      <StrictMode>
+        <Probe src="" />
+      </StrictMode>,
+    )
+
+    rerender(
+      <StrictMode>
+        <Probe src="hello world" />
+      </StrictMode>,
+    )
+    runFrames(clock)
+
+    expect(getByTestId('out').textContent).toBe('hello world')
+  })
+
+  it('paces the next message on the same hook instance', () => {
+    // A chat panel keeps one hook for the whole conversation: message after
+    // message goes through the same stream, and every one of them must be paced,
+    // not just the first.
+    const clock = createManualClock(0)
+    function Probe({ src, done }: { src: string; done: boolean }) {
+      const { text } = useSmoothStream(src, { done, clock, boundary: 'char' })
+      return <p data-testid="out">{text}</p>
+    }
+
+    const { getByTestId, rerender } = render(<Probe src="first answer" done={false} />)
+    runFrames(clock)
+    rerender(<Probe src="first answer" done />)
+    runFrames(clock)
+    expect(getByTestId('out').textContent).toBe('first answer')
+
+    // The panel clears the buffer between messages, then streams the next one.
+    rerender(<Probe src="" done={false} />)
+    rerender(<Probe src="a whole second answer arriving" done={false} />)
+    runFrames(clock, 8)
+
+    // Still paced, not dumped: the second answer is on its way in, not already there.
+    const shown = getByTestId('out').textContent!
+    expect(shown.length).toBeGreaterThan(0)
+    expect(shown.length).toBeLessThan('a whole second answer arriving'.length)
+
+    runFrames(clock)
+    expect(getByTestId('out').textContent).toBe('a whole second answer arriving')
   })
 })
