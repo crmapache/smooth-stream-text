@@ -58,29 +58,64 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./dom": {
-      "types": "./dist/dom/index.d.ts",
-      "import": "./dist/dom/index.js"
+      "import": {
+        "types": "./dist/dom/index.d.ts",
+        "default": "./dist/dom/index.js"
+      },
+      "require": {
+        "types": "./dist/dom/index.d.cts",
+        "default": "./dist/dom/index.cjs"
+      }
     },
     "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.js"
+      "import": {
+        "types": "./dist/react/index.d.ts",
+        "default": "./dist/react/index.js"
+      },
+      "require": {
+        "types": "./dist/react/index.d.cts",
+        "default": "./dist/react/index.cjs"
+      }
     },
     "./vue": {
-      "types": "./dist/vue/index.d.ts",
-      "import": "./dist/vue/index.js"
+      "import": {
+        "types": "./dist/vue/index.d.ts",
+        "default": "./dist/vue/index.js"
+      },
+      "require": {
+        "types": "./dist/vue/index.d.cts",
+        "default": "./dist/vue/index.cjs"
+      }
     },
     "./svelte": {
-      "types": "./dist/svelte/index.d.ts",
-      "import": "./dist/svelte/index.js"
+      "import": {
+        "types": "./dist/svelte/index.d.ts",
+        "default": "./dist/svelte/index.js"
+      },
+      "require": {
+        "types": "./dist/svelte/index.d.cts",
+        "default": "./dist/svelte/index.cjs"
+      }
     },
     "./web-component": {
-      "types": "./dist/web-component/index.d.ts",
-      "import": "./dist/web-component/index.js"
+      "import": {
+        "types": "./dist/web-component/index.d.ts",
+        "default": "./dist/web-component/index.js"
+      },
+      "require": {
+        "types": "./dist/web-component/index.d.cts",
+        "default": "./dist/web-component/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },

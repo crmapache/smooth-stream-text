@@ -54,6 +54,9 @@ export function buildControls(
 
       const show = () => {
         readout.textContent = spec.unit ? `${input.value}${spec.unit}` : input.value
+        // Drives the filled portion of the track, so the slider reads as ours.
+        const filled = ((Number(input.value) - spec.min) / (spec.max - spec.min)) * 100
+        input.style.setProperty('--fill', `${filled}%`)
       }
       show()
 
@@ -64,16 +67,32 @@ export function buildControls(
 
       row.append(name, readout, input)
     } else {
-      const select = document.createElement('select')
-      for (const option of spec.options) {
-        const item = document.createElement('option')
-        item.value = option
-        item.textContent = option
-        select.appendChild(item)
+      // A segmented control rather than a native select: two or three options fit
+      // on one row, and it is one click instead of two.
+      const segmented = document.createElement('div')
+      segmented.className = 'segmented'
+      segmented.setAttribute('role', 'radiogroup')
+      segmented.setAttribute('aria-label', spec.label)
+
+      const buttons = spec.options.map((option) => {
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.className = 'segment'
+        button.textContent = option
+        button.setAttribute('role', 'radio')
+        button.setAttribute('aria-checked', String(option === spec.value))
+        segmented.appendChild(button)
+        return { option, button }
+      })
+
+      for (const { option, button } of buttons) {
+        button.addEventListener('click', () => {
+          for (const other of buttons) other.button.setAttribute('aria-checked', String(other.option === option))
+          onChange(spec.key, option)
+        })
       }
-      select.value = spec.value
-      select.addEventListener('change', () => onChange(spec.key, select.value))
-      row.append(name, select)
+
+      row.append(name, segmented)
     }
 
     group.appendChild(row)

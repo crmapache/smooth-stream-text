@@ -421,9 +421,12 @@ sideEffects  ["**/web-component/**"]
 ```
 
 Exports: `.`, `./dom`, `./react`, `./vue`, `./svelte`, `./web-component`,
-`./package.json`. The root entry ships ESM + CJS (it can run in Node); every
-other entry is ESM-only, since their consumers are always bundler-based.
-`typesVersions` mirrors the export map for older resolvers.
+`./package.json`. Every entry ships ESM + CJS with per-condition `types`, so
+`publint` and `are-the-types-wrong` are clean in all four resolution modes.
+(The original plan was ESM-only for everything but the root, on the grounds that
+framework consumers are always bundler-based. Dual output costs a couple of
+kilobytes and spares CJS-mode test runners a dynamic-import workaround, so it
+won.) `typesVersions` mirrors the export map for older resolvers.
 
 Peer dependencies: `react >=18` and `vue >=3`, both **optional**, so no consumer
 pulls in a framework they do not use. Runtime dependencies: none.

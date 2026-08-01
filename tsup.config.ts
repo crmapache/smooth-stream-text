@@ -13,8 +13,9 @@ export default defineConfig([
     target: 'es2020',
   },
   {
-    // Browser and framework entries ship ESM-only: their consumers are always
-    // bundler-based (Vite/webpack/Rollup), so there is no CJS-only user to serve.
+    // Browser and framework entries are overwhelmingly consumed through a bundler,
+    // but shipping CJS as well costs a couple of kilobytes and saves the CJS-mode
+    // test runners and older toolchains from a dynamic-import workaround.
     entry: {
       'dom/index': 'src/dom/index.ts',
       'react/index': 'src/react/index.ts',
@@ -22,7 +23,7 @@ export default defineConfig([
       'svelte/index': 'src/svelte/index.ts',
       'web-component/index': 'src/web-component/index.ts',
     },
-    format: ['esm'],
+    format: ['esm', 'cjs'],
     dts: true,
     sourcemap: true,
     treeshake: true,
