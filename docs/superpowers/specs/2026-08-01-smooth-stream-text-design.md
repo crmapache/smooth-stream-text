@@ -41,11 +41,11 @@ Four layers, each usable on its own:
 4. Wrappers         React / Vue / Svelte / WC          ->  `./react` `./vue` `./svelte` `./web-component`
 ```
 
-React does **not** use the DOM reveal renderer. It gets a native React
-implementation on top of the same wave timeline, because the primary consumer
-parses markdown itself and renders its own component tree - an imperative
-renderer that owns a node's children would fight React. Vue, Svelte and the web
-component all sit on the DOM renderer.
+Every wrapper, React included, sits on the DOM reveal renderer. That is safe
+because `Reveal` is a leaf over plain text: it renders a host element with no
+React children, so the renderer owning that host never fights React's tree. The
+result is one implementation of the wave instead of two. What React does get
+natively is the pacing hooks, since those are pure state.
 
 Layer 1 is the only layer that must run in Node (it is where all pacing tests
 live). Layers 2-4 are browser-only.
@@ -170,8 +170,11 @@ The cursor may not stop just anywhere. Three rules, in order:
 
 Never cut inside a surrogate pair, a combining sequence, a regional-indicator
 pair, or a ZWJ emoji sequence. Otherwise a broken glyph flashes for a frame.
-Implemented with `Intl.Segmenter` when available, with a hand-rolled fallback
-covering surrogates, combining marks, ZWJ and variation selectors.
+
+Implemented as a bounded backward scan rather than `Intl.Segmenter`: segmenting
+the whole string every frame is O(n) per tick, while the scan is O(1),
+deterministic across runtimes, and enough to guarantee "never cut a visible
+cluster".
 
 ### 4.2 Atomic delimiters - `'markdown'` mode
 
@@ -330,16 +333,24 @@ useReveal(): RevealApi
 <SmoothText text done? as? className? {...PacingOptions} {...RevealOptions} />
 ```
 
-`Reveal` works in two modes, as decided in design review:
+`Reveal` is a leaf over plain text, so it renders a host element and lets the
+imperative renderer from section 6 own that host's children. React never manages
+those children, so there is no conflict - and React and every other framework end
+up sharing one implementation of the wave.
 
-- **default (no `offset`)** - it diffs its own text against the previous render
-  and animates only what is new. The consumer wraps its chunks and computes
-  nothing.
-- **with `offset`** - the chunk's character position in the overall text. The
-  component becomes stateless and survives the markdown parser recreating nodes.
-  The provider keeps a high-water mark of the highest revealed offset plus a
-  small map of recent offset ranges to start times, pruned once their animation
-  window has passed, so memory stays bounded on long answers.
+Two rules give the remount-safety that design review asked for, without the
+`offset` prop that was originally sketched:
+
+- **Mounting seeds, it does not animate.** A freshly created handle treats the
+  text it is given as already settled. So when the markdown parser recreates a
+  node, the remounted `Reveal` shows its text instantly rather than replaying it.
+- **A non-extension is a silent reseed.** If the new text is not an extension of
+  the current text - the parser re-split a paragraph, or moved text between
+  chunks - the renderer reseeds instead of animating text that was already
+  visible.
+
+Before mount (server render and the first client pass) `Reveal` renders its text
+as ordinary React children, so SSR output and hydration contain the real text.
 
 `RevealProvider` supplies options, the shared wave timeline and the resolved
 reduced-motion decision. `resetKey` clears the wave when a new message starts.
