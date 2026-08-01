@@ -1,5 +1,8 @@
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
+
+const root = dirname(fileURLToPath(import.meta.url))
 
 // The playground is a standalone Vite app that consumes the library from source
 // (aliased below), so it always previews the working tree. `vite build` emits a
@@ -8,8 +11,8 @@ export default defineConfig({
   root: 'playground',
   resolve: {
     alias: {
-      'smooth-stream-text/dom': resolve(__dirname, 'src/dom/index.ts'),
-      'smooth-stream-text': resolve(__dirname, 'src/index.ts'),
+      'smooth-stream-text/dom': resolve(root, 'src/dom/index.ts'),
+      'smooth-stream-text': resolve(root, 'src/index.ts'),
     },
   },
   build: {

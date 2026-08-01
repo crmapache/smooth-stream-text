@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>smooth-stream-text - even out an LLM text stream</title>
+    <meta
+      name="description"
+      content="Buffer bursty LLM output and release it at a visually even rate, then reveal it as a left-to-right wave. Zero dependencies, headless first." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="brand">
+        <h1>smooth-stream-text</h1>
+        <p>
+          The same answer, streamed twice. On the left, chunks land as they arrive. On the right, they are paced and
+          revealed as a wave.
+        </p>
+      </div>
+      <nav class="links">
+        <a href="https://github.com/crmapache/smooth-stream-text">GitHub</a>
+        <a href="https://www.npmjs.com/package/smooth-stream-text">npm</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="stage">
+        <section class="pane">
+          <header class="pane-head">
+            <h2>Raw stream</h2>
+            <span class="tag">as received</span>
+          </header>
+          <div class="out" id="raw"></div>
+        </section>
+
+        <section class="pane pane-primary">
+          <header class="pane-head">
+            <h2>Smoothed</h2>
+            <span class="tag tag-accent">smooth-stream-text</span>
+          </header>
+          <div class="out" id="smooth"></div>
+        </section>
+      </div>
+
+      <aside class="panel">
+        <div class="actions">
+          <button id="start" type="button" class="primary">Play</button>
+          <button id="restart" type="button">Restart</button>
+          <button id="flush" type="button">Show all</button>
+        </div>
+
+        <div class="meters">
+          <div class="meter">
+            <span class="meter-label"><i class="dot dot-lag"></i>Backlog</span>
+            <span class="meter-value" id="lag">0 ch</span>
+          </div>
+          <div class="meter">
+            <span class="meter-label"><i class="dot dot-rate"></i>Rate</span>
+            <span class="meter-value" id="rate">0 ch/s</span>
+          </div>
+          <div class="meter">
+            <span class="meter-label">State</span>
+            <span class="meter-value" id="status">idle</span>
+          </div>
+        </div>
+
+        <canvas id="chart" aria-label="Backlog and draw rate over the last few seconds"></canvas>
+
+        <div id="panel" class="groups"></div>
+      </aside>
+    </main>
+
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

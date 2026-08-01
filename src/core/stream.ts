@@ -108,9 +108,14 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     }
 
     if (next > cursor) cursor = next
-    // While held, pin the fractional cursor so that releasing does not dump a
-    // backlog that piled up invisibly.
-    if (cursor < desired) pacer = { rate: pacer.rate, exact: cursor }
+
+    // While a boundary holds us, the fractional cursor must keep moving: it is what
+    // eventually reaches the position where the hold is satisfied - the closing
+    // `**`, the end of the table row. Pinning it here would stall that forever and
+    // leave the release cap to dump text mid-delimiter. It only needs a ceiling, so
+    // that a release cannot reveal more at once than the cap already allows.
+    const ceiling = cursor + opts.holdChars
+    if (pacer.exact > ceiling) pacer = { rate: pacer.rate, exact: ceiling }
   }
 
   function tick(now: number): void {

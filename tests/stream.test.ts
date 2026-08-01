@@ -196,6 +196,72 @@ describe('createSmoothStream', () => {
     expect(stream.getState().cursor).toBeGreaterThan(2)
   })
 
+  it('never shows half-written markdown across a whole realistic answer', () => {
+    const source = [
+      '## A heading',
+      '',
+      'A paragraph with **bold**, _italics_, `inline code` and [a link](https://x.dev) in it.',
+      '',
+      '- **Pacing.** Buffer what arrives and release it evenly.',
+      '- **Reveal.** Let new words fade up rather than switch on.',
+      '',
+      '```ts',
+      'const desired = pending / targetLatencyMs',
+      '```',
+      '',
+      '| Case | Before | After |',
+      '| --- | --- | --- |',
+      '| Burst | dumps | accelerates |',
+      '',
+      'And a trailing sentence so the tail has somewhere to go.',
+      '',
+    ].join('\n')
+
+    /** A visible prefix is broken when it stops inside a delimiter run the source continues. */
+    const truncatedRun = (cut: number) => {
+      if (cut <= 0 || cut >= source.length) return null
+      const ch = source[cut - 1]
+      if (!'*_~`'.includes(ch) || source[cut] !== ch) return null
+      return ch
+    }
+
+    /** ...or when its last line is a bare marker, or has an unclosed span. */
+    const unclosed = (shown: string) => {
+      const line = shown.slice(shown.lastIndexOf('\n') + 1)
+      if (/^\s*(?:```|~~~)/.test(line)) return null // a fence marker is not a code span
+      if (/^\s*(?:[-*+>#]+|\d+[.)])\s*$/.test(line)) return 'bare marker'
+      if (/\[[^\]\n]*$/.test(line)) return 'unclosed link text'
+      if (/\]\($/.test(line)) return 'link url just opened'
+      if ((line.match(/`/g) ?? []).length % 2 === 1) return 'unclosed code span'
+      return null
+    }
+
+    // Several producer speeds, because the failure this pins down only appeared
+    // when the producer was slower than the display could draw.
+    for (const charsPerFrame of [1, 3, 10, 40]) {
+      const clock = createManualClock(0)
+      const stream = createSmoothStream({ clock, boundary: 'markdown' })
+      const broken: string[] = []
+      let at = 0
+
+      for (let frame = 0; frame < 4000; frame++) {
+        for (let k = 0; k < charsPerFrame && at < source.length; k++) stream.push(source[at++])
+        if (at >= source.length) stream.end()
+        clock.advance(16)
+
+        const { text, cursor, phase } = stream.getState()
+        const run = truncatedRun(cursor)
+        if (run) broken.push(`x${charsPerFrame}: truncated ${run} at ${cursor}`)
+        const reason = unclosed(text)
+        if (reason) broken.push(`x${charsPerFrame}: ${reason} -> ${JSON.stringify(text.slice(-24))}`)
+        if (phase === 'done') break
+      }
+
+      expect(broken).toEqual([])
+      expect(stream.getState().text).toBe(source)
+    }
+  })
+
   it('does not show half-written markdown while the hold is in effect', () => {
     const clock = createManualClock(0)
     const stream = createSmoothStream({ clock, boundary: 'markdown' })
