@@ -1,5 +1,6 @@
 import eslint from '@eslint/js'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import reactHooks from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
@@ -8,6 +9,11 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    files: ['src/react/**/*.{ts,tsx}', 'tests/react.test.tsx'],
+    plugins: { 'react-hooks': reactHooks },
+    rules: reactHooks.configs.recommended.rules,
+  },
   eslintConfigPrettier,
   {
     rules: {
