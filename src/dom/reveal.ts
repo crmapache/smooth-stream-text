@@ -38,7 +38,7 @@ export function createReveal(element: HTMLElement, options?: RevealOptions & Rev
   let live: LiveNode[] = []
   let cancelPoll: (() => void) | null = null
 
-  let settled = doc.createTextNode('')
+  const settled = doc.createTextNode('')
   element.textContent = ''
   element.appendChild(settled)
 
