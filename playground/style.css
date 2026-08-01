@@ -162,13 +162,122 @@ main {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 20px;
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-  font-size: 13px;
-  line-height: 1.75;
-  white-space: pre-wrap;
-  word-break: break-word;
+  padding: 20px 22px;
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+/* ---------- rendered markdown ---------- */
+
+.out > * {
+  margin: 0 0 14px;
+}
+
+.out > *:last-child {
+  margin-bottom: 0;
+}
+
+.out h1,
+.out h2,
+.out h3 {
+  margin: 22px 0 10px;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.out > h1:first-child,
+.out > h2:first-child,
+.out > h3:first-child {
+  margin-top: 0;
+}
+
+.out strong {
+  font-weight: 650;
+  color: #fff;
+}
+
+.out em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.out a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.out code {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.86em;
+}
+
+.out :not(pre) > code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--accent-2);
+}
+
+.out ul {
+  padding-left: 20px;
+  list-style: none;
+}
+
+.out li {
+  position: relative;
+  margin-bottom: 7px;
+}
+
+.out li::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 0.66em;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--ink-faint);
+}
+
+.out pre {
+  padding: 12px 14px;
+  background: #0a0c11;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow-x: auto;
+  line-height: 1.65;
+}
+
+.out pre code {
+  white-space: pre-wrap;
+  color: var(--accent-2);
+}
+
+.out table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.out th,
+.out td {
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.out th {
+  background: var(--surface-2);
+  font-weight: 600;
+  color: var(--ink-dim);
 }
 
 .out::-webkit-scrollbar {

@@ -11,7 +11,7 @@ export const defaultPacing: ResolvedPacing = {
   maxLatencyMs: 2000,
   maxFrameMs: 100,
   boundary: 'markdown',
-  holdMs: 400,
+  holdMs: 1500,
   holdChars: 120,
   clock: defaultClock,
 }

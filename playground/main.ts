@@ -1,6 +1,16 @@
-import { createSmoothText, defaultPacing, defaultReveal, type SmoothTextOptions } from 'smooth-stream-text/dom'
+import {
+  createSmoothStream,
+  createWaveTimeline,
+  defaultPacing,
+  defaultReveal,
+  resolveRevealOptions,
+  type PacingOptions,
+  type RevealOptions,
+} from 'smooth-stream-text/dom'
 import { buildControls, type ControlSpec } from './controls'
 import { createChart } from './chart'
+import { parseMarkdown } from './markdown'
+import { createBlockRenderer } from './render'
 import { SAMPLE } from './sample'
 import { createSimulator, type SimulatorOptions } from './simulator'
 
@@ -33,10 +43,18 @@ function follower(element: HTMLElement) {
 
 const followers = [follower(rawOut), follower(smoothOut)]
 
-const pacing: SmoothTextOptions = { ...defaultPacing, ...defaultReveal }
+// Both panes run the same markdown renderer, so what is being compared is the
+// stream itself and nothing else. Only the right one gets paced and revealed.
+const revealConfig = resolveRevealOptions({})
+const timeline = createWaveTimeline(revealConfig)
+const rawRenderer = createBlockRenderer(rawOut, { reveal: false })
+const smoothRenderer = createBlockRenderer(smoothOut, { reveal: true, revealOptions: revealConfig, timeline })
+
+const pacing: PacingOptions = { ...defaultPacing }
 delete (pacing as { clock?: unknown }).clock
 
-const smooth = createSmoothText(smoothOut, pacing)
+const stream = createSmoothStream(pacing)
+stream.subscribe((state) => smoothRenderer.update(parseMarkdown(state.text)))
 
 const producer: SimulatorOptions = {
   charsPerSecond: 220,
@@ -50,11 +68,11 @@ let raw = ''
 const simulator = createSimulator(SAMPLE, producer, {
   onChunk(delta) {
     raw += delta
-    rawOut.textContent = raw
-    smooth.push(delta)
+    rawRenderer.update(parseMarkdown(raw))
+    stream.push(delta)
   },
   onEnd() {
-    smooth.end()
+    stream.end()
     setRunning(false)
   },
 })
@@ -68,8 +86,10 @@ function setRunning(running: boolean) {
 function restart() {
   simulator.stop()
   raw = ''
-  rawOut.textContent = ''
-  smooth.reset()
+  rawRenderer.reset()
+  smoothRenderer.reset()
+  stream.reset()
+  timeline.reset()
   chart.clear()
   for (const one of followers) one.reset()
   simulator.start()
@@ -90,9 +110,9 @@ $('#restart').addEventListener('click', restart)
 $('#flush').addEventListener('click', () => {
   simulator.stop()
   raw = SAMPLE
-  rawOut.textContent = raw
-  smooth.setText(SAMPLE)
-  smooth.flush()
+  rawRenderer.update(parseMarkdown(raw))
+  stream.setSource(SAMPLE)
+  stream.flush()
   setRunning(false)
 })
 
@@ -128,15 +148,15 @@ buildControls(panel, 'Producer', producerControls, (key, value) => {
 })
 
 buildControls(panel, 'Pacing', pacingControls, (key, value) => {
-  smooth.setOptions({ [key]: value } as Partial<SmoothTextOptions>)
+  stream.setOptions({ [key]: value } as Partial<PacingOptions>)
 })
 
 buildControls(panel, 'Reveal', revealControls, (key, value) => {
-  smooth.setOptions({ [key]: value } as Partial<SmoothTextOptions>)
+  smoothRenderer.setRevealOptions({ [key]: value } as Partial<RevealOptions>)
 })
 
 function sample() {
-  const state = smooth.state
+  const state = stream.getState()
   chart.push(state.pending, state.charsPerSecond)
   for (const one of followers) one.follow()
   $('#lag').textContent = `${state.pending} ch`

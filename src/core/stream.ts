@@ -23,7 +23,6 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
   let closedAt = Number.POSITIVE_INFINITY
   let lastInputAt = clock.now()
   let lastTickAt = clock.now()
-  let holdStartedAt = Number.POSITIVE_INFINITY
   let destroyed = false
 
   let cancelTick: (() => void) | null = null
@@ -66,7 +65,6 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
   function finish(now: number): void {
     cursor = source.length
     pacer = { rate: pacer.rate, exact: cursor }
-    holdStartedAt = Number.POSITIVE_INFINITY
     lastTickAt = now
   }
 
@@ -98,13 +96,14 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     let next = resolver.resolve(source, desired, closed)
 
     if (next < desired) {
-      if (holdStartedAt === Number.POSITIVE_INFINITY) holdStartedAt = now
-      const heldTooLong = now - holdStartedAt > opts.holdMs
+      // Time is measured from the last input, not from the start of the hold. A
+      // producer that stalls mid-link has not frozen anything we control, and
+      // releasing then would show the half-written URL the hold exists to hide.
+      // Silence past the cap means the closer is simply never coming.
+      const abandoned = now - lastInputAt > opts.holdMs
       const heldTooMuch = desired - next > opts.holdChars
-      // A briefly literal `**` beats a frozen stream.
-      if (heldTooLong || heldTooMuch) next = clampToGraphemeBoundary(source, desired)
-    } else {
-      holdStartedAt = Number.POSITIVE_INFINITY
+      // A briefly literal `**` beats a stream frozen by us.
+      if (abandoned || heldTooMuch) next = clampToGraphemeBoundary(source, desired)
     }
 
     if (next > cursor) cursor = next
@@ -140,7 +139,6 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     pacer = createPacerState(opts, cursor)
     closed = false
     closedAt = Number.POSITIVE_INFINITY
-    holdStartedAt = Number.POSITIVE_INFINITY
     lastInputAt = clock.now()
     lastTickAt = lastInputAt
   }

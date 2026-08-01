@@ -150,6 +150,16 @@ describe('Reveal', () => {
     expect(new Set(delays).size).toBe(2)
   })
 
+  it('animates on mount when told the element starts empty', () => {
+    const { container } = render(
+      <RevealProvider>
+        <Reveal initialText="">brand new</Reveal>
+      </RevealProvider>,
+    )
+    expect(words(container)).toEqual(['brand', 'new'])
+    expect(container.textContent).toBe('brand new')
+  })
+
   it('renders the text as real markup on the server pass', () => {
     const markup = renderToStaticMarkup(
       <RevealProvider>

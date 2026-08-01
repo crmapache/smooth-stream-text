@@ -34,7 +34,13 @@ export interface PacingOptions {
   maxFrameMs?: number
   /** Where the cursor is allowed to stop. */
   boundary?: BoundaryMode
-  /** Longest a boundary may hold the cursor back before it is released anyway. */
+  /**
+   * How long the producer must be silent before a held construct is released.
+   *
+   * Measured from the last input rather than from the start of the hold: a
+   * producer stalling mid-link should not cause the half-written URL to appear.
+   * Silence past this means the closing delimiter is never coming.
+   */
   holdMs?: number
   /** Most characters a boundary may hold back before it is released anyway. */
   holdChars?: number

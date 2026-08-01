@@ -139,7 +139,7 @@ implicit `reset`.
 | `maxLatencyMs` | 2000 | above this, snap instantly |
 | `maxFrameMs` | 100 | per-tick `dt` clamp |
 | `boundary` | `'markdown'` | where the cursor may stop (section 4) |
-| `holdMs` | 400 | cap on how long a boundary may hold the cursor |
+| `holdMs` | 1500 | producer silence after which a held construct is released |
 | `holdChars` | 120 | cap on how much text a boundary may hold back |
 | `clock` | rAF clock | injected time source |
 
@@ -198,9 +198,18 @@ the body flows freely. Holding a fence to its closer would stall the stream for
 thousands of characters.
 
 Two safety valves, enforced by the engine rather than by the boundary function:
-if a hold has lasted longer than `holdMs` or is withholding more than
-`holdChars` characters, the boundary is ignored for that tick and the text is
-released. A slightly literal `**` beats a frozen stream.
+
+- **Producer silence past `holdMs`.** Measured from the last input, not from the
+  start of the hold. A model pausing to think in the middle of a URL has not
+  frozen anything the package controls, and releasing then would show exactly
+  the half-written link the hold exists to hide. Silence past the cap is the
+  only honest signal that the closing delimiter is never coming.
+- **More than `holdChars` withheld.** Past that the construct is clearly not
+  closing soon, so the cursor carries on at its normal pace with the markup
+  literal. Because the condition stays true once crossed, this is a smooth
+  continuation rather than a one-off dump.
+
+A slightly literal `**` beats a stream frozen by us.
 
 When the producer is closed and the desired cut is the end of the source, all
 holds are released - nothing more is coming.

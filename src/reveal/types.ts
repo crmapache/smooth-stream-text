@@ -43,4 +43,12 @@ export interface RevealHandle {
 export interface RevealDeps {
   timeline?: WaveTimeline
   clock?: Clock
+  /**
+   * The text to treat as already on screen.
+   *
+   * Left unset, the first `update` seeds - which is what makes a remount silent.
+   * Pass `''` when you have just created this element for text that is genuinely
+   * new, so that its first update animates instead of appearing at once.
+   */
+  initialText?: string
 }

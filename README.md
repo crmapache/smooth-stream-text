@@ -3,7 +3,7 @@
 <p align="center">
   <img
     src="https://raw.githubusercontent.com/crmapache/smooth-stream-text/main/docs/demo.gif"
-    alt="The same answer streamed twice, side by side. On the left chunks land as they arrive and the text stutters; on the right it flows at an even rate with new words fading in."
+    alt="The same markdown answer streamed twice, side by side, through the same renderer. On the left chunks land as they arrive and the text stutters; on the right it flows at an even rate with new words fading in."
     width="760" />
 </p>
 
@@ -265,9 +265,14 @@ markdown parser would render wrongly:
 - **Never** inside a fenced code block's body. Holding one to its closing fence
   would stall the stream for thousands of characters; only the fence marker itself
   is atomic.
-- Two safety valves: a hold that lasts longer than `holdMs` or withholds more than
-  `holdChars` characters is released anyway. A briefly literal `**` beats a frozen
-  stream.
+- Two safety valves, so a hold can never become a freeze:
+  - the producer has been **silent** for `holdMs`, which means the closing
+    delimiter is never coming. Measured from the last input rather than from the
+    start of the hold - a model pausing to think mid-URL must not cause the
+    half-written link to appear;
+  - the hold is withholding more than `holdChars` characters, which means the
+    construct is not closing any time soon. From that point the cursor simply
+    carries on at its normal pace with the markup literal, rather than stalling.
 
 Grapheme safety applies in **every** mode, including `'char'`: a cut never splits a
 surrogate pair, a combining mark, a flag, or a ZWJ emoji sequence.
@@ -290,7 +295,7 @@ function `(source, desired, closed) => number` returning the largest allowed ind
 | `maxLatencyMs` | `2000` | Above this projected lag the display jumps instead of catching up. |
 | `maxFrameMs` | `100` | Per-tick clamp on elapsed time, so a stalled frame cannot cause one big jump. |
 | `boundary` | `'markdown'` | Where the cursor may stop. |
-| `holdMs` | `400` | Longest a boundary may hold the cursor before it is released anyway. |
+| `holdMs` | `1500` | How long the producer must be **silent** before a held construct is released. |
 | `holdChars` | `120` | Most characters a boundary may hold back before it is released anyway. |
 | `clock` | rAF | Injected time source. See [testing](#testing-your-own-pacing). |
 
@@ -354,9 +359,15 @@ stream.getState() // { text: 'hello world', phase: 'done', ... }
 
 ## Playground
 
-The playground is a stream simulator with adjustable speed, chunk size, jitter and
-stalls, a raw-versus-smoothed comparison, live controls for every option, and a
-chart of the backlog and draw rate. It is the fastest way to find settings you like:
+Both panes run the **same** markdown renderer, so the only difference between them
+is the stream: the left one is fed chunks as they arrive, the right one is paced
+and revealed. It has a simulator with adjustable speed, chunk size, jitter and
+stalls, live controls for every option, and a chart of the backlog and draw rate -
+the fastest way to find settings you like.
+
+The renderer in the playground is about 200 lines of plain TypeScript with no
+dependencies, and it doubles as a worked example of the headless path: parse the
+smoothed string yourself, then hang `createReveal` on the text runs you produce.
 
 ```sh
 git clone https://github.com/crmapache/smooth-stream-text

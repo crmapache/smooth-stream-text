@@ -33,12 +33,12 @@ export function createReveal(element: HTMLElement, options?: RevealOptions & Rev
   const ownTimeline = options?.timeline ?? createWaveTimeline(config)
   const doc = element.ownerDocument
 
-  let shown = ''
-  let seeded = false
+  let shown = options?.initialText ?? ''
+  let seeded = options?.initialText !== undefined
   let live: LiveNode[] = []
   let cancelPoll: (() => void) | null = null
 
-  const settled = doc.createTextNode('')
+  const settled = doc.createTextNode(shown)
   element.textContent = ''
   element.appendChild(settled)
 

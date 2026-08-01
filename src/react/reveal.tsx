@@ -71,6 +71,12 @@ export interface RevealProps {
   children?: string
   as?: ElementType
   className?: string
+  /**
+   * The text to treat as already on screen. Defaults to whatever is mounted, which
+   * is what keeps a remount silent. Pass `''` when this element was just created
+   * for text that is genuinely new, so its first paint animates.
+   */
+  initialText?: string
 }
 
 /**
@@ -84,7 +90,7 @@ export interface RevealProps {
  * Remounts are silent by design: a fresh handle treats the text it is handed as
  * already settled, so a markdown parser recreating a node does not replay it.
  */
-export function Reveal({ children = '', as = 'span', className }: RevealProps) {
+export function Reveal({ children = '', as = 'span', className, initialText }: RevealProps) {
   const { options, timeline } = useReveal()
   const hostRef = useRef<HTMLElement>(null)
   const handleRef = useRef<RevealHandle | null>(null)
@@ -92,11 +98,12 @@ export function Reveal({ children = '', as = 'span', className }: RevealProps) {
   // Rendered once, then never touched again. React does not manage the children of
   // an element with dangerouslySetInnerHTML, which is what lets the imperative
   // renderer own them - while still putting the real text in the server output.
-  const [initialHtml] = useState(() => ({ __html: escapeHtml(children) }))
+  const [initialHtml] = useState(() => ({ __html: escapeHtml(initialText ?? children) }))
 
   useIsomorphicLayoutEffect(() => {
-    const handle = createReveal(hostRef.current!, { ...options, timeline })
-    // Seeding with the mounted text is what makes a remount silent.
+    const handle = createReveal(hostRef.current!, { ...options, timeline, initialText })
+    // Without an explicit initialText this seeds with the mounted text, which is
+    // what makes a remount silent.
     handle.update(children)
     handleRef.current = handle
     return () => {

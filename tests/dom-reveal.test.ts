@@ -65,6 +65,23 @@ describe('createReveal', () => {
     expect(host.textContent).toBe(text)
   })
 
+  it('animates its first update when told the element starts empty', () => {
+    // The case a markdown renderer hits constantly: a node created for text that
+    // has just arrived, which must animate rather than seed.
+    const reveal = createReveal(host, { initialText: '' })
+    reveal.update('brand new')
+    expect(words(host)).toEqual(['brand', 'new'])
+    expect(host.textContent).toBe('brand new')
+  })
+
+  it('accepts a non-empty initialText as already settled', () => {
+    const reveal = createReveal(host, { initialText: 'already here' })
+    expect(host.textContent).toBe('already here')
+    reveal.update('already here and more')
+    expect(words(host)).toEqual(['and', 'more'])
+    expect(host.textContent).toBe('already here and more')
+  })
+
   it('silently reseeds when the new text is not an extension of the old', () => {
     const reveal = createReveal(host)
     reveal.update('first answer')

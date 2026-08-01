@@ -180,12 +180,47 @@ describe('createSmoothStream', () => {
     }
   })
 
-  it('releases a markdown hold once the time cap is reached', () => {
+  it('releases a markdown hold once the producer has gone quiet', () => {
     const clock = createManualClock(0)
     const stream = createSmoothStream({ clock, boundary: 'markdown', holdMs: 100 })
     stream.push('**this emphasis is never closed and just keeps going and going')
     for (let i = 0; i < 40; i++) clock.advance(16)
     expect(stream.getState().cursor).toBeGreaterThan(2)
+  })
+
+  it('keeps holding a link through a producer stall longer than the cap', () => {
+    // The producer stalling mid-URL has not frozen anything we control, so
+    // releasing would show exactly the half-written link the hold exists to hide.
+    const clock = createManualClock(0)
+    const stream = createSmoothStream({ clock, boundary: 'markdown' })
+    const source = 'a half-written [link](https://github.com/crmapache/smooth-stream-text), or a broken emoji'
+
+    let at = 0
+    const feed = (count: number) => {
+      for (let k = 0; k < count && at < source.length; k++) stream.push(source[at++])
+      clock.advance(16)
+    }
+
+    while (at < source.indexOf('[') + 8) feed(3)
+    // A 900 ms stall, right in the middle of the URL - longer than a settle window
+    // and typical of a model pausing to think.
+    for (let i = 0; i < 56; i++) clock.advance(16)
+    expect(stream.getState().text).not.toContain('[')
+    expect(stream.getState().text).not.toContain('http')
+
+    while (at < source.length) feed(3)
+    stream.end()
+    for (let i = 0; i < 200; i++) clock.advance(16)
+    expect(stream.getState().text).toBe(source)
+  })
+
+  it('still releases when the producer abandons the stream mid-link', () => {
+    const clock = createManualClock(0)
+    const stream = createSmoothStream({ clock, boundary: 'markdown', holdMs: 800 })
+    stream.push('a half-written [link](https://example')
+    for (let i = 0; i < 200; i++) clock.advance(16)
+    // Nothing more is ever coming, so the text has to appear rather than hang.
+    expect(stream.getState().text).toBe('a half-written [link](https://example')
   })
 
   it('releases a markdown hold once the length cap is reached', () => {
