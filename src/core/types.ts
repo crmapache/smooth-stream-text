@@ -70,6 +70,8 @@ export interface SmoothStream {
   reset(text?: string): void
   /** Reveal everything right now. */
   flush(): void
+  /** Change the feel at runtime. `clock` is fixed at creation and is ignored here. */
+  setOptions(next: Partial<PacingOptions>): void
   getState(): SmoothState
   subscribe(listener: (state: SmoothState) => void): () => void
   destroy(): void

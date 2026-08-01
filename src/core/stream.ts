@@ -14,7 +14,7 @@ import type { PacingOptions, SmoothState, SmoothStream, StreamPhase } from './ty
 export function createSmoothStream(options?: PacingOptions): SmoothStream {
   const opts = resolvePacingOptions(options)
   const { clock } = opts
-  const resolver = createBoundaryResolver(opts.boundary)
+  let resolver = createBoundaryResolver(opts.boundary)
 
   let source = ''
   let cursor = 0
@@ -182,6 +182,13 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       finish(clock.now())
       stopTicking()
       emit()
+    },
+
+    setOptions(next) {
+      if (destroyed) return
+      const boundaryChanged = next.boundary !== undefined && next.boundary !== opts.boundary
+      Object.assign(opts, resolvePacingOptions({ ...opts, ...next, clock }))
+      if (boundaryChanged) resolver = createBoundaryResolver(opts.boundary)
     },
 
     getState: () => state,
