@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    // tsup's declaration step injects `baseUrl` into its generated tsconfig, which
+    // TypeScript 6 reports as deprecated. Ours does not use it.
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "smooth-stream-text": ["./src/index.ts"],
+      "smooth-stream-text/dom": ["./src/dom/index.ts"]
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node"],
+    "outDir": "dist"
+  },
+  "include": ["src", "playground", "tests"]
+}

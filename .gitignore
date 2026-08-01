@@ -1,0 +1,35 @@
+# compiled output
+/dist
+/playground/dist
+
+# deps
+/node_modules
+
+# logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# coverage
+/coverage
+
+# OS
+.DS_Store
+
+# editors
+/.idea
+.vscode/*
+!.vscode/extensions.json
+
+# vercel
+.vercel
+
+# playwright mcp artifacts
+.playwright-mcp
+
+# stray root images (pasted screenshots)
+/*.png
+/*.jpg
