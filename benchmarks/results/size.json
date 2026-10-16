@@ -1,7 +1,7 @@
 {
  "meta": {
   "date": "2026-10-16",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "bundler": "esbuild 0.28.2, minified, ESM, target es2020, react/vue/svelte external"
  },
  "results": [
@@ -13,21 +13,21 @@
   },
   {
    "name": "react: useSmoothText",
-   "minBytes": 20751,
-   "gzipBytes": 8396,
-   "brotliBytes": 7733
+   "minBytes": 11013,
+   "gzipBytes": 4795,
+   "brotliBytes": 4497
   },
   {
    "name": "react: SmoothText",
-   "minBytes": 20137,
-   "gzipBytes": 8187,
-   "brotliBytes": 7548
+   "minBytes": 19589,
+   "gzipBytes": 8003,
+   "brotliBytes": 7426
   },
   {
    "name": "react: everything",
-   "minBytes": 22006,
-   "gzipBytes": 8873,
-   "brotliBytes": 8195
+   "minBytes": 22043,
+   "gzipBytes": 8888,
+   "brotliBytes": 8210
   },
   {
    "name": "dom: createSmoothText",
@@ -37,9 +37,9 @@
   },
   {
    "name": "vue: useSmoothStream",
-   "minBytes": 20731,
-   "gzipBytes": 8354,
-   "brotliBytes": 7752
+   "minBytes": 10806,
+   "gzipBytes": 4729,
+   "brotliBytes": 4435
   },
   {
    "name": "svelte: smoothStream",

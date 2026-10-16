@@ -10,7 +10,7 @@
    "trace": "claude-markdown",
    "approach": "markdown as received",
    "renders": 146,
-   "renderMsTotal": 90,
+   "renderMsTotal": 60,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.8,
@@ -20,8 +20,8 @@
   {
    "trace": "claude-markdown",
    "approach": "markdown paced",
-   "renders": 288,
-   "renderMsTotal": 118,
+   "renders": 291,
+   "renderMsTotal": 103,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
@@ -31,8 +31,8 @@
   {
    "trace": "claude-markdown",
    "approach": "markdown paced, unit word",
-   "renders": 242,
-   "renderMsTotal": 106,
+   "renders": 239,
+   "renderMsTotal": 77,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
@@ -58,14 +58,14 @@
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
-   "maxElements": 293,
+   "maxElements": 298,
    "textComplete": true
   },
   {
    "trace": "fast",
    "approach": "markdown as received",
    "renders": 44,
-   "renderMsTotal": 32,
+   "renderMsTotal": 26,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
@@ -75,8 +75,8 @@
   {
    "trace": "fast",
    "approach": "markdown paced",
-   "renders": 108,
-   "renderMsTotal": 52,
+   "renders": 111,
+   "renderMsTotal": 38,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.8,
@@ -86,11 +86,11 @@
   {
    "trace": "fast",
    "approach": "markdown paced, unit word",
-   "renders": 105,
-   "renderMsTotal": 46,
+   "renders": 102,
+   "renderMsTotal": 35,
    "longTasks": 0,
    "longTaskMs": 0,
-   "frameP95Ms": 16.8,
+   "frameP95Ms": 16.7,
    "maxElements": 90,
    "textComplete": null
   },
@@ -113,16 +113,16 @@
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
-   "maxElements": 374,
+   "maxElements": 390,
    "textComplete": true
   },
   {
    "trace": "long",
    "approach": "markdown as received",
    "renders": 946,
-   "renderMsTotal": 856,
-   "longTasks": 0,
-   "longTaskMs": 0,
+   "renderMsTotal": 753,
+   "longTasks": 1,
+   "longTaskMs": 90,
    "frameP95Ms": 16.7,
    "maxElements": 450,
    "textComplete": null
@@ -130,8 +130,19 @@
   {
    "trace": "long",
    "approach": "markdown paced",
-   "renders": 1525,
-   "renderMsTotal": 1153,
+   "renders": 1516,
+   "renderMsTotal": 1116,
+   "longTasks": 2,
+   "longTaskMs": 206,
+   "frameP95Ms": 16.7,
+   "maxElements": 450,
+   "textComplete": null
+  },
+  {
+   "trace": "long",
+   "approach": "markdown paced, unit word",
+   "renders": 1283,
+   "renderMsTotal": 917,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.8,
@@ -140,20 +151,9 @@
   },
   {
    "trace": "long",
-   "approach": "markdown paced, unit word",
-   "renders": 1300,
-   "renderMsTotal": 1032,
-   "longTasks": 0,
-   "longTaskMs": 0,
-   "frameP95Ms": 16.7,
-   "maxElements": 450,
-   "textComplete": null
-  },
-  {
-   "trace": "long",
    "approach": "plain text as received",
    "renders": 946,
-   "renderMsTotal": 20,
+   "renderMsTotal": 14,
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.7,
@@ -168,7 +168,7 @@
    "longTasks": 0,
    "longTaskMs": 0,
    "frameP95Ms": 16.8,
-   "maxElements": 214,
+   "maxElements": 209,
    "textComplete": true
   }
  ]
