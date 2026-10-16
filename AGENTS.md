@@ -32,6 +32,7 @@ npm run lint && npm run typecheck
 npm run build                 # dist/
 npm run check:package         # publint + are-the-types-wrong
 npm run check:docs            # docs and README against the built package (needs build)
+npm run check:bundle          # importing only the hooks leaves the reveal out (needs build)
 node scripts/build-skill.mjs  # regenerate skill references after changing docs
 npm run dev                   # playground on 5188
 npm run dev:docs              # docs on 5194

@@ -27,6 +27,8 @@ jobs:
       # Recipes that import something the package does not export, or tables with a
       # stale default, fail here rather than in a reader's project.
       - run: npm run check:docs
+      # An app that imports only the hooks must not bundle the reveal.
+      - run: npm run check:bundle
       - name: Skill references match the docs
         run: node scripts/build-skill.mjs --check
       # The playground, the docs site, the Markdown copies and llms.txt, as deployed.

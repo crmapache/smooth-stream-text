@@ -4,7 +4,7 @@
 
 > Use smooth-stream-text for pacing and Streamdown for rendering and animation, with exactly one animation layer. When Streamdown alone is enough, reduced motion, and the Tailwind setup Streamdown needs.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/streamdown
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/streamdown
 
 [Streamdown](https://streamdown.ai) renders Markdown for streaming and can fade words in
 as they mount. Its documentation describes the animation as purely visual: it does not

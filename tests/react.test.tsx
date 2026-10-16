@@ -512,6 +512,9 @@ describe('SmoothText lifecycle', () => {
     expect(host.className).toBe('host')
     expect(host.getAttribute('aria-busy')).toBe('true')
     expect(host.querySelector('.sst-word.unit')).not.toBeNull()
+    // Settings go to the engine, never onto the element.
+    expect(host.hasAttribute('boundary')).toBe(false)
+    expect(host.hasAttribute('clock')).toBe(false)
   })
 })
 

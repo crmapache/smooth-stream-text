@@ -4,7 +4,7 @@
 
 > Pace streamed LLM text in React with useSmoothText and keep react-markdown or any other renderer. Hooks, the SmoothText component, the optional reveal, history, Show all and StrictMode.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/react
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/react
 
 ```ts
 import { useSmoothText, useSmoothStream, useSmoothStreamController, SmoothText, Reveal, RevealProvider } from 'smooth-stream-text/react'

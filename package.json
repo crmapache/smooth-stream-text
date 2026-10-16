@@ -1,6 +1,6 @@
 {
   "name": "smooth-stream-text",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Adaptive client-side pacing for streamed LLM text. Keep your Markdown renderer; the answer appears at an even rate. Zero-dependency headless core with React, Vue, Svelte and Web Component bindings and an optional fade-in reveal.",
   "author": "Maksim Zolotoi",
   "license": "MIT",
@@ -153,9 +153,10 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build && npm test && npm run check:package && npm run check:docs",
+    "prepublishOnly": "npm run build && npm test && npm run check:package && npm run check:docs && npm run check:bundle",
     "check:package": "publint && attw --pack . --exclude-entrypoints styles.css",
-    "check:docs": "node scripts/check-docs.mjs"
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:bundle": "node scripts/check-tree-shaking.mjs"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -177,6 +178,7 @@
     "@types/node": "^20.11.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "esbuild": "^0.27.2",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",

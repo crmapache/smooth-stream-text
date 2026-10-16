@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.2 - 2026-10-16
+
+### Fixed
+
+- Importing only the hooks no longer bundles the reveal. `useSmoothText`,
+  `useSmoothStream` and `useSmoothStreamController` from `smooth-stream-text/react`,
+  and `useSmoothStream` from `smooth-stream-text/vue`, brought the reveal code along,
+  because the components next to them were created by calls a bundler could not
+  drop. Minified with esbuild and gzipped, the React hooks go from 8.2 kB to 4.7 kB
+  and the Vue composable from 8.2 kB to 4.6 kB; the core alone is 4.2 kB. An app
+  that uses the reveal bundles the same code as before. CI now fails if the hooks
+  pull the reveal in again.
+
 ## 0.2.1 - 2026-10-16
 
 ### Added

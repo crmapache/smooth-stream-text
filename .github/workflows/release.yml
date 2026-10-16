@@ -39,6 +39,7 @@ jobs:
       - run: npm run build
       - run: npm run check:package
       - run: npm run check:docs
+      - run: npm run check:bundle
       - run: node scripts/build-skill.mjs --check
       - name: Publish with provenance
         run: npm publish --provenance --access public

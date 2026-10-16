@@ -4,7 +4,7 @@
 
 > Pace answers from the Vercel AI SDK's useChat in the browser with smooth-stream-text. Message parts, tool calls, status, stop, errors, history, and how it relates to smoothStream().
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/ai-sdk
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/ai-sdk
 
 The [AI SDK](https://ai-sdk.dev) streams an assistant message into `useChat` as a list
 of parts. This page shows how to pace that message in the browser while keeping

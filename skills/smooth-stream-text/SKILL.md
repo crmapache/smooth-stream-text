@@ -4,7 +4,7 @@ description: Integrates the smooth-stream-text npm package to pace streamed LLM 
 license: MIT
 metadata:
   package: smooth-stream-text
-  package-version: "0.2.1"
+  package-version: "0.2.2"
   docs: https://smooth-stream-text.vercel.app/docs/
 ---
 

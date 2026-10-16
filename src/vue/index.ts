@@ -122,12 +122,16 @@ export function useSmoothStream(
   }
 }
 
+// The components are marked pure: calls at the top of a module are kept by
+// bundlers unless marked, and would pull the reveal into an app that imports
+// only `useSmoothStream`.
+
 /**
  * Shares one wave across every `Reveal` beneath it, so the stagger stays
  * continuous across paragraphs. Renders its default slot and no DOM of its own.
  * Its options may change at any time; every `Reveal` below follows them.
  */
-export const RevealProvider = defineComponent({
+export const RevealProvider = /* @__PURE__ */ defineComponent({
   name: 'RevealProvider',
   props: {
     options: { type: Object as PropType<RevealOptions>, default: undefined },
@@ -147,7 +151,7 @@ export const RevealProvider = defineComponent({
 })
 
 /** Applies the wave to one piece of text inside your own markup. */
-export const Reveal = defineComponent({
+export const Reveal = /* @__PURE__ */ defineComponent({
   name: 'Reveal',
   props: {
     text: { type: String, default: '' },
@@ -199,7 +203,7 @@ export const Reveal = defineComponent({
  * unmounted before then. A message that is already `done` when it first arrives
  * is history and appears at once.
  */
-export const SmoothText = defineComponent({
+export const SmoothText = /* @__PURE__ */ defineComponent({
   name: 'SmoothText',
   props: {
     text: { type: String, default: '' },

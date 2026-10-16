@@ -153,7 +153,7 @@ app, you do not need a dependency.
 
 ## Where smooth-stream-text fits
 
-`smooth-stream-text` 0.2.1 is a client-side pacing controller that keeps your
+`smooth-stream-text` 0.2.2 is a client-side pacing controller that keeps your
 renderer. Its rate follows the backlog to hold a target latency (180 ms by default)
 instead of a fixed speed; its cuts respect grapheme clusters and open Markdown
 constructs; it treats finished text as history; and it has bindings for React, Vue,

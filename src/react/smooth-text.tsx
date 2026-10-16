@@ -29,14 +29,17 @@ export interface SmoothTextProps
   onSettled?: () => void
 }
 
-const OPTION_KEYS = new Set([...Object.keys(defaultPacing), ...Object.keys(defaultReveal)])
+// A lookup rather than a set built at the top of the module, which bundlers could
+// not drop from an app that never renders SmoothText.
+const isOption = (key: string) =>
+  Object.prototype.hasOwnProperty.call(defaultPacing, key) || Object.prototype.hasOwnProperty.call(defaultReveal, key)
 
 /** Settings for the engine on one side, attributes for the host element on the other. */
 function splitProps(props: Record<string, unknown>) {
   const options: Record<string, unknown> = {}
   const attributes: Record<string, unknown> = {}
   for (const [key, value] of Object.entries(props)) {
-    if (OPTION_KEYS.has(key)) options[key] = value
+    if (isOption(key)) options[key] = value
     else attributes[key] = value
   }
   return { options: options as SmoothTextOptions, attributes }
@@ -52,7 +55,7 @@ function splitProps(props: Record<string, unknown>) {
  * when it first arrives is history and appears at once; every setting can change
  * at any time; other props - `id`, `aria-*`, `style`, a `ref` - go to the host.
  */
-export const SmoothText = forwardRef<HTMLElement, SmoothTextProps>(function SmoothText(
+export const SmoothText = /* @__PURE__ */ forwardRef<HTMLElement, SmoothTextProps>(function SmoothText(
   { text, done = false, as = 'span', className, unitClassName, onSettled, ...rest },
   ref,
 ) {

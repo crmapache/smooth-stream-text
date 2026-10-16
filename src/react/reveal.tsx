@@ -25,7 +25,9 @@ export interface RevealContextValue {
   timeline: WaveTimeline
 }
 
-const RevealContext = createContext<RevealContextValue | null>(null)
+// Calls at the top of a module are kept by bundlers unless marked pure. Unmarked,
+// they would pull the whole reveal into an app that imports only the hooks.
+const RevealContext = /* @__PURE__ */ createContext<RevealContextValue | null>(null)
 
 // useLayoutEffect warns during server rendering, where there is no layout to read.
 export const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
@@ -120,7 +122,7 @@ export interface RevealProps extends Omit<HTMLAttributes<HTMLElement>, 'children
  * Remounts are silent by design: a fresh handle treats the text it is handed as
  * already settled, so a markdown parser recreating a node does not replay it.
  */
-export const Reveal = forwardRef<HTMLElement, RevealProps>(function Reveal(
+export const Reveal = /* @__PURE__ */ forwardRef<HTMLElement, RevealProps>(function Reveal(
   { children = '', as = 'span', initialText, ...attributes },
   ref,
 ) {

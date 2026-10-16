@@ -4,7 +4,7 @@
 
 > Pace streamed LLM text in Svelte 4 and 5 and SvelteKit with the smoothStream store or the smoothText action. Runes, cleanup, Show all, and server-rendered history.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/svelte
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/svelte
 
 ```ts
 import { smoothStream, smoothText, reveal } from 'smooth-stream-text/svelte'
