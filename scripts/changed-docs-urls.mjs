@@ -1,6 +1,8 @@
 // Lists the public URLs whose content changed between two commits: docs pages whose
 // source changed, pages that include a changed example file, and the playground.
-// Used to tell search engines what to recrawl after a deploy.
+// Used to tell search engines what to recrawl after a deploy, so it leaves out the
+// Markdown copies of the pages: they are served with noindex and are there for
+// assistants, not for search.
 //
 //   node scripts/changed-docs-urls.mjs <from-ref> [to-ref]
 import { execFileSync } from 'node:child_process'
@@ -27,7 +29,6 @@ for (const page of pages()) {
   if (page.route === '/benchmarks') includes.push('benchmarks/results/summary.md')
   if ([source, ...includes].some((file) => changed.has(file))) {
     urls.add(`${DOCS}${page.route.slice(1)}`)
-    urls.add(`${DOCS}${page.route === '/' ? 'index' : page.route.slice(1)}.md`)
   }
 }
 if ([...changed].some((file) => file.startsWith('playground/'))) urls.add(`${SITE}/`)
