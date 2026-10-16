@@ -43,5 +43,7 @@
     "Do not stack it with the AI SDK smoothStream() transform; the delays add up. Pace in one layer.",
     "In Svelte, call store.apply(text, done) once during component setup as well as in $effect, so server-rendered history contains the text.",
     "flush() shows only what has arrived; to skip pacing for the rest of an answer, call it again as new text arrives."
-  ]
+  ],
+  "url": "https://context7.com/crmapache/smooth-stream-text",
+  "public_key": "pk_bzPDDo3qBJvSbqpdcAMPm"
 }
