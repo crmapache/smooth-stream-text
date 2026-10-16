@@ -5,7 +5,20 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'playground/dist/**', 'node_modules/**'],
+    // Each example is its own project with its own lint and typecheck, run in CI.
+    ignores: [
+      'dist/**',
+      'playground/dist/**',
+      'node_modules/**',
+      'examples/**',
+      'site-dist/**',
+      'website/.vitepress/cache/**',
+      'website/.vitepress/dist/**',
+      'benchmarks/node_modules/**',
+      'benchmarks/results/**',
+      'test-results/**',
+      'playwright-report/**',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -15,9 +28,23 @@ export default tseslint.config(
     rules: reactHooks.configs.recommended.rules,
   },
   {
-    // Plain Node scripts that check the packed tarball.
-    files: ['scripts/**'],
-    languageOptions: { globals: { console: 'readonly', process: 'readonly', require: 'readonly' } },
+    // Plain Node scripts: the tarball checks, the site build and the benchmarks.
+    files: ['scripts/**', 'benchmarks/scripts/**'],
+    languageOptions: {
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        require: 'readonly',
+        URL: 'readonly',
+        Buffer: 'readonly',
+        performance: 'readonly',
+        setImmediate: 'readonly',
+        setTimeout: 'readonly',
+        Intl: 'readonly',
+        fetch: 'readonly',
+        Headers: 'readonly',
+      },
+    },
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
   eslintConfigPrettier,

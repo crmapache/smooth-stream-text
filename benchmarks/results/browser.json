@@ -1,0 +1,175 @@
+{
+ "meta": {
+  "date": "2026-10-16",
+  "browser": "Chromium 156.0.8078.4 (headless)",
+  "machine": "Apple M1 Pro, 10 cores, 16 GB, darwin",
+  "node": "v24.3.0"
+ },
+ "results": [
+  {
+   "trace": "claude-markdown",
+   "approach": "markdown as received",
+   "renders": 146,
+   "renderMsTotal": 92,
+   "longTasks": 1,
+   "longTaskMs": 494,
+   "frameP95Ms": 16.7,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "claude-markdown",
+   "approach": "markdown paced",
+   "renders": 287,
+   "renderMsTotal": 131,
+   "longTasks": 0,
+   "longTaskMs": 0,
+   "frameP95Ms": 16.7,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "claude-markdown",
+   "approach": "markdown paced, unit word",
+   "renders": 231,
+   "renderMsTotal": 98,
+   "longTasks": 2,
+   "longTaskMs": 147,
+   "frameP95Ms": 16.8,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "claude-markdown",
+   "approach": "plain text as received",
+   "renders": 146,
+   "renderMsTotal": 4,
+   "longTasks": 2,
+   "longTaskMs": 128,
+   "frameP95Ms": 16.7,
+   "maxElements": 0,
+   "textComplete": true
+  },
+  {
+   "trace": "claude-markdown",
+   "approach": "plain text paced + reveal",
+   "renders": null,
+   "renderMsTotal": null,
+   "longTasks": 2,
+   "longTaskMs": 171,
+   "frameP95Ms": 16.7,
+   "maxElements": 295,
+   "textComplete": true
+  },
+  {
+   "trace": "fast",
+   "approach": "markdown as received",
+   "renders": 44,
+   "renderMsTotal": 37,
+   "longTasks": 2,
+   "longTaskMs": 304,
+   "frameP95Ms": 33.2,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "fast",
+   "approach": "markdown paced",
+   "renders": 112,
+   "renderMsTotal": 47,
+   "longTasks": 0,
+   "longTaskMs": 0,
+   "frameP95Ms": 16.7,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "fast",
+   "approach": "markdown paced, unit word",
+   "renders": 104,
+   "renderMsTotal": 45,
+   "longTasks": 0,
+   "longTaskMs": 0,
+   "frameP95Ms": 16.7,
+   "maxElements": 90,
+   "textComplete": null
+  },
+  {
+   "trace": "fast",
+   "approach": "plain text as received",
+   "renders": 44,
+   "renderMsTotal": 1,
+   "longTasks": 0,
+   "longTaskMs": 0,
+   "frameP95Ms": 16.8,
+   "maxElements": 0,
+   "textComplete": true
+  },
+  {
+   "trace": "fast",
+   "approach": "plain text paced + reveal",
+   "renders": null,
+   "renderMsTotal": null,
+   "longTasks": 3,
+   "longTaskMs": 274,
+   "frameP95Ms": 33.3,
+   "maxElements": 458,
+   "textComplete": true
+  },
+  {
+   "trace": "long",
+   "approach": "markdown as received",
+   "renders": 946,
+   "renderMsTotal": 1138,
+   "longTasks": 5,
+   "longTaskMs": 492,
+   "frameP95Ms": 16.8,
+   "maxElements": 450,
+   "textComplete": null
+  },
+  {
+   "trace": "long",
+   "approach": "markdown paced",
+   "renders": 1513,
+   "renderMsTotal": 1310,
+   "longTasks": 2,
+   "longTaskMs": 211,
+   "frameP95Ms": 16.7,
+   "maxElements": 450,
+   "textComplete": null
+  },
+  {
+   "trace": "long",
+   "approach": "markdown paced, unit word",
+   "renders": 1301,
+   "renderMsTotal": 1060,
+   "longTasks": 1,
+   "longTaskMs": 65,
+   "frameP95Ms": 16.7,
+   "maxElements": 450,
+   "textComplete": null
+  },
+  {
+   "trace": "long",
+   "approach": "plain text as received",
+   "renders": 946,
+   "renderMsTotal": 20,
+   "longTasks": 0,
+   "longTaskMs": 0,
+   "frameP95Ms": 16.7,
+   "maxElements": 0,
+   "textComplete": true
+  },
+  {
+   "trace": "long",
+   "approach": "plain text paced + reveal",
+   "renders": null,
+   "renderMsTotal": null,
+   "longTasks": 2,
+   "longTaskMs": 114,
+   "frameP95Ms": 16.8,
+   "maxElements": 215,
+   "textComplete": true
+  }
+ ]
+}

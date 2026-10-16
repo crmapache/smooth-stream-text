@@ -34,3 +34,10 @@ yarn-error.log*
 /*.png
 /*.jpg
 .env*
+
+# combined site build
+/site-dist
+/website/.vitepress/cache
+/website/.vitepress/dist
+/test-results
+/playwright-report

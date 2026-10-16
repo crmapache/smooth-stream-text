@@ -1,0 +1,28 @@
+name: Refresh Context7
+
+# Coding assistants read this library's docs through Context7. When the docs, the
+# examples or the README change on main, ask Context7 to re-index them instead of
+# waiting for its own schedule. Needs the CONTEXT7_API_KEY repository secret.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - 'examples/**'
+      - 'README.md'
+      - 'INTEGRATION.md'
+      - 'context7.json'
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/context7-refresh.mjs
+        env:
+          CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}

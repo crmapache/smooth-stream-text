@@ -1,0 +1,47 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "smooth-stream-text",
+  "description": "Client-side pacing for streamed LLM text. Pass the text received so far and whether it is done; get back a prefix that grows at an even, adaptive rate and render it with your existing Markdown renderer. Headless core with React, Vue, Svelte and Web Component bindings and an optional fade-in reveal.",
+  "branch": "main",
+  "folders": ["website", "examples"],
+  "excludeFolders": [
+    "docs",
+    "benchmarks",
+    "playground",
+    "src",
+    "tests",
+    "scripts",
+    "skills",
+    "website/.vitepress",
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/.next",
+    "**/.nuxt",
+    "**/.output",
+    "**/.svelte-kit",
+    "**/e2e",
+    "**/public"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md",
+    "changelog.md",
+    "benchmarks.md",
+    "LICENSE",
+    "REVIEW.md",
+    "AIEO_RESEARCH.md",
+    "AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "rules": [
+    "Pass the accumulated text received so far, not the latest delta, to useSmoothText, useSmoothStream or the Svelte store's apply(); for deltas use useSmoothStreamController() or push().",
+    "Set done to true when the transport closes, whether it finished, was stopped or failed. Pass done: true for messages loaded from history so they appear at once without replaying.",
+    "Render one paced component per assistant message; only the newest message can still be streaming.",
+    "Import only from the public entry points: smooth-stream-text, smooth-stream-text/react, /vue, /svelte, /dom, /web-component and /styles.css.",
+    "The React entry is client-only ('use client'); do not call its hooks in React Server Components.",
+    "Keep one animation layer. With Streamdown's animated mode use only useSmoothText for pacing and set isAnimating={phase !== 'done'}; do not add Reveal or SmoothText.",
+    "Do not stack it with the AI SDK smoothStream() transform; the delays add up. Pace in one layer.",
+    "In Svelte, call store.apply(text, done) once during component setup as well as in $effect, so server-rendered history contains the text.",
+    "flush() shows only what has arrived; to skip pacing for the rest of an answer, call it again as new text arrives."
+  ]
+}

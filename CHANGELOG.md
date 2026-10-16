@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.1 - 2026-10-16
+
+### Added
+
+- `INTEGRATION.md` ships with the package: a short guide to the entry points, the
+  rules every binding follows and the common mistakes, readable offline in
+  `node_modules/smooth-stream-text/`.
+- The README links the new documentation at
+  https://smooth-stream-text.vercel.app/docs/, with a guide per framework, six runnable
+  examples and benchmarks on recorded streams.
+
+### Fixed
+
+- After a pause in the middle of a held construct - the last word with
+  `unit: 'word'`, or an open `**`, link or table row at the live edge - the next
+  chunk appeared all at once instead of being paced. While the hold lasted, the
+  fractional cursor kept advancing past the text that had arrived, up to
+  `holdChars` beyond it. Found by the new benchmark's bursty streams.
+
 ## 0.2.0 - 2026-10-15
 
 ### Behaviour you may notice

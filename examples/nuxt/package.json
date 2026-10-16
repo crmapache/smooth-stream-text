@@ -1,0 +1,23 @@
+{
+  "name": "smooth-stream-text-example-nuxt",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --strictPort",
+    "build": "nuxt build",
+    "preview": "nuxt preview --port 5204 --strictPort",
+    "typecheck": "nuxt typecheck",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "isomorphic-dompurify": "^4.5.0",
+    "marked": "^18.1.1",
+    "nuxt": "^4.6.1",
+    "smooth-stream-text": "^0.2.0",
+    "vue": "^3.5.44"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.13"
+  }
+}

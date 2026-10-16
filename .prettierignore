@@ -5,3 +5,12 @@ node_modules
 # the examples: it prefixes JSX statements with a semicolon and rewrites inline
 # code that contains backticks.
 *.md
+# Examples are separate projects with their own formatting; generated output is not ours to format.
+examples
+site-dist
+website/.vitepress/cache
+benchmarks/node_modules
+benchmarks/results
+benchmarks/traces
+test-results
+playwright-report

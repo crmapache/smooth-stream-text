@@ -1,0 +1,23 @@
+/* The playground's gold, so the docs and the demo read as one site. */
+:root {
+  --vp-c-brand-1: #8a6a36;
+  --vp-c-brand-2: #a07c43;
+  --vp-c-brand-3: #b89763;
+  --vp-c-brand-soft: rgb(184 151 99 / 0.14);
+}
+
+.dark {
+  --vp-c-bg: #050807;
+  --vp-c-bg-alt: #020504;
+  --vp-c-bg-elv: #0b100e;
+  --vp-c-bg-soft: #0d1311;
+  --vp-c-brand-1: #f8e5bd;
+  --vp-c-brand-2: #e2c895;
+  --vp-c-brand-3: #b89763;
+  --vp-c-brand-soft: rgb(184 151 99 / 0.16);
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+}

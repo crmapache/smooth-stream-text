@@ -23,8 +23,14 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      - run: npm run build:playground
       - run: npm run check:package
+      # Recipes that import something the package does not export, or tables with a
+      # stale default, fail here rather than in a reader's project.
+      - run: npm run check:docs
+      - name: Skill references match the docs
+        run: node scripts/build-skill.mjs --check
+      # The playground, the docs site, the Markdown copies and llms.txt, as deployed.
+      - run: npm run build:site
       - name: Pack the tarball users will install
         if: matrix.node == 24
         run: npm pack
@@ -59,3 +65,69 @@ jobs:
           npm install "$GITHUB_WORKSPACE"/smooth-stream-text-*.tgz
           node smoke.mjs
           node smoke.cjs
+
+  peers:
+    name: Oldest supported React and Vue
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarball
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Server-render history with React 18 and Vue 3.2
+        run: |
+          mkdir "$RUNNER_TEMP/peers"
+          cp scripts/smoke-peers.mjs "$RUNNER_TEMP/peers/"
+          cd "$RUNNER_TEMP/peers"
+          npm init -y > /dev/null
+          npm install "$GITHUB_WORKSPACE"/smooth-stream-text-*.tgz react@18 react-dom@18 vue@3.2
+          node smoke-peers.mjs
+
+  examples:
+    name: Example ${{ matrix.example }}
+    needs: check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [react-markdown, next-ai-sdk, react-streamdown, nuxt, sveltekit, vanilla]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarball
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/${{ matrix.example }}/package-lock.json
+      # Playwright lives in the repository root.
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install the example with the tarball from this commit
+        working-directory: examples/${{ matrix.example }}
+        run: |
+          npm ci
+          npm install --no-save "$GITHUB_WORKSPACE"/smooth-stream-text-*.tgz
+          node -e "const v = require('smooth-stream-text/package.json').version; const r = require('../../package.json').version; if (v !== r) throw new Error('installed ' + v + ', repository is ' + r)"
+      - name: Typecheck
+        working-directory: examples/${{ matrix.example }}
+        run: if node -p "require('./package.json').scripts.typecheck ?? ''" | grep -q .; then npm run typecheck; fi
+      - name: Build
+        working-directory: examples/${{ matrix.example }}
+        run: npm run build
+      - name: End-to-end tests against the production build
+        run: npx playwright test
+        env:
+          EXAMPLE: ${{ matrix.example }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-${{ matrix.example }}
+          path: test-results

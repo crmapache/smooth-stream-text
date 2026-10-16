@@ -1,0 +1,26 @@
+name: Notify search engines
+
+# Run by hand after a deploy that changed the docs. It sends the changed URLs to
+# IndexNow; it never runs on its own.
+
+on:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: Commit, tag or branch of the previous deploy
+        required: true
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Changed URLs
+        run: node scripts/changed-docs-urls.mjs "${{ inputs.since }}" | tee "$RUNNER_TEMP/urls.txt"
+      - name: Send to IndexNow
+        run: node scripts/indexnow.mjs < "$RUNNER_TEMP/urls.txt"

@@ -10,7 +10,9 @@
 </p>
 
 <p align="center">
-  <a href="https://smooth-stream-text.vercel.app"><b>Live playground →</b></a>
+  <a href="https://smooth-stream-text.vercel.app"><b>Live playground</b></a> ·
+  <a href="https://smooth-stream-text.vercel.app/docs/"><b>Documentation</b></a> ·
+  <a href="https://github.com/crmapache/smooth-stream-text/tree/main/examples"><b>Examples</b></a>
 </p>
 
 <p align="center">
@@ -19,13 +21,19 @@
   <a href="./LICENSE"><img src="https://img.shields.io/npm/l/smooth-stream-text.svg" alt="MIT license" /></a>
 </p>
 
+Adaptive text-stream smoothing for AI chat interfaces. Keep your existing Markdown
+renderer and pace incoming text with a zero-dependency headless core. React, Vue,
+Svelte and Web Component integrations are included; a fade-in reveal is optional.
+
 When a language model answers, the chunks arrive **unevenly**: one word, then twenty
 at once, then a pause while the server thinks. Rendering each chunk the moment it
 lands means the text stutters, and the eye reads the stutter before it reads the
 words.
 
-`smooth-stream-text` buffers what arrives and releases it at a visually even rate,
-then reveals new text as a soft left-to-right wave.
+`smooth-stream-text` sits between your transport and your renderer. You hand it the
+text received so far and whether the answer is finished; it hands back a prefix that
+grows at an even, adaptive rate, which you render exactly as before. It works with any
+provider (OpenAI, Anthropic, Google, your own backend) because it only sees text.
 
 - **A real pacing controller.** Not a fixed characters-per-second you tune per
   model - the rate follows from holding a constant distance behind the live text,
@@ -42,11 +50,31 @@ then reveals new text as a soft left-to-right wave.
   never stops inside a `**`, a half-written link or an emoji, so a markdown
   renderer downstream never flashes broken syntax.
 
+**It fits** when text arrives in bursts and you want it to read as a steady flow, you
+already have a renderer (react-markdown, Streamdown, marked, your own), and history
+must appear at once while only new answers are paced.
+
+**It does not fit** when you only render static Markdown, need transport features
+(retries, reconnects), want a CSS typing effect for a heading, or already pace text
+in another layer such as the AI SDK's `smoothStream()` and are happy with it: two
+layers add their delays. The core runs anywhere JavaScript runs, but only the web
+bindings are built and tested. [Choosing an approach](https://smooth-stream-text.vercel.app/docs/comparisons)
+compares the alternatives.
+
 ## Install
 
 ```sh
 npm install smooth-stream-text
 ```
+
+Full documentation, with a guide per framework and runnable examples:
+**[smooth-stream-text.vercel.app/docs](https://smooth-stream-text.vercel.app/docs/)**.
+For tools and coding assistants, [`llms.txt`](https://smooth-stream-text.vercel.app/llms.txt)
+lists every page as plain Markdown, and the package ships
+[`INTEGRATION.md`](./INTEGRATION.md), a short guide readable offline in
+`node_modules/smooth-stream-text/`. An optional
+[Agent Skill](./skills/smooth-stream-text) for coding agents installs with
+`npx skills add crmapache/smooth-stream-text`.
 
 ## Quick start - headless (the main path)
 
@@ -67,9 +95,11 @@ function Answer({ answer, streaming }: { answer: string; streaming: boolean }) {
 
 That is the whole integration. Feed it your accumulated answer, render what comes
 back. `useSmoothText` re-renders only when the visible text or the phase changes,
-so your markdown is parsed once per visible step rather than once per incoming
-chunk. `useSmoothStream` takes the same arguments and returns the full state as
-well - the backlog, the current rate, the source - for debugging and charts.
+at most once per animation frame while text appears. That can be more often than
+chunks arrive, so if your Markdown rendering is expensive, see the
+[benchmarks](https://smooth-stream-text.vercel.app/docs/benchmarks). `useSmoothStream`
+takes the same arguments and returns the full state as well - the backlog, the
+current rate, the source - for debugging and charts.
 
 One hook serves a whole conversation. A message that is already `done` when it
 first arrives is history and appears at once. A different message starts over.
@@ -184,7 +214,11 @@ server.
 
   // Headless: a store you render yourself.
   const smooth = smoothStream()
-  $effect(() => smooth.apply(answer, !streaming))
+  const sync = () => smooth.apply(answer, !streaming)
+  // Effects do not run on the server: apply once during setup too, so finished
+  // text is already in the server HTML.
+  sync()
+  $effect(sync)
   onDestroy(smooth.destroy)
 </script>
 
@@ -195,7 +229,7 @@ server.
 ```
 
 Actions do not run on the server, so an element with the action is empty in the
-server output and fills in on the client.
+server output and fills in on the client. For server-rendered history, use the store.
 
 </details>
 
@@ -510,10 +544,11 @@ and comes back once it can.
 ## Details worth knowing
 
 **Copying and selecting stay clean.** A word lives in a `<span>` only while it is
-animating; once finished it collapses back into the surrounding text node. A long
-answer is a flat text node plus a handful of spans, not thousands of them, and a
-selection copies exactly the characters on screen. A selection made while the
-answer is still arriving survives the collapse.
+animating; once finished it collapses back into the surrounding text node. A
+finished answer is plain text with no spans; while one arrives, only the units still
+animating are spans (a few hundred at the peak of a very fast stream). A selection
+copies exactly the characters on screen, and a selection made while the answer is
+still arriving survives the collapse.
 
 **Styles.** No CSS file to import: the stylesheet is adopted on first use into the
 document, or into the shadow root the element renders in. It is a constructed
@@ -529,9 +564,9 @@ the preference mid-answer keeps the text in order.
 
 **Big batches** - a tab returning from the background, a whole message handed over
 at once - show everything but their last `maxAnimatedUnits` units immediately and
-animate only that tail. `requestAnimationFrame` stops while a tab is hidden, and on
-return the backlog trips the `maxLatencyMs` jump, so the reader sees the finished
-answer rather than a replay.
+animate only that tail. `requestAnimationFrame` stops while a tab is hidden; on
+return, a backlog that could not be drawn within `maxLatencyMs` at the maximum rate
+jumps into place, and a smaller one is caught up at that rate.
 
 **Long words** such as URLs and identifiers animate as plain inline text even with
 `unit: 'word'`, so they wrap in a narrow column while they fade in instead of

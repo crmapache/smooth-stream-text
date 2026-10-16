@@ -1,0 +1,184 @@
+{
+ "name": "fast",
+ "description": "A fast model: 60-character chunks every 33 ms, about 1,800 characters per second.",
+ "chunks": [
+  {
+   "t": 33,
+   "delta": "## Start from what the URL promises\n\nChoose headers per clas"
+  },
+  {
+   "t": 66,
+   "delta": "s of response, not per file. The deciding question is whethe"
+  },
+  {
+   "t": 99,
+   "delta": "r a URL's content can ever change. A filename with a content"
+  },
+  {
+   "t": 132,
+   "delta": " hash (`app.3f9a1c.js`) is immutable: a new build produces a"
+  },
+  {
+   "t": 165,
+   "delta": " new URL, so caches can keep the old one forever. A stable U"
+  },
+  {
+   "t": 198,
+   "delta": "RL (`/`, `/api/me`) must either be revalidated or cached onl"
+  },
+  {
+   "t": 231,
+   "delta": "y briefly.\n\n- **Hashed static assets** (bundled JS, CSS, fon"
+  },
+  {
+   "t": 264,
+   "delta": "ts, images): cache for a year and mark them `immutable` so b"
+  },
+  {
+   "t": 297,
+   "delta": "rowsers skip revalidation on reload.\n- **HTML documents**: u"
+  },
+  {
+   "t": 330,
+   "delta": "se `no-cache`, which means \"store it, but check with the ser"
+  },
+  {
+   "t": 363,
+   "delta": "ver first.\" With an `ETag`, that check is a cheap `304 Not M"
+  },
+  {
+   "t": 396,
+   "delta": "odified`.\n- **Personalized responses**: use `private` so CDN"
+  },
+  {
+   "t": 429,
+   "delta": "s and proxies never store them. Use `no-store` if the data s"
+  },
+  {
+   "t": 462,
+   "delta": "houldn't be stored anywhere.\n- **Public data that changes sl"
+  },
+  {
+   "t": 495,
+   "delta": "owly**: a short `max-age` plus `stale-while-revalidate` keep"
+  },
+  {
+   "t": 528,
+   "delta": "s responses fast without serving very old data.\n- **Response"
+  },
+  {
+   "t": 561,
+   "delta": "s behind a CDN**: add `s-maxage` to give the edge a differen"
+  },
+  {
+   "t": 594,
+   "delta": "t lifetime than browsers, so a purge takes effect without wa"
+  },
+  {
+   "t": 627,
+   "delta": "iting on users' caches.\n\n## Put it into practice\n\n| Response"
+  },
+  {
+   "t": 660,
+   "delta": " | Cache-Control | Validator |\n|---|---|---|\n| `/assets/*.[h"
+  },
+  {
+   "t": 693,
+   "delta": "ash].js` | `public, max-age=31536000, immutable` | not neede"
+  },
+  {
+   "t": 726,
+   "delta": "d |\n| `index.html` | `no-cache` | `ETag` |\n| `/api/me` | `pr"
+  },
+  {
+   "t": 759,
+   "delta": "ivate, no-cache` | `ETag` |\n| `/api/products` | `public, max"
+  },
+  {
+   "t": 792,
+   "delta": "-age=60, stale-while-revalidate=300` | `ETag` |\n| `/account/"
+  },
+  {
+   "t": 825,
+   "delta": "export` | `no-store` | none |\n\nIn an Express app:\n\n```js\napp"
+  },
+  {
+   "t": 858,
+   "delta": ".use('/assets', express.static('dist/assets', {\n  immutable:"
+  },
+  {
+   "t": 891,
+   "delta": " true,\n  maxAge: '1y',\n}));\n\napp.get('/api/products', (req, "
+  },
+  {
+   "t": 924,
+   "delta": "res) => {\n  res.set('Cache-Control', 'public, max-age=60, st"
+  },
+  {
+   "t": 957,
+   "delta": "ale-while-revalidate=300');\n  res.json(products);\n});\n\n// SP"
+  },
+  {
+   "t": 990,
+   "delta": "A fallback: always revalidate the HTML shell\napp.use((req, r"
+  },
+  {
+   "t": 1023,
+   "delta": "es) => {\n  res.set('Cache-Control', 'no-cache');\n  res.sendF"
+  },
+  {
+   "t": 1056,
+   "delta": "ile('index.html', { root: 'dist' });\n});\n```\n\nCommon traps:\n"
+  },
+  {
+   "t": 1089,
+   "delta": "\n- **Long-cached HTML.** Never give HTML a long `max-age`. U"
+  },
+  {
+   "t": 1122,
+   "delta": "sers get stuck on an old page that references asset hashes y"
+  },
+  {
+   "t": 1155,
+   "delta": "ou've already deleted.\n- **Confusing `no-cache` and `no-stor"
+  },
+  {
+   "t": 1188,
+   "delta": "e`.** `no-cache` doesn't mean \"don't cache.\" `no-store` does"
+  },
+  {
+   "t": 1221,
+   "delta": ".\n- **Missing `Vary`.** If a response depends on a request h"
+  },
+  {
+   "t": 1254,
+   "delta": "eader like `Accept-Language`, send a matching `Vary`. Otherw"
+  },
+  {
+   "t": 1287,
+   "delta": "ise a cache can serve one user's variant to another.\n- **Unv"
+  },
+  {
+   "t": 1320,
+   "delta": "erified headers.** Frameworks and CDNs often override what y"
+  },
+  {
+   "t": 1353,
+   "delta": "ou set, so check the actual headers with `curl -I` or the De"
+  },
+  {
+   "t": 1386,
+   "delta": "vTools Network panel.\n\nFor the full list of directives, see "
+  },
+  {
+   "t": 1419,
+   "delta": "[MDN's Cache-Control reference](https://developer.mozilla.or"
+  },
+  {
+   "t": 1452,
+   "delta": "g/en-US/docs/Web/HTTP/Headers/Cache-Control)."
+  }
+ ],
+ "source": "synthetic, scripts/make-traces.mjs",
+ "synthetic": true
+}

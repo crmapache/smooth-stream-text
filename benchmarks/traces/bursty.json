@@ -1,0 +1,696 @@
+{
+ "name": "bursty",
+ "description": "Groups of 3-8 chunks arrive together, then nothing for 300-900 ms.",
+ "chunks": [
+  {
+   "t": 413,
+   "delta": "## Start f"
+  },
+  {
+   "t": 413,
+   "delta": "rom what the URL pro"
+  },
+  {
+   "t": 413,
+   "delta": "mises\n\nChoose heade"
+  },
+  {
+   "t": 413,
+   "delta": "rs per c"
+  },
+  {
+   "t": 413,
+   "delta": "lass of r"
+  },
+  {
+   "t": 1131,
+   "delta": "esponse, not p"
+  },
+  {
+   "t": 1131,
+   "delta": "er file. The decidi"
+  },
+  {
+   "t": 1131,
+   "delta": "ng quest"
+  },
+  {
+   "t": 1131,
+   "delta": "ion is whether a"
+  },
+  {
+   "t": 1131,
+   "delta": " URL's content can e"
+  },
+  {
+   "t": 1131,
+   "delta": "ver change. A "
+  },
+  {
+   "t": 1636,
+   "delta": "filename with "
+  },
+  {
+   "t": 1636,
+   "delta": "a content hash (`app.3f9"
+  },
+  {
+   "t": 1636,
+   "delta": "a1c.js`) is i"
+  },
+  {
+   "t": 2381,
+   "delta": "mmutable: a new build p"
+  },
+  {
+   "t": 2381,
+   "delta": "roduces a new"
+  },
+  {
+   "t": 2381,
+   "delta": " URL, so c"
+  },
+  {
+   "t": 2381,
+   "delta": "aches ca"
+  },
+  {
+   "t": 2381,
+   "delta": "n keep th"
+  },
+  {
+   "t": 2381,
+   "delta": "e old on"
+  },
+  {
+   "t": 2381,
+   "delta": "e forev"
+  },
+  {
+   "t": 2880,
+   "delta": "er. A stable"
+  },
+  {
+   "t": 2880,
+   "delta": " URL (`/`, "
+  },
+  {
+   "t": 2880,
+   "delta": "`/api/me`) must e"
+  },
+  {
+   "t": 2880,
+   "delta": "ither be revalidated"
+  },
+  {
+   "t": 2880,
+   "delta": " or cached onl"
+  },
+  {
+   "t": 2880,
+   "delta": "y briefly.\n\n"
+  },
+  {
+   "t": 3695,
+   "delta": "- **Hashed static ass"
+  },
+  {
+   "t": 3695,
+   "delta": "ets** (bundled JS, "
+  },
+  {
+   "t": 3695,
+   "delta": "CSS, fonts, images): c"
+  },
+  {
+   "t": 3695,
+   "delta": "ache for a year and"
+  },
+  {
+   "t": 3695,
+   "delta": " mark them `immutable` "
+  },
+  {
+   "t": 3695,
+   "delta": "so browsers"
+  },
+  {
+   "t": 3695,
+   "delta": " skip rev"
+  },
+  {
+   "t": 4529,
+   "delta": "alidation on reload.\n-"
+  },
+  {
+   "t": 4529,
+   "delta": " **HTML do"
+  },
+  {
+   "t": 4529,
+   "delta": "cuments**: use "
+  },
+  {
+   "t": 4529,
+   "delta": "`no-cache`, which mean"
+  },
+  {
+   "t": 4529,
+   "delta": "s \"sto"
+  },
+  {
+   "t": 4529,
+   "delta": "re it,"
+  },
+  {
+   "t": 4529,
+   "delta": " but check with t"
+  },
+  {
+   "t": 4529,
+   "delta": "he server firs"
+  },
+  {
+   "t": 5220,
+   "delta": "t.\" With an "
+  },
+  {
+   "t": 5220,
+   "delta": "`ETag`, that check i"
+  },
+  {
+   "t": 5220,
+   "delta": "s a cheap `304"
+  },
+  {
+   "t": 5220,
+   "delta": " Not Modified`.\n- **Pers"
+  },
+  {
+   "t": 5220,
+   "delta": "onalized"
+  },
+  {
+   "t": 5220,
+   "delta": " responses**: use `p"
+  },
+  {
+   "t": 5963,
+   "delta": "rivate` "
+  },
+  {
+   "t": 5963,
+   "delta": "so CDNs an"
+  },
+  {
+   "t": 5963,
+   "delta": "d proxies never stor"
+  },
+  {
+   "t": 5963,
+   "delta": "e them. Use `no"
+  },
+  {
+   "t": 5963,
+   "delta": "-store` "
+  },
+  {
+   "t": 5963,
+   "delta": "if the data shouldn't b"
+  },
+  {
+   "t": 6863,
+   "delta": "e stor"
+  },
+  {
+   "t": 6863,
+   "delta": "ed anyw"
+  },
+  {
+   "t": 6863,
+   "delta": "here.\n- **Public data "
+  },
+  {
+   "t": 6863,
+   "delta": "that c"
+  },
+  {
+   "t": 6863,
+   "delta": "hanges slowly**: a shor"
+  },
+  {
+   "t": 6863,
+   "delta": "t `max-age` plus"
+  },
+  {
+   "t": 7562,
+   "delta": " `stale-while"
+  },
+  {
+   "t": 7562,
+   "delta": "-revalidate` keeps"
+  },
+  {
+   "t": 7562,
+   "delta": " responses fast witho"
+  },
+  {
+   "t": 7562,
+   "delta": "ut serving very"
+  },
+  {
+   "t": 7562,
+   "delta": " old data.\n- **Resp"
+  },
+  {
+   "t": 7562,
+   "delta": "onses b"
+  },
+  {
+   "t": 8153,
+   "delta": "ehind a CDN**"
+  },
+  {
+   "t": 8153,
+   "delta": ": add `s-maxage` to give"
+  },
+  {
+   "t": 8153,
+   "delta": " the edge a dif"
+  },
+  {
+   "t": 8153,
+   "delta": "ferent lif"
+  },
+  {
+   "t": 8153,
+   "delta": "etime than browsers, so"
+  },
+  {
+   "t": 8153,
+   "delta": " a purge takes effect wi"
+  },
+  {
+   "t": 8153,
+   "delta": "thout waiting on user"
+  },
+  {
+   "t": 8153,
+   "delta": "s' caches.\n\n"
+  },
+  {
+   "t": 8583,
+   "delta": "## Put it i"
+  },
+  {
+   "t": 8583,
+   "delta": "nto practice\n\n| Respo"
+  },
+  {
+   "t": 8583,
+   "delta": "nse | Cache-C"
+  },
+  {
+   "t": 8583,
+   "delta": "ontrol | Validato"
+  },
+  {
+   "t": 8583,
+   "delta": "r |\n|---|---|---"
+  },
+  {
+   "t": 9159,
+   "delta": "|\n| `/assets/*.[has"
+  },
+  {
+   "t": 9159,
+   "delta": "h].js` | `publ"
+  },
+  {
+   "t": 9159,
+   "delta": "ic, max-age=315360"
+  },
+  {
+   "t": 9159,
+   "delta": "00, im"
+  },
+  {
+   "t": 9159,
+   "delta": "mutable` | n"
+  },
+  {
+   "t": 9159,
+   "delta": "ot needed |\n| `i"
+  },
+  {
+   "t": 9482,
+   "delta": "ndex.html` | `no-cach"
+  },
+  {
+   "t": 9482,
+   "delta": "e` | `ETag` |\n| "
+  },
+  {
+   "t": 9482,
+   "delta": "`/api/me` | `private"
+  },
+  {
+   "t": 9482,
+   "delta": ", no-c"
+  },
+  {
+   "t": 9482,
+   "delta": "ache` | `ETag` |\n| `"
+  },
+  {
+   "t": 10233,
+   "delta": "/api/products` |"
+  },
+  {
+   "t": 10233,
+   "delta": " `public, max-age=60, "
+  },
+  {
+   "t": 10233,
+   "delta": "stale-while-revali"
+  },
+  {
+   "t": 10233,
+   "delta": "date=300` | `ETag`"
+  },
+  {
+   "t": 10233,
+   "delta": " |\n| `/account"
+  },
+  {
+   "t": 10995,
+   "delta": "/export` | `no-s"
+  },
+  {
+   "t": 10995,
+   "delta": "tore` | none |\n\nIn "
+  },
+  {
+   "t": 10995,
+   "delta": "an Express app:\n\n`"
+  },
+  {
+   "t": 10995,
+   "delta": "``js\napp.use('"
+  },
+  {
+   "t": 10995,
+   "delta": "/assets', express.sta"
+  },
+  {
+   "t": 10995,
+   "delta": "tic('d"
+  },
+  {
+   "t": 10995,
+   "delta": "ist/assets'"
+  },
+  {
+   "t": 11383,
+   "delta": ", {\n  i"
+  },
+  {
+   "t": 11383,
+   "delta": "mmutable: true,\n  max"
+  },
+  {
+   "t": 11383,
+   "delta": "Age: '1y',\n}"
+  },
+  {
+   "t": 11383,
+   "delta": "));\n\napp.ge"
+  },
+  {
+   "t": 11383,
+   "delta": "t('/api/products"
+  },
+  {
+   "t": 12209,
+   "delta": "', (req, res) => {\n  res"
+  },
+  {
+   "t": 12209,
+   "delta": ".set('Cache-Control'"
+  },
+  {
+   "t": 12209,
+   "delta": ", 'public, ma"
+  },
+  {
+   "t": 12209,
+   "delta": "x-age=60"
+  },
+  {
+   "t": 12209,
+   "delta": ", stale-while-revali"
+  },
+  {
+   "t": 12209,
+   "delta": "date=300');\n  res.jso"
+  },
+  {
+   "t": 12209,
+   "delta": "n(products);"
+  },
+  {
+   "t": 12209,
+   "delta": "\n});\n\n// SPA fallback: "
+  },
+  {
+   "t": 12602,
+   "delta": "always revalidate the"
+  },
+  {
+   "t": 12602,
+   "delta": " HTML shell\napp."
+  },
+  {
+   "t": 12602,
+   "delta": "use((req, res) =>"
+  },
+  {
+   "t": 12908,
+   "delta": " {\n  res."
+  },
+  {
+   "t": 12908,
+   "delta": "set('Cache-Control', 'n"
+  },
+  {
+   "t": 12908,
+   "delta": "o-cache');"
+  },
+  {
+   "t": 13761,
+   "delta": "\n  res.sendFile('i"
+  },
+  {
+   "t": 13761,
+   "delta": "ndex.html', { roo"
+  },
+  {
+   "t": 13761,
+   "delta": "t: 'dist' });\n});\n```\n\nC"
+  },
+  {
+   "t": 13761,
+   "delta": "ommon traps:\n\n-"
+  },
+  {
+   "t": 13761,
+   "delta": " **Long-cached"
+  },
+  {
+   "t": 13761,
+   "delta": " HTML.** Never giv"
+  },
+  {
+   "t": 13761,
+   "delta": "e HTML a long `m"
+  },
+  {
+   "t": 13761,
+   "delta": "ax-age`. Users get stu"
+  },
+  {
+   "t": 14290,
+   "delta": "ck on an old page that r"
+  },
+  {
+   "t": 14290,
+   "delta": "eferen"
+  },
+  {
+   "t": 14290,
+   "delta": "ces asset "
+  },
+  {
+   "t": 14290,
+   "delta": "hashes you've already"
+  },
+  {
+   "t": 14290,
+   "delta": " deleted.\n-"
+  },
+  {
+   "t": 14290,
+   "delta": " **Confusing `no-cache` "
+  },
+  {
+   "t": 14718,
+   "delta": "and `no-store`.** `"
+  },
+  {
+   "t": 14718,
+   "delta": "no-cache` doesn"
+  },
+  {
+   "t": 14718,
+   "delta": "'t mean \"don't "
+  },
+  {
+   "t": 14718,
+   "delta": "cache.\" `no-st"
+  },
+  {
+   "t": 14718,
+   "delta": "ore` does.\n- "
+  },
+  {
+   "t": 14718,
+   "delta": "**Missing `Vary`.** I"
+  },
+  {
+   "t": 14718,
+   "delta": "f a respons"
+  },
+  {
+   "t": 15433,
+   "delta": "e depends o"
+  },
+  {
+   "t": 15433,
+   "delta": "n a request header lik"
+  },
+  {
+   "t": 15433,
+   "delta": "e `Accept-"
+  },
+  {
+   "t": 16198,
+   "delta": "Language`, s"
+  },
+  {
+   "t": 16198,
+   "delta": "end a mat"
+  },
+  {
+   "t": 16198,
+   "delta": "ching `Vary`. Otherwis"
+  },
+  {
+   "t": 16198,
+   "delta": "e a cache can "
+  },
+  {
+   "t": 16198,
+   "delta": "serve one use"
+  },
+  {
+   "t": 16198,
+   "delta": "r's variant to anothe"
+  },
+  {
+   "t": 16198,
+   "delta": "r.\n- **Unverified "
+  },
+  {
+   "t": 16944,
+   "delta": "headers.** Framew"
+  },
+  {
+   "t": 16944,
+   "delta": "orks and C"
+  },
+  {
+   "t": 16944,
+   "delta": "DNs often ov"
+  },
+  {
+   "t": 16944,
+   "delta": "erride wh"
+  },
+  {
+   "t": 16944,
+   "delta": "at you set, so "
+  },
+  {
+   "t": 17423,
+   "delta": "check the actual h"
+  },
+  {
+   "t": 17423,
+   "delta": "eaders with `"
+  },
+  {
+   "t": 17423,
+   "delta": "curl -I` "
+  },
+  {
+   "t": 17423,
+   "delta": "or the D"
+  },
+  {
+   "t": 18152,
+   "delta": "evTools Network "
+  },
+  {
+   "t": 18152,
+   "delta": "panel.\n\nFor th"
+  },
+  {
+   "t": 18152,
+   "delta": "e full list of dir"
+  },
+  {
+   "t": 18152,
+   "delta": "ectives, see [MDN's"
+  },
+  {
+   "t": 18152,
+   "delta": " Cache-C"
+  },
+  {
+   "t": 18152,
+   "delta": "ontrol referenc"
+  },
+  {
+   "t": 19006,
+   "delta": "e](https://developer.m"
+  },
+  {
+   "t": 19006,
+   "delta": "ozilla.org/en-U"
+  },
+  {
+   "t": 19006,
+   "delta": "S/docs/Web/HT"
+  },
+  {
+   "t": 19006,
+   "delta": "TP/Headers/Cache-Cont"
+  },
+  {
+   "t": 19006,
+   "delta": "rol)."
+  }
+ ],
+ "source": "synthetic, scripts/make-traces.mjs",
+ "synthetic": true
+}

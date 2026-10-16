@@ -1,0 +1,591 @@
+{
+ "name": "claude-markdown",
+ "source": "recorded from Claude Code (claude-opus-5-5) stream-json partial messages on 2026-10-16",
+ "synthetic": false,
+ "chunks": [
+  {
+   "t": 0,
+   "delta": "## Start from"
+  },
+  {
+   "t": 117,
+   "delta": " what the URL promises"
+  },
+  {
+   "t": 117.2,
+   "delta": "\n\nChoose headers per class of response"
+  },
+  {
+   "t": 167.9,
+   "delta": ", not per file. The deci"
+  },
+  {
+   "t": 199.5,
+   "delta": "ding question is whether a URL"
+  },
+  {
+   "t": 261.3,
+   "delta": "'s content can "
+  },
+  {
+   "t": 295.3,
+   "delta": "ever change. A filename with a"
+  },
+  {
+   "t": 337.1,
+   "delta": " content hash (`app.3"
+  },
+  {
+   "t": 379,
+   "delta": "f9a1c.js`"
+  },
+  {
+   "t": 423.1,
+   "delta": ") is immutable: a new"
+  },
+  {
+   "t": 477.7,
+   "delta": " build produces a new URL,"
+  },
+  {
+   "t": 548.8,
+   "delta": " so caches can keep the old"
+  },
+  {
+   "t": 609.5,
+   "delta": " one forever. A stable UR"
+  },
+  {
+   "t": 652.5,
+   "delta": "L (`/`, `/"
+  },
+  {
+   "t": 702.7,
+   "delta": "api/me`) must either"
+  },
+  {
+   "t": 748.6,
+   "delta": " be revalidated or c"
+  },
+  {
+   "t": 825.8,
+   "delta": "ached only briefly.\n\n-"
+  },
+  {
+   "t": 1271.1,
+   "delta": " **Hashed static assets"
+  },
+  {
+   "t": 1271.2,
+   "delta": "** (b"
+  },
+  {
+   "t": 1271.2,
+   "delta": "undled"
+  },
+  {
+   "t": 1279.7,
+   "delta": " JS, CSS, f"
+  },
+  {
+   "t": 1279.8,
+   "delta": "onts,"
+  },
+  {
+   "t": 1280.2,
+   "delta": " images): cache for a year and"
+  },
+  {
+   "t": 1280.2,
+   "delta": " mark them `immutable`"
+  },
+  {
+   "t": 1280.2,
+   "delta": " so browsers skip reval"
+  },
+  {
+   "t": 1280.2,
+   "delta": "idation on reload.\n-"
+  },
+  {
+   "t": 1289.3,
+   "delta": " **HTML documents**:"
+  },
+  {
+   "t": 1330.8,
+   "delta": " use `no-cache`,"
+  },
+  {
+   "t": 1552.9,
+   "delta": " which means \"store it, but check"
+  },
+  {
+   "t": 1552.9,
+   "delta": " with the server first"
+  },
+  {
+   "t": 1552.9,
+   "delta": ".\" With an `ETag`"
+  },
+  {
+   "t": 1553.2,
+   "delta": ", that check is a cheap"
+  },
+  {
+   "t": 1635.5,
+   "delta": " `304 Not Modified"
+  },
+  {
+   "t": 1653.5,
+   "delta": "`.\n- **Personal"
+  },
+  {
+   "t": 1676.6,
+   "delta": "ized responses**: use `private"
+  },
+  {
+   "t": 1759.3,
+   "delta": "` so C"
+  },
+  {
+   "t": 1832.4,
+   "delta": "DNs and proxies never"
+  },
+  {
+   "t": 1886.2,
+   "delta": " store them. Use `no-"
+  },
+  {
+   "t": 1944.4,
+   "delta": "store` if"
+  },
+  {
+   "t": 2131.6,
+   "delta": " the data sh"
+  },
+  {
+   "t": 2131.7,
+   "delta": "ouldn't be"
+  },
+  {
+   "t": 2132,
+   "delta": " st"
+  },
+  {
+   "t": 2132.1,
+   "delta": "ored an"
+  },
+  {
+   "t": 2270,
+   "delta": "ywhere.\n- **"
+  },
+  {
+   "t": 2270.2,
+   "delta": "Public data that changes slowly"
+  },
+  {
+   "t": 2293.2,
+   "delta": "**: a short `max-age"
+  },
+  {
+   "t": 2322.6,
+   "delta": "` plus `stale-while"
+  },
+  {
+   "t": 2375.6,
+   "delta": "-revalidate` kee"
+  },
+  {
+   "t": 2431.3,
+   "delta": "ps respon"
+  },
+  {
+   "t": 2472.1,
+   "delta": "ses fast without serving very old"
+  },
+  {
+   "t": 2528.3,
+   "delta": " data.\n- **Respon"
+  },
+  {
+   "t": 2553.7,
+   "delta": "ses behind a CDN**"
+  },
+  {
+   "t": 2643.8,
+   "delta": ": add `s-maxage"
+  },
+  {
+   "t": 2670.5,
+   "delta": "` to give the edge a different"
+  },
+  {
+   "t": 2716.6,
+   "delta": " lifetime than"
+  },
+  {
+   "t": 2757.8,
+   "delta": " browsers, so a"
+  },
+  {
+   "t": 2822.6,
+   "delta": " purge tak"
+  },
+  {
+   "t": 2887.1,
+   "delta": "es effect without waiting on"
+  },
+  {
+   "t": 2940.1,
+   "delta": " users' caches.\n\n##"
+  },
+  {
+   "t": 3000,
+   "delta": " Put it into practice\n\n|"
+  },
+  {
+   "t": 3043.5,
+   "delta": " Response | Cache-Control"
+  },
+  {
+   "t": 3071.5,
+   "delta": " | Validator |\n|---"
+  },
+  {
+   "t": 3120.5,
+   "delta": "|---|---|\n| `"
+  },
+  {
+   "t": 3201,
+   "delta": "/assets/*.[h"
+  },
+  {
+   "t": 3245.9,
+   "delta": "ash].js` | `public,"
+  },
+  {
+   "t": 3296.5,
+   "delta": " max-age=31536000,"
+  },
+  {
+   "t": 3336.2,
+   "delta": " immutable` | not needed"
+  },
+  {
+   "t": 3568.1,
+   "delta": " |\n| `index.html`"
+  },
+  {
+   "t": 3568.3,
+   "delta": " | `no-cache` |"
+  },
+  {
+   "t": 3568.3,
+   "delta": " `ETag` |\n|"
+  },
+  {
+   "t": 3568.3,
+   "delta": " `/api/me` | `"
+  },
+  {
+   "t": 3568.3,
+   "delta": "private, no-cache` |"
+  },
+  {
+   "t": 3583.5,
+   "delta": " `ETag` |\n|"
+  },
+  {
+   "t": 3683.8,
+   "delta": " `/api/products` | `"
+  },
+  {
+   "t": 3773.1,
+   "delta": "public, max-age=60,"
+  },
+  {
+   "t": 3817.3,
+   "delta": " stale-while-revalid"
+  },
+  {
+   "t": 3858.6,
+   "delta": "ate=300` | `ET"
+  },
+  {
+   "t": 3976.2,
+   "delta": "ag` |\n| `/account"
+  },
+  {
+   "t": 3976.2,
+   "delta": "/export` | `no-store"
+  },
+  {
+   "t": 3976.2,
+   "delta": "` | none |\n\nIn an"
+  },
+  {
+   "t": 3987.7,
+   "delta": " Express app:"
+  },
+  {
+   "t": 4114.5,
+   "delta": "\n\n```js\napp.use('"
+  },
+  {
+   "t": 4164.8,
+   "delta": "/assets', express.static('"
+  },
+  {
+   "t": 4184.7,
+   "delta": "dist/assets', {"
+  },
+  {
+   "t": 4204.6,
+   "delta": "\n  immutable: true,"
+  },
+  {
+   "t": 4230.6,
+   "delta": "\n  maxAge: '1"
+  },
+  {
+   "t": 4304.3,
+   "delta": "y',\n}));\n\napp."
+  },
+  {
+   "t": 4537.6,
+   "delta": "get('/api/products', ("
+  },
+  {
+   "t": 4538.1,
+   "delta": "req, res) => {\n  "
+  },
+  {
+   "t": 4538.1,
+   "delta": "res.set('Cache-"
+  },
+  {
+   "t": 4538.2,
+   "delta": "Control', 'public, max"
+  },
+  {
+   "t": 4552.4,
+   "delta": "-age=60, stale-"
+  },
+  {
+   "t": 4577.2,
+   "delta": "while-revalidate=300"
+  },
+  {
+   "t": 4643.5,
+   "delta": "');\n  res.json(products"
+  },
+  {
+   "t": 4731.1,
+   "delta": ");\n});\n\n// S"
+  },
+  {
+   "t": 4774.6,
+   "delta": "PA fallback: always"
+  },
+  {
+   "t": 4798.2,
+   "delta": " rev"
+  },
+  {
+   "t": 4833.8,
+   "delta": "alidate the HTML sh"
+  },
+  {
+   "t": 4872.7,
+   "delta": "ell\napp.use((req,"
+  },
+  {
+   "t": 4956.8,
+   "delta": " res) => {\n  res."
+  },
+  {
+   "t": 4988.8,
+   "delta": "set('Cache-Control"
+  },
+  {
+   "t": 5029.2,
+   "delta": "', 'no-cache');"
+  },
+  {
+   "t": 5080.2,
+   "delta": "\n  res.sendFile"
+  },
+  {
+   "t": 5137.4,
+   "delta": "('index.html', { root:"
+  },
+  {
+   "t": 5225.7,
+   "delta": " 'dist' });\n});"
+  },
+  {
+   "t": 5259,
+   "delta": "\n```\n\nCommon traps:"
+  },
+  {
+   "t": 5305.3,
+   "delta": "\n\n- **Long"
+  },
+  {
+   "t": 5346.1,
+   "delta": "-cached HTML."
+  },
+  {
+   "t": 5409,
+   "delta": "** Never give HTML a"
+  },
+  {
+   "t": 5487.8,
+   "delta": " long `max-age`."
+  },
+  {
+   "t": 5537.9,
+   "delta": " Users get"
+  },
+  {
+   "t": 5597.8,
+   "delta": " stuck on an old page that"
+  },
+  {
+   "t": 5657.6,
+   "delta": " references as"
+  },
+  {
+   "t": 5691.3,
+   "delta": "set hashes you"
+  },
+  {
+   "t": 6029.6,
+   "delta": "'ve already deleted.\n-"
+  },
+  {
+   "t": 6029.7,
+   "delta": " **Confusing `no-"
+  },
+  {
+   "t": 6029.7,
+   "delta": "cache` and `no-store"
+  },
+  {
+   "t": 6029.7,
+   "delta": "`.** `no-cache"
+  },
+  {
+   "t": 6029.8,
+   "delta": "` doesn't mean \""
+  },
+  {
+   "t": 6030.5,
+   "delta": "don't cache.\" `no-"
+  },
+  {
+   "t": 6031,
+   "delta": "store` does.\n- **"
+  },
+  {
+   "t": 6037.7,
+   "delta": "Missing `Vary`."
+  },
+  {
+   "t": 6076,
+   "delta": "** If a response dep"
+  },
+  {
+   "t": 6196.5,
+   "delta": "ends on a request header like"
+  },
+  {
+   "t": 6722.1,
+   "delta": " `Accept-Language`"
+  },
+  {
+   "t": 6722.3,
+   "delta": ", send a matching `V"
+  },
+  {
+   "t": 6722.3,
+   "delta": "ary`"
+  },
+  {
+   "t": 6722.4,
+   "delta": ". Otherwise a c"
+  },
+  {
+   "t": 6722.4,
+   "delta": "ache can serve one user"
+  },
+  {
+   "t": 6722.5,
+   "delta": "'s variant to another.\n-"
+  },
+  {
+   "t": 6722.6,
+   "delta": " **Un"
+  },
+  {
+   "t": 6722.6,
+   "delta": "verified headers.** Fr"
+  },
+  {
+   "t": 6722.7,
+   "delta": "ameworks and CDNs"
+  },
+  {
+   "t": 6722.7,
+   "delta": " often override what you set, so check"
+  },
+  {
+   "t": 6745.4,
+   "delta": " the actual headers with `"
+  },
+  {
+   "t": 6780.3,
+   "delta": "curl -I` or the"
+  },
+  {
+   "t": 6814.2,
+   "delta": " DevTools Network panel"
+  },
+  {
+   "t": 6836.6,
+   "delta": ".\n\nFor the full list"
+  },
+  {
+   "t": 6879.4,
+   "delta": " of directives, see [MD"
+  },
+  {
+   "t": 7023,
+   "delta": "N's Cache-Control"
+  },
+  {
+   "t": 7041,
+   "delta": " re"
+  },
+  {
+   "t": 7063.5,
+   "delta": "ference](https://developer.m"
+  },
+  {
+   "t": 7099.4,
+   "delta": "ozilla.org/en-"
+  },
+  {
+   "t": 7125,
+   "delta": "US/docs/Web/"
+  },
+  {
+   "t": 7222.2,
+   "delta": "HTTP/Headers"
+  },
+  {
+   "t": 7237.3,
+   "delta": "/Cache-Control)."
+  }
+ ]
+}

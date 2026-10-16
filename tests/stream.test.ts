@@ -348,6 +348,39 @@ describe('whole words with unit word', () => {
   })
 })
 
+describe('a pause while a boundary holds', () => {
+  // The fractional cursor keeps moving under a hold so it can reach the position
+  // that ends it. It must not run past the text that has arrived: the next chunk
+  // would otherwise appear all at once instead of being paced.
+  const cases: [string, PacingOptions, string, string][] = [
+    [
+      'the last word',
+      { boundary: 'markdown', unit: 'word' },
+      'The quick brown fox jumps over the lazy dog and keeps running far',
+      'ther away',
+    ],
+    [
+      'an open emphasis',
+      { boundary: 'markdown' },
+      'The quick brown fox jumps over the **lazy dog and keeps runn',
+      'ing**',
+    ],
+  ]
+  for (const [label, options, first, closing] of cases) {
+    it(`paces the next burst after a pause at ${label}`, () => {
+      const { stream, frames } = run(options)
+      stream.push(first)
+      // Silent for a second: longer than the grace period, shorter than holdMs.
+      frames(60)
+      stream.push(closing + ' and then a long burst of words arrives all at once'.repeat(3))
+      frames(1)
+      expect(stream.getState().cursor).toBeLessThanOrEqual(first.length + closing.length + 20)
+      frames(400)
+      expect(stream.getState().text.length).toBeGreaterThan(first.length + 100)
+    })
+  }
+})
+
 describe('characters by default', () => {
   it('lets the text grow a character at a time', () => {
     const clock = createManualClock(0)

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>smooth-stream-text without a framework</title>
+  </head>
+  <body>
+    <main>
+      <header class="page-header">
+        <h1>smooth-stream-text without a framework</h1>
+        <p>Both panels replay the same canned answers with uneven timing, so no server or API key is needed.</p>
+      </header>
+
+      <div class="panels">
+        <section id="imperative" class="panel" aria-labelledby="imperative-title">
+          <h2 id="imperative-title">Imperative API</h2>
+          <p class="panel-note"><code>createSmoothText(element)</code> from <code>smooth-stream-text/dom</code></p>
+          <div class="scroller">
+            <ol class="messages" aria-label="Conversation"></ol>
+          </div>
+          <form class="composer">
+            <label for="imperative-question">Your question</label>
+            <input id="imperative-question" name="question" autocomplete="off" />
+            <div class="actions">
+              <button type="submit" class="primary">Send</button>
+              <button type="button" name="stop" disabled>Stop</button>
+              <button type="button" name="show-all" hidden>Show all</button>
+              <button type="button" name="clear" class="clear">Clear chat</button>
+            </div>
+          </form>
+          <p class="visually-hidden" role="status"></p>
+        </section>
+
+        <section id="web-component" class="panel" aria-labelledby="web-component-title">
+          <h2 id="web-component-title">Web Component</h2>
+          <p class="panel-note">
+            <code>&lt;smooth-stream-text&gt;</code> from <code>smooth-stream-text/web-component</code>
+          </p>
+          <div class="scroller">
+            <ol class="messages" aria-label="Conversation"></ol>
+          </div>
+          <form class="composer">
+            <label for="web-component-question">Your question</label>
+            <input id="web-component-question" name="question" autocomplete="off" />
+            <div class="actions">
+              <button type="submit" class="primary">Send</button>
+              <button type="button" name="stop" disabled>Stop</button>
+              <button type="button" name="show-all" hidden>Show all</button>
+              <button type="button" name="clear" class="clear">Clear chat</button>
+            </div>
+          </form>
+          <p class="visually-hidden" role="status"></p>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
