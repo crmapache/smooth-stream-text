@@ -2,7 +2,7 @@
 
 ### Streams
 
-smooth-stream-text 0.2.0 built from `133b1bd-dirty` (includes changes not yet released; see the changelog), AI SDK `ai` 7.0.142, 2026-10-16.
+smooth-stream-text 0.2.1 built from `v0.2.1`, AI SDK `ai` 7.0.142, 2026-10-16.
 
 | Stream | Origin | Characters | Chunks | Duration | Pattern |
 | --- | --- | --- | --- | --- | --- |
@@ -220,25 +220,25 @@ Chromium 156.0.8078.4 (headless), Apple M1 Pro, 10 cores, 16 GB, darwin, 2026-10
 
 | Stream | Approach | Renders | Render time (ms) | Long tasks | Frame p95 (ms) | Peak elements |
 | --- | --- | --- | --- | --- | --- | --- |
-| claude-markdown | markdown as received | 146 | 92 | 1 | 16.7 | 90 |
-| claude-markdown | markdown paced | 287 | 131 | 0 | 16.7 | 90 |
-| claude-markdown | markdown paced, unit word | 231 | 98 | 2 | 16.8 | 90 |
-| claude-markdown | plain text as received | 146 | 4 | 2 | 16.7 | 0 |
-| claude-markdown | plain text paced + reveal | n/a | n/a | 2 | 16.7 | 295 |
-| fast | markdown as received | 44 | 37 | 2 | 33.2 | 90 |
-| fast | markdown paced | 112 | 47 | 0 | 16.7 | 90 |
-| fast | markdown paced, unit word | 104 | 45 | 0 | 16.7 | 90 |
-| fast | plain text as received | 44 | 1 | 0 | 16.8 | 0 |
-| fast | plain text paced + reveal | n/a | n/a | 3 | 33.3 | 458 |
-| long | markdown as received | 946 | 1138 | 5 | 16.8 | 450 |
-| long | markdown paced | 1513 | 1310 | 2 | 16.7 | 450 |
-| long | markdown paced, unit word | 1301 | 1060 | 1 | 16.7 | 450 |
+| claude-markdown | markdown as received | 146 | 90 | 0 | 16.8 | 90 |
+| claude-markdown | markdown paced | 288 | 118 | 0 | 16.7 | 90 |
+| claude-markdown | markdown paced, unit word | 242 | 106 | 0 | 16.7 | 90 |
+| claude-markdown | plain text as received | 146 | 2 | 0 | 16.8 | 0 |
+| claude-markdown | plain text paced + reveal | n/a | n/a | 0 | 16.7 | 293 |
+| fast | markdown as received | 44 | 32 | 0 | 16.7 | 90 |
+| fast | markdown paced | 108 | 52 | 0 | 16.8 | 90 |
+| fast | markdown paced, unit word | 105 | 46 | 0 | 16.8 | 90 |
+| fast | plain text as received | 44 | 1 | 0 | 16.7 | 0 |
+| fast | plain text paced + reveal | n/a | n/a | 0 | 16.7 | 374 |
+| long | markdown as received | 946 | 856 | 0 | 16.7 | 450 |
+| long | markdown paced | 1525 | 1153 | 0 | 16.8 | 450 |
+| long | markdown paced, unit word | 1300 | 1032 | 0 | 16.7 | 450 |
 | long | plain text as received | 946 | 20 | 0 | 16.7 | 0 |
-| long | plain text paced + reveal | n/a | n/a | 2 | 16.8 | 215 |
+| long | plain text paced + reveal | n/a | n/a | 0 | 16.8 | 214 |
 
 ### Bundle size
 
-smooth-stream-text 0.2.0, esbuild 0.28.2, minified, ESM, target es2020, react/vue/svelte external, 2026-10-16.
+smooth-stream-text 0.2.1, esbuild 0.28.2, minified, ESM, target es2020, react/vue/svelte external, 2026-10-16.
 
 | Import | Minified | gzip | brotli |
 | --- | --- | --- | --- |
