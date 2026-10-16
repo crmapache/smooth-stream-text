@@ -3,25 +3,63 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#020504" />
     <title>smooth-stream-text - even out an LLM text stream</title>
     <meta
       name="description"
       content="Buffer bursty LLM output and release it at a visually even rate, then reveal it as a left-to-right wave. Zero dependencies, headless first." />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&family=Plus+Jakarta+Sans:wght@200..800&display=swap" />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <header class="masthead">
-      <div class="brand">
-        <h1>smooth-stream-text</h1>
-        <p>
-          The same answer, streamed twice. On the left, chunks land as they arrive. On the right, they are paced and
-          revealed as a wave.
-        </p>
-      </div>
-      <nav class="links">
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="g-mark" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b89763" />
+          <stop offset="1" stop-color="#f8e5bd" />
+        </linearGradient>
+      </defs>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="M8.5 6.2v11.6a.8.8 0 0 0 1.2.7l9.3-5.8a.8.8 0 0 0 0-1.4L9.7 5.5a.8.8 0 0 0-1.2.7z" />
+      </symbol>
+      <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2.2" /></symbol>
+      <symbol id="i-restart" viewBox="0 0 24 24">
+        <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" />
+        <path d="M4.5 4.5v4h4" />
+      </symbol>
+      <symbol id="i-skip" viewBox="0 0 24 24"><path d="M5 6.5 11 12l-6 5.5M12.5 6.5l6 5.5-6 5.5" /></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <rect x="8.5" y="8.5" width="11" height="11" rx="2.5" />
+        <path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+      <!-- Bursty on the left, smooth on the right: the whole package in one line. -->
+      <symbol id="mark" viewBox="0 0 28 28">
+        <path class="mark-line" d="M4.5 17.5h3V11h3c3 0 3 7 6 7s3-7 6-7" />
+        <circle class="mark-dot" cx="22.5" cy="11" r="2.4" />
+      </symbol>
+    </svg>
+
+    <div class="room" aria-hidden="true"><div class="room-spot"></div></div>
+
+    <header class="top">
+      <a class="brand" href="/">
+        <span class="mark"
+          ><svg aria-hidden="true"><use href="#mark" /></svg
+        ></span>
+        <span>smooth-stream-text</span>
+        <span class="brand-tag" id="version"></span>
+      </a>
+      <nav class="links" aria-label="Project links">
         <a
-          class="icon-link"
+          class="icon-btn"
           href="https://github.com/crmapache/smooth-stream-text"
           title="Source on GitHub"
           aria-label="Source on GitHub"
@@ -32,7 +70,7 @@
           </svg>
         </a>
         <a
-          class="icon-link"
+          class="icon-btn"
           href="https://www.npmjs.com/package/smooth-stream-text"
           title="Package on npm"
           aria-label="Package on npm"
@@ -43,7 +81,7 @@
           </svg>
         </a>
         <a
-          class="icon-link"
+          class="icon-btn"
           href="https://www.linkedin.com/in/spacenear-cr/"
           title="Author on LinkedIn"
           aria-label="Author on LinkedIn"
@@ -56,52 +94,102 @@
       </nav>
     </header>
 
-    <main>
-      <div class="stage">
-        <section class="pane">
-          <header class="pane-head">
-            <h2>Raw stream</h2>
-            <span class="tag">as received</span>
-          </header>
-          <div class="out" id="raw" dir="auto"></div>
-        </section>
-
-        <section class="pane pane-primary">
-          <header class="pane-head">
-            <h2>Smoothed</h2>
-            <span class="tag tag-accent">smooth-stream-text</span>
-          </header>
-          <div class="out" id="smooth" dir="auto"></div>
-        </section>
-      </div>
-
-      <aside class="panel">
-        <div class="actions">
-          <button id="start" type="button" class="primary">Play</button>
-          <button id="restart" type="button">Restart</button>
-          <button id="flush" type="button">Show all</button>
-        </div>
-
-        <div class="meters">
-          <div class="meter">
-            <span class="meter-label"><i class="dot dot-lag"></i>Backlog</span>
-            <span class="meter-value" id="lag">0 ch</span>
-          </div>
-          <div class="meter">
-            <span class="meter-label"><i class="dot dot-rate"></i>Rate</span>
-            <span class="meter-value" id="rate">0 ch/s</span>
-          </div>
-          <div class="meter">
-            <span class="meter-label">State</span>
-            <span class="meter-value" id="status">idle</span>
+    <main class="wrap">
+      <section class="hero">
+        <h1 class="hero-title">
+          <span class="ln" id="title-1">Even out</span>
+          <span class="ln" id="title-2">the stream</span>
+        </h1>
+        <div class="hero-side">
+          <p class="hero-lede">
+            Buffer bursty LLM output, release it at an even pace and reveal it as a wave. Below, the same answer streams
+            twice: once as it arrives, once smoothed.
+          </p>
+          <div class="hero-actions">
+            <button id="install" type="button" class="btn btn-glass install" aria-label="Copy the install command">
+              <code>npm i smooth-stream-text</code>
+              <svg class="i i-sm install-copy" aria-hidden="true"><use href="#i-copy" /></svg>
+              <svg class="i i-sm install-done" aria-hidden="true"><use href="#i-check" /></svg>
+            </button>
+            <a class="btn-text" href="https://github.com/crmapache/smooth-stream-text#readme" rel="noreferrer">
+              Read the docs
+              <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
+            </a>
           </div>
         </div>
+      </section>
 
-        <canvas id="chart" aria-label="Backlog and draw rate over the last few seconds"></canvas>
+      <section class="app glass" aria-label="Playground">
+        <header class="app-bar">
+          <div class="actions">
+            <button id="start" type="button" class="btn btn-primary">
+              <svg class="i i-fill i-play" aria-hidden="true"><use href="#i-play" /></svg>
+              <svg class="i i-fill i-stop" aria-hidden="true"><use href="#i-stop" /></svg>
+              <span class="swap">
+                <span class="swap-play">Play</span>
+                <span class="swap-stop">Stop</span>
+              </span>
+            </button>
+            <button id="restart" type="button" class="btn btn-glass">
+              <svg class="i" aria-hidden="true"><use href="#i-restart" /></svg>
+              <span>Restart</span>
+            </button>
+            <button id="flush" type="button" class="btn btn-glass">
+              <svg class="i" aria-hidden="true"><use href="#i-skip" /></svg>
+              <span>Show all</span>
+            </button>
+          </div>
+          <div class="app-bar-r">
+            <div id="sample"></div>
+            <span class="status" id="status-badge"><i class="status-dot"></i><span id="status">idle</span></span>
+          </div>
+        </header>
 
-        <div id="panel" class="groups"></div>
-      </aside>
+        <div class="app-grid">
+          <section class="pane card lit">
+            <header class="pane-head">
+              <h2>Raw stream</h2>
+              <span class="tag">as received</span>
+            </header>
+            <div class="out" id="raw" dir="auto"></div>
+          </section>
+
+          <section class="pane card lit rim-host" id="smooth-pane">
+            <span class="rim" aria-hidden="true"></span>
+            <header class="pane-head">
+              <h2>Smoothed</h2>
+              <span class="badge">smooth-stream-text</span>
+            </header>
+            <div class="out" id="smooth" dir="auto"></div>
+          </section>
+
+          <aside class="panel">
+            <article class="card lit telemetry">
+              <div class="kpis">
+                <div class="kpi kpi-lag">
+                  <small><i class="sw"></i>Backlog</small>
+                  <b class="fig"><span id="lag">0</span><span class="u">ch</span></b>
+                </div>
+                <div class="kpi kpi-rate">
+                  <small><i class="sw"></i>Rate</small>
+                  <b class="fig"><span id="rate">0</span><span class="u">ch/s</span></b>
+                </div>
+              </div>
+              <canvas id="chart" aria-label="Backlog and draw rate over the last few seconds"></canvas>
+            </article>
+
+            <div id="panel" class="groups"></div>
+          </aside>
+        </div>
+      </section>
     </main>
+
+    <footer class="foot wrap">
+      <span class="mark sm"
+        ><svg aria-hidden="true"><use href="#mark" /></svg
+      ></span>
+      <p>MIT licensed. Zero dependencies, with React, Vue, Svelte and Web Component wrappers.</p>
+    </footer>
 
     <script type="module" src="/main.ts"></script>
   </body>

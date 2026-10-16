@@ -1,4 +1,5 @@
 import {
+  createReveal,
   createSmoothStream,
   createWaveTimeline,
   defaultPacing,
@@ -7,7 +8,8 @@ import {
   type PacingOptions,
   type RevealOptions,
 } from 'smooth-stream-text/dom'
-import { buildControls, type ControlSpec } from './controls'
+import { version } from '../package.json'
+import { buildControls, createSegmented, type ControlSpec } from './controls'
 import { createChart } from './chart'
 import { parseMarkdown } from './markdown'
 import { createBlockRenderer } from './render'
@@ -21,6 +23,12 @@ const smoothOut = $('#smooth')
 const panel = $('#panel')
 const startButton = $<HTMLButtonElement>('#start')
 const status = $('#status')
+const statusBadge = $('#status-badge')
+const smoothPane = $('#smooth-pane')
+const lag = $('#lag')
+const rate = $('#rate')
+
+$('#version').textContent = `v${version}`
 
 const chart = createChart($<HTMLCanvasElement>('#chart'))
 
@@ -57,7 +65,7 @@ const stream = createSmoothStream(pacing)
 stream.subscribe((state) => smoothRenderer.update(parseMarkdown(state.text)))
 
 const producer: SimulatorOptions = {
-  charsPerSecond: 220,
+  charsPerSecond: 350,
   chunkChars: 14,
   jitter: 0.9,
   pauseChance: 0.12,
@@ -79,9 +87,9 @@ const simulator = createSimulator(SAMPLE, producer, {
 })
 
 function setRunning(running: boolean) {
-  startButton.textContent = running ? 'Stop' : 'Play'
   startButton.dataset.running = String(running)
   status.textContent = running ? 'streaming' : 'idle'
+  statusBadge.classList.toggle('is-on', running)
 }
 
 function restart() {
@@ -201,15 +209,12 @@ const revealControls: ControlSpec[] = [
   },
 ]
 
-buildControls(
-  panel,
-  'Text',
-  [{ key: 'sample', label: 'Sample', options: Object.keys(SAMPLES), value: 'English' }],
-  (_, value) => {
+$('#sample').append(
+  createSegmented({ key: 'sample', label: 'Sample text', options: Object.keys(SAMPLES), value: 'English' }, (value) => {
     answer = SAMPLES[value]
     simulator.setText(answer)
     restart()
-  },
+  }),
 )
 
 buildControls(panel, 'Producer', producerControls, (key, value) => {
@@ -230,10 +235,48 @@ function sample() {
   const state = stream.getState()
   chart.push(state.pending, state.charsPerSecond)
   for (const one of followers) one.follow()
-  $('#lag').textContent = `${state.pending} ch`
-  $('#rate').textContent = `${Math.round(state.charsPerSecond)} ch/s`
+  lag.textContent = String(state.pending)
+  rate.textContent = String(Math.round(state.charsPerSecond))
+  // The rim runs while the smoothed side still has something to draw, which
+  // outlasts the producer by however much backlog it left behind.
+  smoothPane.classList.toggle('is-active', simulator.running || state.pending > 0)
   requestAnimationFrame(sample)
 }
+
+// The page heading arrives the way the package draws text: one wave, both lines
+// on the same timeline so the second line picks up where the first left off.
+const titleReveal = { durationMs: 900, staggerMs: 60, blurPx: 14, translatePx: 12 }
+const titleTimeline = createWaveTimeline(resolveRevealOptions(titleReveal))
+for (const line of [$('#title-1'), $('#title-2')]) {
+  const text = line.textContent ?? ''
+  createReveal(line, { ...titleReveal, timeline: titleTimeline, initialText: '' }).update(text)
+}
+
+const install = $<HTMLButtonElement>('#install')
+let copiedTimer = 0
+install.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(install.querySelector('code')!.textContent ?? '')
+  } catch {
+    return
+  }
+  install.dataset.copied = ''
+  clearTimeout(copiedTimer)
+  copiedTimer = window.setTimeout(() => delete install.dataset.copied, 1600)
+})
+
+// The light on a card's edge follows the pointer.
+document.addEventListener(
+  'pointermove',
+  (event) => {
+    const card = (event.target as Element).closest?.<HTMLElement>('.lit')
+    if (!card) return
+    const box = card.getBoundingClientRect()
+    card.style.setProperty('--mx', `${event.clientX - box.left}px`)
+    card.style.setProperty('--my', `${event.clientY - box.top}px`)
+  },
+  { passive: true },
+)
 
 setRunning(false)
 requestAnimationFrame(sample)
