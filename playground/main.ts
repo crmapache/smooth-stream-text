@@ -11,7 +11,7 @@ import { buildControls, type ControlSpec } from './controls'
 import { createChart } from './chart'
 import { parseMarkdown } from './markdown'
 import { createBlockRenderer } from './render'
-import { SAMPLE } from './sample'
+import { SAMPLE, SAMPLES } from './sample'
 import { createSimulator, type SimulatorOptions } from './simulator'
 
 const $ = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector)!
@@ -65,6 +65,7 @@ const producer: SimulatorOptions = {
 }
 
 let raw = ''
+let answer = SAMPLE
 const simulator = createSimulator(SAMPLE, producer, {
   onChunk(delta) {
     raw += delta
@@ -107,17 +108,29 @@ startButton.addEventListener('click', () => {
 
 $('#restart').addEventListener('click', restart)
 
+// Everything at once, on both sides: the stream jumps to the end and closes, and
+// every word still animating on screen finishes immediately.
 $('#flush').addEventListener('click', () => {
   simulator.stop()
-  raw = SAMPLE
+  raw = answer
   rawRenderer.update(parseMarkdown(raw))
-  stream.setSource(SAMPLE)
+  stream.setSource(answer)
+  stream.end()
   stream.flush()
+  smoothRenderer.flush()
   setRunning(false)
 })
 
 const producerControls: ControlSpec[] = [
-  { key: 'charsPerSecond', label: 'Speed', min: 20, max: 1200, step: 10, value: producer.charsPerSecond, unit: ' ch/s' },
+  {
+    key: 'charsPerSecond',
+    label: 'Speed',
+    min: 20,
+    max: 1200,
+    step: 10,
+    value: producer.charsPerSecond,
+    unit: ' ch/s',
+  },
   { key: 'chunkChars', label: 'Chunk size', min: 1, max: 120, step: 1, value: producer.chunkChars, unit: ' ch' },
   { key: 'jitter', label: 'Jitter', min: 0, max: 1, step: 0.05, value: producer.jitter },
   { key: 'pauseChance', label: 'Stall chance', min: 0, max: 1, step: 0.02, value: producer.pauseChance },
@@ -125,13 +138,50 @@ const producerControls: ControlSpec[] = [
 ]
 
 const pacingControls: ControlSpec[] = [
-  { key: 'targetLatencyMs', label: 'Target latency', min: 0, max: 800, step: 10, value: defaultPacing.targetLatencyMs, unit: 'ms' },
+  {
+    key: 'targetLatencyMs',
+    label: 'Target latency',
+    min: 0,
+    max: 800,
+    step: 10,
+    value: defaultPacing.targetLatencyMs,
+    unit: 'ms',
+  },
   { key: 'adaptMs', label: 'Rate inertia', min: 20, max: 1200, step: 10, value: defaultPacing.adaptMs, unit: 'ms' },
-  { key: 'minCharsPerSecond', label: 'Min rate', min: 1, max: 200, step: 1, value: defaultPacing.minCharsPerSecond, unit: ' ch/s' },
-  { key: 'maxCharsPerSecond', label: 'Max rate', min: 100, max: 4000, step: 50, value: defaultPacing.maxCharsPerSecond, unit: ' ch/s' },
+  {
+    key: 'minCharsPerSecond',
+    label: 'Min rate',
+    min: 1,
+    max: 200,
+    step: 1,
+    value: defaultPacing.minCharsPerSecond,
+    unit: ' ch/s',
+  },
+  {
+    key: 'maxCharsPerSecond',
+    label: 'Max rate',
+    min: 100,
+    max: 4000,
+    step: 50,
+    value: defaultPacing.maxCharsPerSecond,
+    unit: ' ch/s',
+  },
   { key: 'settleMs', label: 'Settle window', min: 0, max: 1500, step: 25, value: defaultPacing.settleMs, unit: 'ms' },
-  { key: 'idleGraceMs', label: 'Idle grace', min: 0, max: 1500, step: 25, value: defaultPacing.idleGraceMs, unit: 'ms' },
-  { key: 'boundary', label: 'Cut boundary', options: ['markdown', 'word', 'char'], value: String(defaultPacing.boundary) },
+  {
+    key: 'idleGraceMs',
+    label: 'Idle grace',
+    min: 0,
+    max: 1500,
+    step: 25,
+    value: defaultPacing.idleGraceMs,
+    unit: 'ms',
+  },
+  {
+    key: 'boundary',
+    label: 'Cut boundary',
+    options: ['markdown', 'word', 'char'],
+    value: String(defaultPacing.boundary),
+  },
 ]
 
 const revealControls: ControlSpec[] = [
@@ -140,8 +190,27 @@ const revealControls: ControlSpec[] = [
   { key: 'staggerMs', label: 'Stagger', min: 0, max: 200, step: 2, value: defaultReveal.staggerMs, unit: 'ms' },
   { key: 'blurPx', label: 'Blur', min: 0, max: 20, step: 0.5, value: defaultReveal.blurPx, unit: 'px' },
   { key: 'translatePx', label: 'Shift', min: 0, max: 24, step: 0.5, value: defaultReveal.translatePx, unit: 'px' },
-  { key: 'maxWaveLagMs', label: 'Wave lag cap', min: 0, max: 1200, step: 20, value: defaultReveal.maxWaveLagMs, unit: 'ms' },
+  {
+    key: 'maxWaveLagMs',
+    label: 'Wave lag cap',
+    min: 0,
+    max: 1200,
+    step: 20,
+    value: defaultReveal.maxWaveLagMs,
+    unit: 'ms',
+  },
 ]
+
+buildControls(
+  panel,
+  'Text',
+  [{ key: 'sample', label: 'Sample', options: Object.keys(SAMPLES), value: 'English' }],
+  (_, value) => {
+    answer = SAMPLES[value]
+    simulator.setText(answer)
+    restart()
+  },
+)
 
 buildControls(panel, 'Producer', producerControls, (key, value) => {
   simulator.setOptions({ [key]: value } as Partial<SimulatorOptions>)
@@ -153,6 +222,8 @@ buildControls(panel, 'Pacing', pacingControls, (key, value) => {
 
 buildControls(panel, 'Reveal', revealControls, (key, value) => {
   smoothRenderer.setRevealOptions({ [key]: value } as Partial<RevealOptions>)
+  // The unit is shared: pacing stops at whole words exactly when words animate.
+  if (key === 'unit') stream.setOptions({ unit: value as RevealOptions['unit'] })
 })
 
 function sample() {

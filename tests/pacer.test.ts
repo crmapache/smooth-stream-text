@@ -52,7 +52,13 @@ describe('effectiveTargetLatency', () => {
 
   it('is unaffected by silence shorter than the grace period', () => {
     const t = effectiveTargetLatency(
-      { pending: 100, dtMs: 16, closed: false, msSinceLastInput: opts.idleGraceMs - 1, msSinceClose: Number.POSITIVE_INFINITY },
+      {
+        pending: 100,
+        dtMs: 16,
+        closed: false,
+        msSinceLastInput: opts.idleGraceMs - 1,
+        msSinceClose: Number.POSITIVE_INFINITY,
+      },
       opts,
     )
     expect(t).toBe(opts.targetLatencyMs)

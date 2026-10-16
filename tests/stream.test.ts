@@ -307,6 +307,82 @@ describe('createSmoothStream', () => {
   })
 })
 
+describe('whole words with unit word', () => {
+  const source =
+    'Streaming text should appear a word at a time, never as half a word that then grows. ' +
+    'That holds for **bold**, `code`, [links](https://x.dev) and long-ish words like internationalisation.'
+
+  it('never shows half a word while the producer is talking', () => {
+    for (const charsPerFrame of [1, 2, 5, 13]) {
+      const clock = createManualClock(0)
+      const stream = createSmoothStream({ clock, unit: 'word' })
+      const torn: string[] = []
+      let at = 0
+      for (let frame = 0; frame < 4000; frame++) {
+        for (let k = 0; k < charsPerFrame && at < source.length; k++) stream.push(source[at++])
+        if (at >= source.length) stream.end()
+        clock.advance(16)
+        const { cursor, phase } = stream.getState()
+        const whole =
+          cursor === 0 || cursor === source.length || /\s/.test(source[cursor - 1]) || /\s/.test(source[cursor])
+        if (!whole) torn.push(`x${charsPerFrame}: ${JSON.stringify(stream.getState().text.slice(-12))}`)
+        if (phase === 'done') break
+      }
+      expect(torn).toEqual([])
+      expect(stream.getState().text).toBe(source)
+    }
+  })
+
+  it('holds a word cut off by a stalled producer for as long as any other hold', () => {
+    const { stream, frames } = run({ boundary: 'markdown', unit: 'word', holdMs: 1500 })
+    stream.push('hello wor')
+    for (let i = 0; i < 90; i++) {
+      frames(1)
+      expect(['', 'hello', 'hello ']).toContain(stream.getState().text)
+    }
+    frames(10)
+    expect(stream.getState().text).toBe('hello wor')
+    stream.push('ld again')
+    frames(120)
+    expect(stream.getState().text).toBe('hello world again')
+  })
+})
+
+describe('characters by default', () => {
+  it('lets the text grow a character at a time', () => {
+    const clock = createManualClock(0)
+    const stream = createSmoothStream({ clock })
+    stream.push('streaming character by character')
+    const lengths = new Set<number>()
+    for (let i = 0; i < 300 && stream.getState().cursor < 20; i++) {
+      clock.advance(16)
+      lengths.add(stream.getState().cursor)
+    }
+    // Stops inside words, not only at spaces.
+    expect(
+      [...lengths].some(
+        (at) =>
+          at > 0 &&
+          !/\s/.test('streaming character by character'[at - 1]) &&
+          !/\s/.test('streaming character by character'[at]),
+      ),
+    ).toBe(true)
+  })
+
+  it('switches between characters and words at runtime', () => {
+    const clock = createManualClock(0)
+    const stream = createSmoothStream({ clock })
+    stream.setOptions({ unit: 'word' })
+    stream.push('hello brave world and more words')
+    for (let i = 0; i < 40; i++) {
+      clock.advance(16)
+      const { cursor, source } = stream.getState()
+      const whole = cursor === 0 || /\s/.test(source[cursor - 1]) || /\s/.test(source[cursor])
+      expect(whole).toBe(true)
+    }
+  })
+})
+
 describe('a producer that speaks again', () => {
   it('reopens the stream when text arrives after end, instead of dumping it', () => {
     // One long-lived stream per view is the normal shape: a chat panel keeps the
@@ -372,4 +448,150 @@ describe('pause and resume', () => {
     frames(200)
     expect(stream.getState().text).toBe('written while nobody was watching')
   })
+})
+
+describe('a stream with nothing it may show yet', () => {
+  for (const unit of ['char', 'word'] as const) {
+    it(`sleeps on a lone half of a surrogate pair instead of drawing every frame (${unit})`, () => {
+      const clock = createManualClock(0)
+      let scheduled = 0
+      const counting = { now: clock.now, schedule: (cb: (now: number) => void) => (scheduled++, clock.schedule(cb)) }
+      const stream = createSmoothStream({ clock: counting, unit })
+      stream.push('the cut is at \uD83D')
+      for (let i = 0; i < 300; i++) clock.advance(16)
+      expect(stream.getState().text).toBe('the cut is at ')
+
+      const asleep = scheduled
+      for (let i = 0; i < 100; i++) clock.advance(16)
+      expect(scheduled).toBe(asleep)
+
+      // The other half wakes it up.
+      stream.push('\uDE00')
+      for (let i = 0; i < 300; i++) clock.advance(16)
+      expect(stream.getState().text).toBe('the cut is at \u{1F600}')
+    })
+  }
+})
+
+describe('whole words in a script without spaces', () => {
+  it('never shows half a word, even with a cap shorter than the dictionary wait', () => {
+    const source = 'นักวิทยาศาสตร์คอมพิวเตอร์กำลังศึกษาปัญญาประดิษฐ์ที่มหาวิทยาลัยและการเรียนรู้ของเครื่อง'
+    const words = new Intl.Segmenter(undefined, { granularity: 'word' })
+    const real = new Set([...words.segment(source)].map((part) => part.index))
+    // Any cap the longest word fits in: a longer word is cut by the cap in any script.
+    for (const holdChars of [12, 16, 32]) {
+      const clock = createManualClock(0)
+      // Running close behind the live edge, so the dictionary's wait meets the cap.
+      const stream = createSmoothStream({ clock, unit: 'word', holdChars, targetLatencyMs: 20 })
+      const halves: string[] = []
+      stream.subscribe(({ text }) => {
+        if (!real.has(text.length) && text.length !== source.length) halves.push(text)
+      })
+      for (let at = 0; at < source.length; at += 3) {
+        stream.push(source.slice(at, at + 3))
+        clock.advance(16)
+      }
+      stream.end()
+      for (let i = 0; i < 200; i++) clock.advance(16)
+      expect(halves, `holdChars ${holdChars}`).toEqual([])
+      expect(stream.getState().text).toBe(source)
+    }
+  })
+})
+
+describe('a cap smaller than a character', () => {
+  for (const holdChars of [0, 1]) {
+    it(`still steps over a whole emoji with holdChars ${holdChars}`, () => {
+      // Slow enough that one frame never carries the cursor across an emoji.
+      const { stream, frames } = run({ holdChars, maxCharsPerSecond: 30 })
+      const source = 'a\u{1F600}b\u{1F468}‍\u{1F469}‍\u{1F467}‍\u{1F466}c d'
+      // Still open, so no deadline can push it through.
+      stream.push(source)
+      frames(400)
+      expect(stream.getState().text).toBe(source)
+    })
+  }
+})
+
+describe('options changed at runtime', () => {
+  it('brings the floor back when a lowered ceiling is raised again', () => {
+    // A target this far away, and a producer never taken for silent, pin the rate to the floor.
+    const { stream, frames } = run({ targetLatencyMs: 1e6, maxLatencyMs: 1e9, idleGraceMs: 1e9 })
+    stream.push('x'.repeat(400))
+    frames(30)
+    expect(stream.getState().charsPerSecond).toBeCloseTo(12)
+    stream.setOptions({ maxCharsPerSecond: 5 })
+    frames(30)
+    expect(stream.getState().charsPerSecond).toBeCloseTo(5)
+    stream.setOptions({ maxCharsPerSecond: 900 })
+    frames(30)
+    expect(stream.getState().charsPerSecond).toBeCloseTo(12)
+  })
+
+  it('returns a setting passed as undefined to its default', () => {
+    const { stream, frames } = run({ targetLatencyMs: 1e6, maxLatencyMs: 1e9, idleGraceMs: 1e9, minCharsPerSecond: 40 })
+    stream.push('x'.repeat(400))
+    frames(30)
+    expect(stream.getState().charsPerSecond).toBeCloseTo(40)
+    stream.setOptions({ minCharsPerSecond: undefined })
+    frames(30)
+    expect(stream.getState().charsPerSecond).toBeCloseTo(12)
+  })
+})
+
+describe('clusters longer than the window', () => {
+  it('lets an open stream through an emoji sequence longer than any window', () => {
+    const family = '\u{1F468}‍\u{1F469}‍\u{1F467}‍\u{1F466}'
+    const source = `a ${Array.from({ length: 12 }, () => family).join('‍')} and the rest`
+    const { stream, frames } = run()
+    stream.push(source)
+    frames(400)
+    expect(stream.getState().text).toBe(source)
+  })
+
+  it('keeps moving when a pause left the cursor inside an emoji that then grew', () => {
+    const { stream, frames } = run({ holdChars: 0, maxCharsPerSecond: 30 })
+    stream.push('a \u{1F468}')
+    frames(30) // quiet long enough to show it
+    expect(stream.getState().text).toBe('a \u{1F468}')
+    const rest = '‍\u{1F469}‍\u{1F467} and more words follow'
+    const seen = new Set<number>()
+    for (const char of rest) {
+      stream.push(char)
+      frames(4)
+      seen.add(stream.getState().cursor)
+    }
+    // It moved while the producer was still talking, not only once it fell silent.
+    expect(seen.size).toBeGreaterThan(3)
+  })
+})
+
+describe('an unlimited ceiling', () => {
+  it('keeps pacing after a pause has let the rate run to infinity', () => {
+    const { stream, frames } = run({ maxCharsPerSecond: Number.POSITIVE_INFINITY, unit: 'word' })
+    stream.push('Hello wor')
+    frames(50) // the producer pauses mid-word
+    stream.push('ld and more words')
+    frames(100)
+    expect(stream.getState().text).toBe('Hello world and more words')
+  })
+})
+
+describe('a chunk that ends inside a surrogate pair', () => {
+  // The missing half may join what came before: a skin tone, or the next person of a family.
+  for (const [name, before, after] of [
+    ['skin tone', 'hi \u{1F44B}\uD83C', '\uDFFD there'],
+    ['joined emoji', 'hi \u{1F468}‍\uD83D', '\uDC69 there'],
+  ]) {
+    it(`does not show the glyph the other half will change (${name})`, () => {
+      // No latency, so the cursor goes as far as it is allowed at once.
+      const { stream, frames } = run({ targetLatencyMs: 0 })
+      stream.push(before)
+      frames(3) // the producer is still talking
+      expect(stream.getState().text).toBe('hi ')
+      stream.push(after)
+      frames(100)
+      expect(stream.getState().text).toBe(before + after)
+    })
+  }
 })

@@ -20,6 +20,8 @@ export interface Simulator {
   start(): void
   stop(): void
   setOptions(next: Partial<SimulatorOptions>): void
+  /** The answer to emit from the next `start()` on. */
+  setText(next: string): void
   readonly running: boolean
 }
 
@@ -82,6 +84,9 @@ export function createSimulator(text: string, options: SimulatorOptions, handler
     },
     setOptions(next) {
       Object.assign(config, next)
+    },
+    setText(next) {
+      text = next
     },
     get running() {
       return running

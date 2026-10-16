@@ -34,9 +34,15 @@ export function createManualClock(startMs = 0): ManualClock {
 
   const runOneWave = () => {
     if (pending.size === 0) return
-    const due = [...pending.values()]
-    pending.clear()
-    for (const callback of due) callback(current)
+    // The wave is fixed before it runs, so work scheduled inside it waits for the
+    // next one - but a callback cancelled by an earlier one in the same wave is
+    // skipped, exactly as with rAF.
+    for (const id of [...pending.keys()]) {
+      const callback = pending.get(id)
+      if (!callback) continue
+      pending.delete(id)
+      callback(current)
+    }
   }
 
   return {

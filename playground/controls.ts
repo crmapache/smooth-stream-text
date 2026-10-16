@@ -34,7 +34,9 @@ export function buildControls(
   group.appendChild(heading)
 
   for (const spec of specs) {
-    const row = document.createElement('label')
+    // A label only around a slider: a label forwards clicks to the first control
+    // inside it, which in a segmented row would select its first option.
+    const row = document.createElement(isSlider(spec) ? 'label' : 'div')
     row.className = 'control'
 
     const name = document.createElement('span')
@@ -80,17 +82,44 @@ export function buildControls(
         button.className = 'segment'
         button.textContent = option
         button.setAttribute('role', 'radio')
-        button.setAttribute('aria-checked', String(option === spec.value))
         segmented.appendChild(button)
-        return { option, button }
+        return button
       })
 
-      for (const { option, button } of buttons) {
-        button.addEventListener('click', () => {
-          for (const other of buttons) other.button.setAttribute('aria-checked', String(other.option === option))
-          onChange(spec.key, option)
+      // A radio group is one tab stop - the checked option - and the arrow keys
+      // move the choice within it, as the radiogroup role promises.
+      const check = (index: number) => {
+        buttons.forEach((button, i) => {
+          button.setAttribute('aria-checked', String(i === index))
+          button.tabIndex = i === index ? 0 : -1
         })
       }
+      const choose = (index: number) => {
+        check(index)
+        buttons[index].focus()
+        onChange(spec.key, spec.options[index])
+      }
+      check(Math.max(0, spec.options.indexOf(spec.value)))
+
+      buttons.forEach((button, index) => button.addEventListener('click', () => choose(index)))
+      segmented.addEventListener('keydown', (event) => {
+        const current = buttons.indexOf(document.activeElement as HTMLButtonElement)
+        if (current < 0) return
+        const last = buttons.length - 1
+        const next =
+          event.key === 'ArrowRight' || event.key === 'ArrowDown'
+            ? (current + 1) % buttons.length
+            : event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+              ? (current + last) % buttons.length
+              : event.key === 'Home'
+                ? 0
+                : event.key === 'End'
+                  ? last
+                  : -1
+        if (next < 0) return
+        event.preventDefault()
+        choose(next)
+      })
 
       row.append(name, segmented)
     }

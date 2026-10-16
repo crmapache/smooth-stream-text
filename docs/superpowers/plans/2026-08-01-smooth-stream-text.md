@@ -1,5 +1,7 @@
 # smooth-stream-text Implementation Plan
 
+> **Historical.** This is the plan the first release was built from, kept as a record. It no longer describes the package: every entry now ships both ESM and CJS from one build, the default boundary stops at whole words, and the wrappers share one lifecycle. The README and CHANGELOG describe the current behaviour.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Ship `smooth-stream-text` to npm - a zero-dependency library that paces bursty LLM text into a visually even stream and reveals it as a left-to-right wave, with a headless-first core and wrappers for React, Vue, Svelte and Web Components.

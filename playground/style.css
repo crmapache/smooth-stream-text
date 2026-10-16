@@ -25,7 +25,13 @@ body {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -72,7 +78,10 @@ body {
   border-radius: 9px;
   color: var(--ink-faint);
   border: 1px solid transparent;
-  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .icon-link svg {
@@ -226,7 +235,7 @@ main {
 }
 
 .out ul {
-  padding-left: 20px;
+  padding-inline-start: 20px;
   list-style: none;
 }
 
@@ -238,7 +247,7 @@ main {
 .out li::before {
   content: '';
   position: absolute;
-  left: -14px;
+  inset-inline-start: -14px;
   top: 0.66em;
   width: 5px;
   height: 5px;
@@ -315,7 +324,10 @@ button {
   border: 1px solid var(--line);
   border-radius: 9px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 }
 
 button:hover {
@@ -458,7 +470,9 @@ input[type='range']::-webkit-slider-thumb {
   height: 13px;
   border-radius: 999px;
   background: var(--ink);
-  box-shadow: 0 0 0 3px var(--surface), 0 1px 4px rgb(0 0 0 / 0.5);
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 1px 4px rgb(0 0 0 / 0.5);
   cursor: pointer;
   border: none;
   transition: transform 0.12s;
@@ -473,7 +487,9 @@ input[type='range']::-moz-range-thumb {
   height: 13px;
   border-radius: 999px;
   background: var(--ink);
-  box-shadow: 0 0 0 3px var(--surface), 0 1px 4px rgb(0 0 0 / 0.5);
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 1px 4px rgb(0 0 0 / 0.5);
   cursor: pointer;
   border: none;
 }
@@ -501,7 +517,9 @@ input[type='range']::-moz-range-thumb {
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  transition: background 0.14s, color 0.14s;
+  transition:
+    background 0.14s,
+    color 0.14s;
 }
 
 .segment:hover {

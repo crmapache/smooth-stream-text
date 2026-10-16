@@ -40,4 +40,19 @@ describe('splitPieces', () => {
   it('returns nothing for empty input', () => {
     expect(splitPieces('', 'word')).toEqual([])
   })
+
+  it('splits a run in a script without spaces into words, punctuation attached', () => {
+    const pieces = splitPieces('今天天气很好，我们去公园。', 'word').map((p) => p.text)
+    expect(pieces.join('')).toBe('今天天气很好，我们去公园。')
+    expect(pieces.length).toBeGreaterThan(2)
+    for (const piece of pieces) expect('，。'.includes(piece[0])).toBe(false)
+  })
+
+  it('keeps a space-separated word whole, punctuation included', () => {
+    expect(splitPieces('Hello, world!', 'word').map((p) => p.text)).toEqual(['Hello,', ' ', 'world!'])
+  })
+
+  it('splits flags and conjuncts as whole clusters in char mode', () => {
+    expect(splitPieces('\u{1F1FA}\u{1F1F8}क्ष', 'char').map((p) => p.text)).toEqual(['\u{1F1FA}\u{1F1F8}', 'क्ष'])
+  })
 })

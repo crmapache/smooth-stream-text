@@ -13,13 +13,18 @@ interface Emphasis {
 export interface MarkdownScanner {
   /**
    * The largest index `<= desired` at which the visible prefix contains no
-   * unclosed inline construct and no half-written delimiter.
+   * unclosed inline construct and no half-written delimiter, and which `accept`
+   * - when given - also allows. Each position is judged once, when the scan
+   * first passes it.
    *
    * The source must be append-only between calls; `reset()` starts over.
    */
-  cleanUpTo(source: string, desired: number): number
+  cleanUpTo(source: string, desired: number, accept?: (index: number) => boolean): number
   reset(): void
 }
+
+/** How many clean positions behind the scan stay remembered; a stream looks back a few dozen at most. */
+const RECENT = 256
 
 /**
  * Walks the source forward exactly once, so the total cost across a stream is
@@ -34,6 +39,11 @@ export interface MarkdownScanner {
 export function createMarkdownScanner(): MarkdownScanner {
   let pos = 0
   let lastClean = 0
+  // Clean positions the scan has passed, newest last: a question about an earlier
+  // position must get an exact answer without stepping back, since stepping over
+  // the same delimiters twice would corrupt the state.
+  let recent: number[] = []
+  let forgotten = false
 
   // Block level - survives newlines.
   let inFence = false
@@ -75,7 +85,8 @@ export function createMarkdownScanner(): MarkdownScanner {
     lineStart = nextLineStart
   }
 
-  function finalizeRun(): void {
+  /** `next` is the character after the run, which decides what a line-leading star is. */
+  function finalizeRun(next: string): void {
     if (runLen === 0) return
     const ch = runChar
     const len = runLen
@@ -88,8 +99,9 @@ export function createMarkdownScanner(): MarkdownScanner {
     // could not land inside the closing marker.
     if (inFence) return
 
-    // A lone star opening a line is a bullet, not emphasis.
-    if (ch === '*' && len === 1 && wasAtLineStart) return
+    // A lone star opening a line is a bullet only when a space follows it;
+    // `*word*` at the start of a line is emphasis like anywhere else.
+    if (ch === '*' && len === 1 && wasAtLineStart && (next === ' ' || next === '\t')) return
 
     if (ch === '`') {
       if (backtick === 0) backtick = len
@@ -138,7 +150,7 @@ export function createMarkdownScanner(): MarkdownScanner {
     const ch = source[p]
 
     if (ch === '\n') {
-      finalizeRun()
+      finalizeRun(ch)
       toggleFence(source, p)
       resetLine(p + 1)
       return
@@ -172,7 +184,7 @@ export function createMarkdownScanner(): MarkdownScanner {
     }
 
     if (!inFence && ch === '\\') {
-      finalizeRun()
+      finalizeRun(ch)
       escape = true
       atLineStart = false
       return
@@ -181,7 +193,7 @@ export function createMarkdownScanner(): MarkdownScanner {
     if (RUN_CHARS.has(ch)) {
       if (runLen > 0 && runChar === ch) runLen++
       else {
-        finalizeRun()
+        finalizeRun(ch)
         runChar = ch
         runLen = 1
         runAtLineStart = atLineStart
@@ -196,7 +208,7 @@ export function createMarkdownScanner(): MarkdownScanner {
       return
     }
 
-    finalizeRun()
+    finalizeRun(ch)
 
     if (atLineStart) {
       if (ch === ' ' || ch === '\t') return // still in the leading indent
@@ -207,7 +219,15 @@ export function createMarkdownScanner(): MarkdownScanner {
           return
         }
         const kind: MarkerKind =
-          ch === '#' ? 'hash' : ch === '>' ? 'quote' : ch === '-' || ch === '+' ? 'bullet' : /\d/.test(ch) ? 'ordered' : null
+          ch === '#'
+            ? 'hash'
+            : ch === '>'
+              ? 'quote'
+              : ch === '-' || ch === '+'
+                ? 'bullet'
+                : /\d/.test(ch)
+                  ? 'ordered'
+                  : null
         if (kind) {
           marker = kind
           markerPending = true
@@ -235,34 +255,63 @@ export function createMarkdownScanner(): MarkdownScanner {
     return backtick === 0 && emphasis.length === 0 && bracket === 0 && !inUrl
   }
 
+  /** The last clean position at or before `desired`, from what the scan remembers. */
+  function recentCleanUpTo(desired: number): number | null {
+    let lo = 0
+    let hi = recent.length - 1
+    let found: number | null = null
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1
+      if (recent[mid] <= desired) {
+        found = recent[mid]
+        lo = mid + 1
+      } else hi = mid - 1
+    }
+    return found ?? (forgotten ? null : 0)
+  }
+
   function resetAll(): void {
     pos = 0
     lastClean = 0
+    recent = []
+    forgotten = false
     inFence = false
     fenceChar = ''
     fenceLen = 0
     resetLine(0)
   }
 
-  return {
-    cleanUpTo(source, desired) {
-      // The source is contracted to be append-only; recovering from a violation
-      // costs one line, and silently reporting stale positions would not.
-      if (source.length < pos) resetAll()
+  function cleanUpTo(source: string, desired: number, accept?: (index: number) => boolean): number {
+    // The source is contracted to be append-only; recovering from a violation
+    // costs one line, and silently reporting stale positions would not.
+    if (source.length < pos) resetAll()
 
-      const limit = Math.min(desired, source.length)
-      for (let p = pos; p < limit; p++) {
-        step(source, p)
-        const k = p + 1
-        // A run whose next character is known and different is complete; a run at
-        // the very end of the source may still grow, so it stays unresolved.
-        if (runLen > 0 && k < source.length && source[k] !== runChar) finalizeRun()
-        if (isClean()) lastClean = k
+    const limit = Math.min(desired, source.length)
+    for (let p = pos; p < limit; p++) {
+      step(source, p)
+      const k = p + 1
+      // A run whose next character is known and different is complete; a run at
+      // the very end of the source may still grow, so it stays unresolved.
+      if (runLen > 0 && k < source.length && source[k] !== runChar) finalizeRun(source[k])
+      if (isClean() && (!accept || accept(k))) {
+        lastClean = k
+        recent.push(k)
+        if (recent.length > 2 * RECENT) {
+          recent = recent.slice(-RECENT)
+          forgotten = true
+        }
       }
-      pos = limit
-      return Math.min(desired, lastClean)
-    },
+    }
+    if (limit > pos) pos = limit
+    if (lastClean <= desired) return lastClean
 
-    reset: resetAll,
+    // Asked about a position already passed: the last clean one before it, or,
+    // that far back, a fresh scan up to it.
+    const known = recentCleanUpTo(desired)
+    if (known !== null) return known
+    resetAll()
+    return cleanUpTo(source, desired, accept)
   }
+
+  return { cleanUpTo, reset: resetAll }
 }

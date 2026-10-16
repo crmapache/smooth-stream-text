@@ -1,4 +1,5 @@
-import { clampToGraphemeBoundary } from '../core/grapheme'
+import { splitClusters } from '../core/grapheme'
+import { createWordBoundaries, hasNoSpaceScript } from '../core/words'
 
 export interface Piece {
   text: string
@@ -8,21 +9,21 @@ export interface Piece {
 
 const WHITESPACE = /\s/
 
-/** The smallest cluster boundary strictly after `at`. */
-function nextClusterEnd(text: string, at: number): number {
-  for (let end = at + 1; end < text.length; end++) {
-    if (clampToGraphemeBoundary(text, end) === end) return end
+function pushWords(run: string, out: Piece[]): void {
+  // A space-separated word is already one unit; only runs in scripts written
+  // without spaces hold several words.
+  if (!hasNoSpaceScript(run)) {
+    out.push({ text: run, animatable: true })
+    return
   }
-  return text.length
-}
-
-function pushClusters(text: string, out: Piece[]): void {
-  let at = 0
-  while (at < text.length) {
-    const end = nextClusterEnd(text, at)
-    out.push({ text: text.slice(at, end), animatable: true })
-    at = end
+  const words = createWordBoundaries()
+  let start = 0
+  for (let at = 1; at < run.length; at++) {
+    if (!words.isBoundary(run, at, true)) continue
+    out.push({ text: run.slice(start, at), animatable: true })
+    start = at
   }
+  out.push({ text: run.slice(start), animatable: true })
 }
 
 /**
@@ -43,8 +44,8 @@ export function splitPieces(text: string, unit: 'word' | 'char'): Piece[] {
 
     const run = text.slice(at, end)
     if (isSpace) pieces.push({ text: run, animatable: false })
-    else if (unit === 'word') pieces.push({ text: run, animatable: true })
-    else pushClusters(run, pieces)
+    else if (unit === 'word') pushWords(run, pieces)
+    else for (const cluster of splitClusters(run)) pieces.push({ text: cluster, animatable: true })
 
     at = end
   }

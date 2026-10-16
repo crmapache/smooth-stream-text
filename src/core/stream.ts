@@ -1,5 +1,6 @@
-import { createBoundaryResolver } from './boundary'
-import { clampToGraphemeBoundary } from './grapheme'
+import { createBoundaryResolver, safeCut, stopsAtWords } from './boundary'
+import { clampToGraphemeBoundary, clusterEnd } from './grapheme'
+import { settledWords } from './words'
 import { resolvePacingOptions } from './options'
 import { createPacerState, stepPacer, type PacerState } from './pacer'
 import type { PacingOptions, SmoothState, SmoothStream, StreamPhase } from './types'
@@ -12,9 +13,12 @@ import type { PacingOptions, SmoothState, SmoothStream, StreamPhase } from './ty
  * identical output at identical times.
  */
 export function createSmoothStream(options?: PacingOptions): SmoothStream {
-  const opts = resolvePacingOptions(options)
+  // What was asked for is kept apart from what is in effect: a value that had to
+  // give way to another, a floor above the ceiling, comes back with it.
+  let given: PacingOptions = { ...options }
+  const opts = resolvePacingOptions(given)
   const { clock } = opts
-  let resolver = createBoundaryResolver(opts.boundary)
+  let resolver = createBoundaryResolver(opts.boundary, opts.unit)
 
   let source = ''
   let cursor = 0
@@ -52,8 +56,18 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     for (const listener of listeners) listener(state)
   }
 
+  /**
+   * Whether waiting alone can still show more. Holds give way with time, but half
+   * of a surrogate pair at the end of an open stream is never shown on its own:
+   * until the other half or the end arrives, frames would only burn battery.
+   * Every input schedules again, so a sleeping stream wakes on its own.
+   */
+  function hasWork(): boolean {
+    return cursor < safeCut(source, source.length, closed, true)
+  }
+
   function schedule(): void {
-    if (destroyed || paused || cancelTick) return
+    if (destroyed || paused || cancelTick || !hasWork()) return
     cancelTick = clock.schedule(tick)
   }
 
@@ -93,8 +107,15 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       opts,
     )
 
+    // When whole words are the unit, the last word of a live stream may still be
+    // growing, so it is held like any other unfinished construct until the
+    // producer has been silent for `holdMs`: a model pausing mid-word must not
+    // leave half of it on screen. Character by character only the last cluster is
+    // at stake, which needs no more than the grace period.
+    const holdsWords = stopsAtWords(opts.boundary, opts.unit)
+    const quiet = closed || now - lastInputAt > (holdsWords ? opts.holdMs : opts.idleGraceMs)
     const desired = Math.min(Math.floor(pacer.exact), source.length)
-    let next = resolver.resolve(source, desired, closed)
+    let next = resolver.resolve(source, desired, closed, quiet)
 
     if (next < desired) {
       // Time is measured from the last input, not from the start of the hold. A
@@ -102,9 +123,14 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       // releasing then would show the half-written URL the hold exists to hide.
       // Silence past the cap means the closer is simply never coming.
       const abandoned = now - lastInputAt > opts.holdMs
-      const heldTooMuch = desired - next > opts.holdChars
+      // Whole words in a script without spaces also wait while the dictionary may
+      // still change its mind about the last ones. That is the text being
+      // unfinished, like its last cluster, not a construct we hold back - so it
+      // neither counts against the cap nor is released by it.
+      const decided = holdsWords ? Math.min(desired, settledWords(source, quiet)) : desired
+      const heldTooMuch = decided - next > opts.holdChars
       // A briefly literal `**` beats a stream frozen by us.
-      if (abandoned || heldTooMuch) next = clampToGraphemeBoundary(source, desired)
+      if (abandoned || heldTooMuch) next = Math.max(next, safeCut(source, decided, closed, quiet))
     }
 
     if (next > cursor) cursor = next
@@ -113,9 +139,16 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     // eventually reaches the position where the hold is satisfied - the closing
     // `**`, the end of the table row. Pinning it here would stall that forever and
     // leave the release cap to dump text mid-delimiter. It only needs a ceiling, so
-    // that a release cannot reveal more at once than the cap already allows.
-    const ceiling = cursor + opts.holdChars
-    if (pacer.exact > ceiling) pacer = { rate: pacer.rate, exact: ceiling }
+    // that a release cannot reveal more at once than the cap already allows - one
+    // character above it, so that even a zero cap keeps fractional progress, and
+    // never less than the end of the cluster the cursor is in, or an emoji longer
+    // than the cap could never be crossed. The cursor itself sits inside one when
+    // a pause showed what had arrived and the cluster then grew.
+    const ceiling = cursor + opts.holdChars + 1
+    if (pacer.exact > ceiling) {
+      const clusterDone = clusterEnd(source, clampToGraphemeBoundary(source, cursor))
+      pacer = { rate: pacer.rate, exact: Math.min(pacer.exact, Math.max(ceiling, clusterDone)) }
+    }
   }
 
   function tick(now: number): void {
@@ -126,10 +159,10 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     lastTickAt = now
 
     const beforeCursor = cursor
-    if (source.length > cursor) advance(now, dt)
+    if (hasWork()) advance(now, dt)
 
     if (cursor !== beforeCursor || phaseOf() !== state.phase) emit()
-    if (source.length > cursor) schedule()
+    schedule()
   }
 
   function resetTo(text?: string): void {
@@ -165,7 +198,7 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
     if (!cancelTick) lastTickAt = now
     lastInputAt = now
     emit()
-    if (source.length > cursor) schedule()
+    schedule()
   }
 
   return {
@@ -191,8 +224,10 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       if (destroyed || closed) return
       closed = true
       closedAt = clock.now()
+      // Like any input, closing may wake a sleeping stream.
+      if (!cancelTick) lastTickAt = closedAt
       emit()
-      if (source.length > cursor) schedule()
+      schedule()
     },
 
     reset(text) {
@@ -218,14 +253,17 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       if (destroyed || !paused) return
       paused = false
       lastTickAt = clock.now()
-      if (source.length > cursor) schedule()
+      schedule()
     },
 
     setOptions(next) {
       if (destroyed) return
-      const boundaryChanged = next.boundary !== undefined && next.boundary !== opts.boundary
-      Object.assign(opts, resolvePacingOptions({ ...opts, ...next, clock }))
-      if (boundaryChanged) resolver = createBoundaryResolver(opts.boundary)
+      const before = { boundary: opts.boundary, unit: opts.unit }
+      given = { ...given, ...next }
+      Object.assign(opts, resolvePacingOptions({ ...given, clock }))
+      if (opts.boundary !== before.boundary || opts.unit !== before.unit) {
+        resolver = createBoundaryResolver(opts.boundary, opts.unit)
+      }
     },
 
     getState: () => state,

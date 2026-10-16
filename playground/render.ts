@@ -69,7 +69,8 @@ export function createBlockRenderer(host: HTMLElement, options: RenderOptions) {
     for (let i = 0; i < runs.length; i++) {
       const existing = slot.parts[i]
       const wanted = runs[i]
-      const sameShape = existing && existing.tag === wanted.tag && existing.href === wanted.href && slot.hosts[i] === hosts[i]
+      const sameShape =
+        existing && existing.tag === wanted.tag && existing.href === wanted.href && slot.hosts[i] === hosts[i]
 
       if (sameShape) {
         if (existing.reveal) existing.reveal.update(wanted.text)
@@ -221,6 +222,13 @@ export function createBlockRenderer(host: HTMLElement, options: RenderOptions) {
       Object.assign(options.revealOptions ?? {}, next)
       for (const slot of slots) {
         for (const part of slot.parts) part.reveal?.setOptions(next)
+      }
+    },
+
+    /** Finishes every animation on screen at once. */
+    flush(): void {
+      for (const slot of slots) {
+        for (const part of slot.parts) part.reveal?.flush()
       }
     },
 

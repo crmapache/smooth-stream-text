@@ -52,10 +52,20 @@ export function stepPacer(state: PacerState, input: PacerInput, opts: ResolvedPa
   const max = opts.maxCharsPerSecond / 1000
 
   const desired = target > 0 ? input.pending / target : Number.POSITIVE_INFINITY
-  const alpha = 1 - Math.exp(-input.dtMs / opts.adaptMs)
+  // No inertia at all means jumping straight to the wanted rate - and never 0 / 0
+  // on a frame that took no time.
+  const alpha = opts.adaptMs > 0 ? 1 - Math.exp(-input.dtMs / opts.adaptMs) : 1
 
-  let rate = Number.isFinite(desired) ? state.rate + (desired - state.rate) * alpha : max
+  // An unlimited ceiling lets the rate itself run to infinity once the target
+  // has decayed, and there is no easing back from there: Infinity minus Infinity
+  // would freeze the stream, so the next real target is taken as it is.
+  let rate = !Number.isFinite(desired)
+    ? max
+    : Number.isFinite(state.rate)
+      ? state.rate + (desired - state.rate) * alpha
+      : desired
   rate = Math.min(max, Math.max(min, rate))
 
-  return { rate, exact: state.exact + rate * input.dtMs }
+  // An unlimited rate over a frame that took no time is no progress, not NaN.
+  return { rate, exact: state.exact + (input.dtMs > 0 ? rate * input.dtMs : 0) }
 }

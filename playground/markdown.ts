@@ -162,7 +162,14 @@ export function parseMarkdown(source: string): Block[] {
     }
 
     const paragraph: string[] = []
-    while (at < lines.length && lines[at].trim() && !HEADING.test(lines[at]) && !BULLET.test(lines[at]) && !FENCE.test(lines[at]) && !TABLE_ROW.test(lines[at])) {
+    while (
+      at < lines.length &&
+      lines[at].trim() &&
+      !HEADING.test(lines[at]) &&
+      !BULLET.test(lines[at]) &&
+      !FENCE.test(lines[at]) &&
+      !TABLE_ROW.test(lines[at])
+    ) {
       paragraph.push(lines[at].trim())
       at++
     }

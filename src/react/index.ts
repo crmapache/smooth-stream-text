@@ -1,8 +1,8 @@
-export { useSmoothStream, useSmoothStreamController } from './use-smooth-stream'
+export { useSmoothStream, useSmoothStreamController, useSmoothText } from './use-smooth-stream'
 export { Reveal, RevealProvider, useReveal } from './reveal'
 export { SmoothText } from './smooth-text'
 
-export type { SmoothStreamController, SmoothStreamControls } from './use-smooth-stream'
+export type { SmoothStreamController, SmoothStreamControls, SmoothText as SmoothTextState } from './use-smooth-stream'
 export type { RevealContextValue, RevealProps, RevealProviderProps } from './reveal'
 export type { SmoothTextProps } from './smooth-text'
 

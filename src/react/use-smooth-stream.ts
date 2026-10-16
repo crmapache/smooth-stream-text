@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { changedOptions } from '../core/options'
 import { createSmoothStream } from '../core/stream'
-import type { PacingOptions, SmoothState, SmoothStream } from '../core/types'
+import { createSourceSync } from '../core/sync'
+import type { PacingOptions, SmoothState, SmoothStream, StreamPhase } from '../core/types'
 
 export interface SmoothStreamControls {
   flush(): void
@@ -14,14 +16,8 @@ export interface SmoothStreamController extends SmoothState, SmoothStreamControl
   end(): void
 }
 
-function useStream(options: PacingOptions | undefined, seed?: string): SmoothStream {
-  const [stream] = useState(() => {
-    const created = createSmoothStream(options)
-    // Already-finished text must appear instantly - that is what makes rendering
-    // an existing conversation cheap instead of replaying every message.
-    if (seed) created.reset(seed)
-    return created
-  })
+function useStream(options: PacingOptions | undefined): SmoothStream {
+  const [stream] = useState(() => createSmoothStream(options))
 
   // Pause rather than destroy: StrictMode mounts, unmounts and mounts again, and
   // the stream itself lives in state across all three. Tearing it down on the
@@ -31,6 +27,18 @@ function useStream(options: PacingOptions | undefined, seed?: string): SmoothStr
     stream.resume()
     return () => stream.pause()
   }, [stream])
+
+  // The settings follow the props as they change, so one changed through
+  // `setOptions` stays until its own prop changes. Only the clock is fixed at
+  // creation - the stream ignores it here.
+  // A copy, so that an object the app changes in place still shows what changed.
+  const applied = useRef(options && { ...options })
+  useEffect(() => {
+    const next = options && { ...options }
+    const changes = changedOptions(applied.current, next)
+    applied.current = next
+    if (changes) stream.setOptions(changes)
+  })
 
   return stream
 }
@@ -56,24 +64,65 @@ function useControls(stream: SmoothStream): SmoothStreamControls {
  * ```tsx
  * const { text, phase } = useSmoothStream(answer, { done: !isStreaming })
  * ```
+ *
+ * One hook serves any number of answers: a message that is already `done` when
+ * it first arrives - history - appears at once, a new answer starts over, and
+ * `done` closes whichever answer is current, even when its last chunk lands
+ * after `done` was set.
  */
 export function useSmoothStream(
   source: string,
   options?: PacingOptions & { done?: boolean },
 ): SmoothState & SmoothStreamControls {
-  const { done, ...pacing } = options ?? {}
-  const stream = useStream(pacing, done ? source : undefined)
-  const state = useStreamState(stream)
+  const stream = useSyncedStream(source, options)
+  return { ...useStreamState(stream), ...useControls(stream) }
+}
+
+/** The stream behind both string hooks, fed the latest `(source, done)` pair. */
+function useSyncedStream(source: string, options: (PacingOptions & { done?: boolean }) | undefined): SmoothStream {
+  const { done = false, ...pacing } = options ?? {}
+  const stream = useStream(pacing)
+  // Created during the first render, so finished text is already there for the
+  // server pass and the first paint.
+  const [sync] = useState(() => {
+    const created = createSourceSync(stream)
+    if (done) created.apply(source, true)
+    return created
+  })
 
   useEffect(() => {
-    stream.setSource(source)
-  }, [stream, source])
+    sync.apply(source, done)
+  }, [sync, source, done])
 
-  useEffect(() => {
-    if (done) stream.end()
-  }, [stream, done])
+  return stream
+}
 
-  return { ...state, ...useControls(stream) }
+export interface SmoothText extends SmoothStreamControls {
+  text: string
+  phase: StreamPhase
+}
+
+/**
+ * `useSmoothStream` for when the text is all you render - the usual case with a
+ * markdown renderer. It re-renders only when the visible text or the phase
+ * changes, not for every chunk that arrives, so an expensive parse runs once
+ * per visible step instead.
+ *
+ * ```tsx
+ * const { text } = useSmoothText(answer, { done: !isStreaming })
+ * return <Markdown>{text}</Markdown>
+ * ```
+ */
+export function useSmoothText(source: string, options?: PacingOptions & { done?: boolean }): SmoothText {
+  const stream = useSyncedStream(source, options)
+  const subscribe = useCallback((onChange: () => void) => stream.subscribe(onChange), [stream])
+  // Two plain strings rather than one state object: React compares snapshots by
+  // value for strings, so a chunk that changes neither renders nothing.
+  const readText = useCallback(() => stream.getState().text, [stream])
+  const readPhase = useCallback(() => stream.getState().phase, [stream])
+  const text = useSyncExternalStore(subscribe, readText, readText)
+  const phase = useSyncExternalStore(subscribe, readPhase, readPhase)
+  return { text, phase, ...useControls(stream) }
 }
 
 /**

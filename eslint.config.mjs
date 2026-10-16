@@ -14,6 +14,12 @@ export default tseslint.config(
     plugins: { 'react-hooks': reactHooks },
     rules: reactHooks.configs.recommended.rules,
   },
+  {
+    // Plain Node scripts that check the packed tarball.
+    files: ['scripts/**'],
+    languageOptions: { globals: { console: 'readonly', process: 'readonly', require: 'readonly' } },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
   eslintConfigPrettier,
   {
     rules: {

@@ -15,6 +15,8 @@ export default defineConfig({
       'smooth-stream-text': resolve(root, 'src/index.ts'),
     },
   },
+  // Fixed port: the default 5173 belongs to another project on this machine.
+  server: { port: 5188, strictPort: true },
   build: {
     outDir: 'dist',
     emptyOutDir: true,

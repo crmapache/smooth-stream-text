@@ -1,6 +1,6 @@
-import type { BoundaryMode } from './boundary'
+import type { BoundaryMode, TextUnit } from './boundary'
 
-export type { BoundaryFn, BoundaryMode } from './boundary'
+export type { BoundaryFn, BoundaryMode, TextUnit } from './boundary'
 
 /**
  * The time source the engine runs on. Injecting it is what makes every pacing
@@ -34,6 +34,12 @@ export interface PacingOptions {
   maxFrameMs?: number
   /** Where the cursor is allowed to stop. */
   boundary?: BoundaryMode
+  /**
+   * What appears as one piece: `'char'` lets the text grow a character at a time,
+   * `'word'` only ever adds whole words. The reveal reads the same key, so one
+   * setting keeps pacing and animation in step.
+   */
+  unit?: TextUnit
   /**
    * How long the producer must be silent before a held construct is released.
    *
@@ -90,7 +96,11 @@ export interface SmoothStream {
   pause(): void
   /** Draw again after `pause`, carrying on from wherever the cursor stopped. */
   resume(): void
-  /** Change the feel at runtime. `clock` is fixed at creation and is ignored here. */
+  /**
+   * Change the feel at runtime. Settings left out keep their value, and one passed
+   * as `undefined` returns to its default. `clock` is fixed at creation and is
+   * ignored here.
+   */
   setOptions(next: Partial<PacingOptions>): void
   getState(): SmoothState
   subscribe(listener: (state: SmoothState) => void): () => void

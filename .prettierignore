@@ -1,3 +1,7 @@
 dist
 playground/dist
 node_modules
+# Prose is wrapped and its tables aligned by hand, and Prettier would also break
+# the examples: it prefixes JSX statements with a semicolon and rewrites inline
+# code that contains backticks.
+*.md
