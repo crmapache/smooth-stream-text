@@ -1,0 +1,1308 @@
+{
+ "name": "steady",
+ "description": "Even arrival: 4-12 characters every 30 ms, about 270 characters per second.",
+ "chunks": [
+  {
+   "t": 30,
+   "delta": "## Sta"
+  },
+  {
+   "t": 60,
+   "delta": "rt from"
+  },
+  {
+   "t": 90,
+   "delta": " what th"
+  },
+  {
+   "t": 120,
+   "delta": "e URL prom"
+  },
+  {
+   "t": 150,
+   "delta": "ises"
+  },
+  {
+   "t": 180,
+   "delta": "\n\nChoos"
+  },
+  {
+   "t": 210,
+   "delta": "e headers "
+  },
+  {
+   "t": 240,
+   "delta": "per class"
+  },
+  {
+   "t": 270,
+   "delta": " of "
+  },
+  {
+   "t": 300,
+   "delta": "response,"
+  },
+  {
+   "t": 330,
+   "delta": " not p"
+  },
+  {
+   "t": 360,
+   "delta": "er file"
+  },
+  {
+   "t": 390,
+   "delta": ". The dec"
+  },
+  {
+   "t": 420,
+   "delta": "iding quest"
+  },
+  {
+   "t": 450,
+   "delta": "ion is"
+  },
+  {
+   "t": 480,
+   "delta": " whether a U"
+  },
+  {
+   "t": 510,
+   "delta": "RL's conten"
+  },
+  {
+   "t": 540,
+   "delta": "t can "
+  },
+  {
+   "t": 570,
+   "delta": "ever chang"
+  },
+  {
+   "t": 600,
+   "delta": "e. A fil"
+  },
+  {
+   "t": 630,
+   "delta": "ename"
+  },
+  {
+   "t": 660,
+   "delta": " wit"
+  },
+  {
+   "t": 690,
+   "delta": "h a "
+  },
+  {
+   "t": 720,
+   "delta": "conten"
+  },
+  {
+   "t": 750,
+   "delta": "t has"
+  },
+  {
+   "t": 780,
+   "delta": "h (`app.3f"
+  },
+  {
+   "t": 810,
+   "delta": "9a1c.js`)"
+  },
+  {
+   "t": 840,
+   "delta": " is imm"
+  },
+  {
+   "t": 870,
+   "delta": "utable"
+  },
+  {
+   "t": 900,
+   "delta": ": a new bu"
+  },
+  {
+   "t": 930,
+   "delta": "ild produces"
+  },
+  {
+   "t": 960,
+   "delta": " a ne"
+  },
+  {
+   "t": 990,
+   "delta": "w URL, "
+  },
+  {
+   "t": 1020,
+   "delta": "so caches ca"
+  },
+  {
+   "t": 1050,
+   "delta": "n keep "
+  },
+  {
+   "t": 1080,
+   "delta": "the old "
+  },
+  {
+   "t": 1110,
+   "delta": "one fore"
+  },
+  {
+   "t": 1140,
+   "delta": "ver. A stabl"
+  },
+  {
+   "t": 1170,
+   "delta": "e URL (`/`,"
+  },
+  {
+   "t": 1200,
+   "delta": " `/api/me`"
+  },
+  {
+   "t": 1230,
+   "delta": ") must eithe"
+  },
+  {
+   "t": 1260,
+   "delta": "r be revalid"
+  },
+  {
+   "t": 1290,
+   "delta": "ated "
+  },
+  {
+   "t": 1320,
+   "delta": "or cach"
+  },
+  {
+   "t": 1350,
+   "delta": "ed only br"
+  },
+  {
+   "t": 1380,
+   "delta": "iefly"
+  },
+  {
+   "t": 1410,
+   "delta": ".\n\n- **H"
+  },
+  {
+   "t": 1440,
+   "delta": "ashed"
+  },
+  {
+   "t": 1470,
+   "delta": " static a"
+  },
+  {
+   "t": 1500,
+   "delta": "ssets** (bu"
+  },
+  {
+   "t": 1530,
+   "delta": "ndled "
+  },
+  {
+   "t": 1560,
+   "delta": "JS, "
+  },
+  {
+   "t": 1590,
+   "delta": "CSS, fonts, "
+  },
+  {
+   "t": 1620,
+   "delta": "images"
+  },
+  {
+   "t": 1650,
+   "delta": "): cache fo"
+  },
+  {
+   "t": 1680,
+   "delta": "r a "
+  },
+  {
+   "t": 1710,
+   "delta": "year an"
+  },
+  {
+   "t": 1740,
+   "delta": "d ma"
+  },
+  {
+   "t": 1770,
+   "delta": "rk them"
+  },
+  {
+   "t": 1800,
+   "delta": " `imm"
+  },
+  {
+   "t": 1830,
+   "delta": "utable` so "
+  },
+  {
+   "t": 1860,
+   "delta": "browser"
+  },
+  {
+   "t": 1890,
+   "delta": "s ski"
+  },
+  {
+   "t": 1920,
+   "delta": "p revalid"
+  },
+  {
+   "t": 1950,
+   "delta": "ation on re"
+  },
+  {
+   "t": 1980,
+   "delta": "load.\n- **HT"
+  },
+  {
+   "t": 2010,
+   "delta": "ML d"
+  },
+  {
+   "t": 2040,
+   "delta": "ocum"
+  },
+  {
+   "t": 2070,
+   "delta": "ents**: use "
+  },
+  {
+   "t": 2100,
+   "delta": "`no-cache`,"
+  },
+  {
+   "t": 2130,
+   "delta": " which m"
+  },
+  {
+   "t": 2160,
+   "delta": "eans \"s"
+  },
+  {
+   "t": 2190,
+   "delta": "tore it, b"
+  },
+  {
+   "t": 2220,
+   "delta": "ut check wit"
+  },
+  {
+   "t": 2250,
+   "delta": "h the serv"
+  },
+  {
+   "t": 2280,
+   "delta": "er first"
+  },
+  {
+   "t": 2310,
+   "delta": ".\" With"
+  },
+  {
+   "t": 2340,
+   "delta": " an `"
+  },
+  {
+   "t": 2370,
+   "delta": "ETag`, that "
+  },
+  {
+   "t": 2400,
+   "delta": "check is a"
+  },
+  {
+   "t": 2430,
+   "delta": " cheap `3"
+  },
+  {
+   "t": 2460,
+   "delta": "04 Not Mo"
+  },
+  {
+   "t": 2490,
+   "delta": "dified`."
+  },
+  {
+   "t": 2520,
+   "delta": "\n- *"
+  },
+  {
+   "t": 2550,
+   "delta": "*Person"
+  },
+  {
+   "t": 2580,
+   "delta": "alized re"
+  },
+  {
+   "t": 2610,
+   "delta": "sponses**: u"
+  },
+  {
+   "t": 2640,
+   "delta": "se `pri"
+  },
+  {
+   "t": 2670,
+   "delta": "vate` so C"
+  },
+  {
+   "t": 2700,
+   "delta": "DNs an"
+  },
+  {
+   "t": 2730,
+   "delta": "d proxies ne"
+  },
+  {
+   "t": 2760,
+   "delta": "ver store th"
+  },
+  {
+   "t": 2790,
+   "delta": "em. Use"
+  },
+  {
+   "t": 2820,
+   "delta": " `no-st"
+  },
+  {
+   "t": 2850,
+   "delta": "ore` if"
+  },
+  {
+   "t": 2880,
+   "delta": " the"
+  },
+  {
+   "t": 2910,
+   "delta": " data sho"
+  },
+  {
+   "t": 2940,
+   "delta": "uldn't be "
+  },
+  {
+   "t": 2970,
+   "delta": "stored "
+  },
+  {
+   "t": 3000,
+   "delta": "anywhere"
+  },
+  {
+   "t": 3030,
+   "delta": ".\n- **Publi"
+  },
+  {
+   "t": 3060,
+   "delta": "c data"
+  },
+  {
+   "t": 3090,
+   "delta": " tha"
+  },
+  {
+   "t": 3120,
+   "delta": "t chang"
+  },
+  {
+   "t": 3150,
+   "delta": "es slowly"
+  },
+  {
+   "t": 3180,
+   "delta": "**: "
+  },
+  {
+   "t": 3210,
+   "delta": "a shor"
+  },
+  {
+   "t": 3240,
+   "delta": "t `ma"
+  },
+  {
+   "t": 3270,
+   "delta": "x-age`"
+  },
+  {
+   "t": 3300,
+   "delta": " plus `sta"
+  },
+  {
+   "t": 3330,
+   "delta": "le-while"
+  },
+  {
+   "t": 3360,
+   "delta": "-revalida"
+  },
+  {
+   "t": 3390,
+   "delta": "te` keeps"
+  },
+  {
+   "t": 3420,
+   "delta": " responses f"
+  },
+  {
+   "t": 3450,
+   "delta": "ast with"
+  },
+  {
+   "t": 3480,
+   "delta": "out se"
+  },
+  {
+   "t": 3510,
+   "delta": "rving very o"
+  },
+  {
+   "t": 3540,
+   "delta": "ld data.\n-"
+  },
+  {
+   "t": 3570,
+   "delta": " **Respon"
+  },
+  {
+   "t": 3600,
+   "delta": "ses behi"
+  },
+  {
+   "t": 3630,
+   "delta": "nd a CDN*"
+  },
+  {
+   "t": 3660,
+   "delta": "*: ad"
+  },
+  {
+   "t": 3690,
+   "delta": "d `s-maxage`"
+  },
+  {
+   "t": 3720,
+   "delta": " to give th"
+  },
+  {
+   "t": 3750,
+   "delta": "e ed"
+  },
+  {
+   "t": 3780,
+   "delta": "ge a "
+  },
+  {
+   "t": 3810,
+   "delta": "different"
+  },
+  {
+   "t": 3840,
+   "delta": " lif"
+  },
+  {
+   "t": 3870,
+   "delta": "etime tha"
+  },
+  {
+   "t": 3900,
+   "delta": "n browse"
+  },
+  {
+   "t": 3930,
+   "delta": "rs, so a"
+  },
+  {
+   "t": 3960,
+   "delta": " purge "
+  },
+  {
+   "t": 3990,
+   "delta": "take"
+  },
+  {
+   "t": 4020,
+   "delta": "s effect w"
+  },
+  {
+   "t": 4050,
+   "delta": "ithout waiti"
+  },
+  {
+   "t": 4080,
+   "delta": "ng on user"
+  },
+  {
+   "t": 4110,
+   "delta": "s' cache"
+  },
+  {
+   "t": 4140,
+   "delta": "s.\n\n## Put "
+  },
+  {
+   "t": 4170,
+   "delta": "it into"
+  },
+  {
+   "t": 4200,
+   "delta": " practice"
+  },
+  {
+   "t": 4230,
+   "delta": "\n\n| Response"
+  },
+  {
+   "t": 4260,
+   "delta": " | Cac"
+  },
+  {
+   "t": 4290,
+   "delta": "he-Control "
+  },
+  {
+   "t": 4320,
+   "delta": "| Validat"
+  },
+  {
+   "t": 4350,
+   "delta": "or |\n|---"
+  },
+  {
+   "t": 4380,
+   "delta": "|---|"
+  },
+  {
+   "t": 4410,
+   "delta": "---|"
+  },
+  {
+   "t": 4440,
+   "delta": "\n| `/asse"
+  },
+  {
+   "t": 4470,
+   "delta": "ts/*.[hash]"
+  },
+  {
+   "t": 4500,
+   "delta": ".js`"
+  },
+  {
+   "t": 4530,
+   "delta": " | `"
+  },
+  {
+   "t": 4560,
+   "delta": "public, max-"
+  },
+  {
+   "t": 4590,
+   "delta": "age=31"
+  },
+  {
+   "t": 4620,
+   "delta": "536000"
+  },
+  {
+   "t": 4650,
+   "delta": ", immu"
+  },
+  {
+   "t": 4680,
+   "delta": "table` "
+  },
+  {
+   "t": 4710,
+   "delta": "| not need"
+  },
+  {
+   "t": 4740,
+   "delta": "ed |\n|"
+  },
+  {
+   "t": 4770,
+   "delta": " `inde"
+  },
+  {
+   "t": 4800,
+   "delta": "x.ht"
+  },
+  {
+   "t": 4830,
+   "delta": "ml` | `no-"
+  },
+  {
+   "t": 4860,
+   "delta": "cache` | `"
+  },
+  {
+   "t": 4890,
+   "delta": "ETag` |\n"
+  },
+  {
+   "t": 4920,
+   "delta": "| `/api/"
+  },
+  {
+   "t": 4950,
+   "delta": "me` | `"
+  },
+  {
+   "t": 4980,
+   "delta": "priv"
+  },
+  {
+   "t": 5010,
+   "delta": "ate, no-ca"
+  },
+  {
+   "t": 5040,
+   "delta": "che`"
+  },
+  {
+   "t": 5070,
+   "delta": " | `ETag` |"
+  },
+  {
+   "t": 5100,
+   "delta": "\n| `/api/"
+  },
+  {
+   "t": 5130,
+   "delta": "products`"
+  },
+  {
+   "t": 5160,
+   "delta": " | `publ"
+  },
+  {
+   "t": 5190,
+   "delta": "ic, max-ag"
+  },
+  {
+   "t": 5220,
+   "delta": "e=60, "
+  },
+  {
+   "t": 5250,
+   "delta": "stale-whil"
+  },
+  {
+   "t": 5280,
+   "delta": "e-reval"
+  },
+  {
+   "t": 5310,
+   "delta": "idate=3"
+  },
+  {
+   "t": 5340,
+   "delta": "00` | `ET"
+  },
+  {
+   "t": 5370,
+   "delta": "ag` |\n| `/"
+  },
+  {
+   "t": 5400,
+   "delta": "account/exp"
+  },
+  {
+   "t": 5430,
+   "delta": "ort` | `no-s"
+  },
+  {
+   "t": 5460,
+   "delta": "tore` | non"
+  },
+  {
+   "t": 5490,
+   "delta": "e |\n\nI"
+  },
+  {
+   "t": 5520,
+   "delta": "n an Expres"
+  },
+  {
+   "t": 5550,
+   "delta": "s ap"
+  },
+  {
+   "t": 5580,
+   "delta": "p:\n\n```js"
+  },
+  {
+   "t": 5610,
+   "delta": "\napp"
+  },
+  {
+   "t": 5640,
+   "delta": ".use"
+  },
+  {
+   "t": 5670,
+   "delta": "('/as"
+  },
+  {
+   "t": 5700,
+   "delta": "sets', exp"
+  },
+  {
+   "t": 5730,
+   "delta": "ress.s"
+  },
+  {
+   "t": 5760,
+   "delta": "tatic('di"
+  },
+  {
+   "t": 5790,
+   "delta": "st/assets',"
+  },
+  {
+   "t": 5820,
+   "delta": " {\n  im"
+  },
+  {
+   "t": 5850,
+   "delta": "mutable: tr"
+  },
+  {
+   "t": 5880,
+   "delta": "ue,\n  m"
+  },
+  {
+   "t": 5910,
+   "delta": "axAge: '1"
+  },
+  {
+   "t": 5940,
+   "delta": "y',\n"
+  },
+  {
+   "t": 5970,
+   "delta": "}));\n\napp"
+  },
+  {
+   "t": 6000,
+   "delta": ".get('"
+  },
+  {
+   "t": 6030,
+   "delta": "/api/pro"
+  },
+  {
+   "t": 6060,
+   "delta": "ducts"
+  },
+  {
+   "t": 6090,
+   "delta": "', ("
+  },
+  {
+   "t": 6120,
+   "delta": "req, "
+  },
+  {
+   "t": 6150,
+   "delta": "res) => {\n  "
+  },
+  {
+   "t": 6180,
+   "delta": "res.set"
+  },
+  {
+   "t": 6210,
+   "delta": "('Cache-C"
+  },
+  {
+   "t": 6240,
+   "delta": "ontrol',"
+  },
+  {
+   "t": 6270,
+   "delta": " 'publ"
+  },
+  {
+   "t": 6300,
+   "delta": "ic, max-"
+  },
+  {
+   "t": 6330,
+   "delta": "age=60, stal"
+  },
+  {
+   "t": 6360,
+   "delta": "e-wh"
+  },
+  {
+   "t": 6390,
+   "delta": "ile-re"
+  },
+  {
+   "t": 6420,
+   "delta": "validate=30"
+  },
+  {
+   "t": 6450,
+   "delta": "0');\n  r"
+  },
+  {
+   "t": 6480,
+   "delta": "es.json("
+  },
+  {
+   "t": 6510,
+   "delta": "products);"
+  },
+  {
+   "t": 6540,
+   "delta": "\n});\n\n// SP"
+  },
+  {
+   "t": 6570,
+   "delta": "A fallba"
+  },
+  {
+   "t": 6600,
+   "delta": "ck: always"
+  },
+  {
+   "t": 6630,
+   "delta": " reva"
+  },
+  {
+   "t": 6660,
+   "delta": "lidate th"
+  },
+  {
+   "t": 6690,
+   "delta": "e HTM"
+  },
+  {
+   "t": 6720,
+   "delta": "L shell\napp."
+  },
+  {
+   "t": 6750,
+   "delta": "use((re"
+  },
+  {
+   "t": 6780,
+   "delta": "q, res"
+  },
+  {
+   "t": 6810,
+   "delta": ") => {"
+  },
+  {
+   "t": 6840,
+   "delta": "\n  r"
+  },
+  {
+   "t": 6870,
+   "delta": "es.set"
+  },
+  {
+   "t": 6900,
+   "delta": "('Cache"
+  },
+  {
+   "t": 6930,
+   "delta": "-Control', '"
+  },
+  {
+   "t": 6960,
+   "delta": "no-cache')"
+  },
+  {
+   "t": 6990,
+   "delta": ";\n  r"
+  },
+  {
+   "t": 7020,
+   "delta": "es.sendFil"
+  },
+  {
+   "t": 7050,
+   "delta": "e('index."
+  },
+  {
+   "t": 7080,
+   "delta": "html', {"
+  },
+  {
+   "t": 7110,
+   "delta": " root: "
+  },
+  {
+   "t": 7140,
+   "delta": "'dist' });\n"
+  },
+  {
+   "t": 7170,
+   "delta": "});\n```"
+  },
+  {
+   "t": 7200,
+   "delta": "\n\nCommon"
+  },
+  {
+   "t": 7230,
+   "delta": " traps"
+  },
+  {
+   "t": 7260,
+   "delta": ":\n\n- **"
+  },
+  {
+   "t": 7290,
+   "delta": "Long-cach"
+  },
+  {
+   "t": 7320,
+   "delta": "ed HTML.**"
+  },
+  {
+   "t": 7350,
+   "delta": " Never "
+  },
+  {
+   "t": 7380,
+   "delta": "give HTML "
+  },
+  {
+   "t": 7410,
+   "delta": "a long `m"
+  },
+  {
+   "t": 7440,
+   "delta": "ax-age`. "
+  },
+  {
+   "t": 7470,
+   "delta": "Users get "
+  },
+  {
+   "t": 7500,
+   "delta": "stuck on an"
+  },
+  {
+   "t": 7530,
+   "delta": " old page th"
+  },
+  {
+   "t": 7560,
+   "delta": "at referenc"
+  },
+  {
+   "t": 7590,
+   "delta": "es asset has"
+  },
+  {
+   "t": 7620,
+   "delta": "hes you"
+  },
+  {
+   "t": 7650,
+   "delta": "'ve alre"
+  },
+  {
+   "t": 7680,
+   "delta": "ady de"
+  },
+  {
+   "t": 7710,
+   "delta": "leted"
+  },
+  {
+   "t": 7740,
+   "delta": ".\n- **C"
+  },
+  {
+   "t": 7770,
+   "delta": "onfusin"
+  },
+  {
+   "t": 7800,
+   "delta": "g `no-cac"
+  },
+  {
+   "t": 7830,
+   "delta": "he` and `"
+  },
+  {
+   "t": 7860,
+   "delta": "no-sto"
+  },
+  {
+   "t": 7890,
+   "delta": "re`.** `no-c"
+  },
+  {
+   "t": 7920,
+   "delta": "ache`"
+  },
+  {
+   "t": 7950,
+   "delta": " doesn't me"
+  },
+  {
+   "t": 7980,
+   "delta": "an \"d"
+  },
+  {
+   "t": 8010,
+   "delta": "on't cache."
+  },
+  {
+   "t": 8040,
+   "delta": "\" `no-s"
+  },
+  {
+   "t": 8070,
+   "delta": "tore`"
+  },
+  {
+   "t": 8100,
+   "delta": " does.\n- *"
+  },
+  {
+   "t": 8130,
+   "delta": "*Missin"
+  },
+  {
+   "t": 8160,
+   "delta": "g `Vary`.*"
+  },
+  {
+   "t": 8190,
+   "delta": "* If a res"
+  },
+  {
+   "t": 8220,
+   "delta": "ponse d"
+  },
+  {
+   "t": 8250,
+   "delta": "epends "
+  },
+  {
+   "t": 8280,
+   "delta": "on a request"
+  },
+  {
+   "t": 8310,
+   "delta": " header lik"
+  },
+  {
+   "t": 8340,
+   "delta": "e `A"
+  },
+  {
+   "t": 8370,
+   "delta": "ccept-Lang"
+  },
+  {
+   "t": 8400,
+   "delta": "uage`, "
+  },
+  {
+   "t": 8430,
+   "delta": "send a matc"
+  },
+  {
+   "t": 8460,
+   "delta": "hing "
+  },
+  {
+   "t": 8490,
+   "delta": "`Vary`"
+  },
+  {
+   "t": 8520,
+   "delta": ". Otherwis"
+  },
+  {
+   "t": 8550,
+   "delta": "e a cache ca"
+  },
+  {
+   "t": 8580,
+   "delta": "n serve o"
+  },
+  {
+   "t": 8610,
+   "delta": "ne user's v"
+  },
+  {
+   "t": 8640,
+   "delta": "ariant t"
+  },
+  {
+   "t": 8670,
+   "delta": "o another.\n"
+  },
+  {
+   "t": 8700,
+   "delta": "- **Unv"
+  },
+  {
+   "t": 8730,
+   "delta": "erified "
+  },
+  {
+   "t": 8760,
+   "delta": "heade"
+  },
+  {
+   "t": 8790,
+   "delta": "rs.** Fram"
+  },
+  {
+   "t": 8820,
+   "delta": "eworks and "
+  },
+  {
+   "t": 8850,
+   "delta": "CDNs often "
+  },
+  {
+   "t": 8880,
+   "delta": "override"
+  },
+  {
+   "t": 8910,
+   "delta": " what y"
+  },
+  {
+   "t": 8940,
+   "delta": "ou set, so"
+  },
+  {
+   "t": 8970,
+   "delta": " chec"
+  },
+  {
+   "t": 9000,
+   "delta": "k th"
+  },
+  {
+   "t": 9030,
+   "delta": "e actual h"
+  },
+  {
+   "t": 9060,
+   "delta": "eaders with"
+  },
+  {
+   "t": 9090,
+   "delta": " `curl"
+  },
+  {
+   "t": 9120,
+   "delta": " -I` or "
+  },
+  {
+   "t": 9150,
+   "delta": "the DevTo"
+  },
+  {
+   "t": 9180,
+   "delta": "ols N"
+  },
+  {
+   "t": 9210,
+   "delta": "etwork pan"
+  },
+  {
+   "t": 9240,
+   "delta": "el.\n\nF"
+  },
+  {
+   "t": 9270,
+   "delta": "or the full"
+  },
+  {
+   "t": 9300,
+   "delta": " list of dir"
+  },
+  {
+   "t": 9330,
+   "delta": "ectives, "
+  },
+  {
+   "t": 9360,
+   "delta": "see [MDN"
+  },
+  {
+   "t": 9390,
+   "delta": "'s Cache-C"
+  },
+  {
+   "t": 9420,
+   "delta": "ontrol refer"
+  },
+  {
+   "t": 9450,
+   "delta": "ence](h"
+  },
+  {
+   "t": 9480,
+   "delta": "ttps:"
+  },
+  {
+   "t": 9510,
+   "delta": "//dev"
+  },
+  {
+   "t": 9540,
+   "delta": "eloper.m"
+  },
+  {
+   "t": 9570,
+   "delta": "ozilla.org"
+  },
+  {
+   "t": 9600,
+   "delta": "/en-US/doc"
+  },
+  {
+   "t": 9630,
+   "delta": "s/Web/H"
+  },
+  {
+   "t": 9660,
+   "delta": "TTP/Head"
+  },
+  {
+   "t": 9690,
+   "delta": "ers/Cache"
+  },
+  {
+   "t": 9720,
+   "delta": "-Con"
+  },
+  {
+   "t": 9750,
+   "delta": "trol)."
+  }
+ ],
+ "source": "synthetic, scripts/make-traces.mjs",
+ "synthetic": true
+}

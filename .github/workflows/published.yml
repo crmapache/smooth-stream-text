@@ -1,0 +1,66 @@
+name: Published release
+
+# The examples exactly as a developer would install them: the version on npm, with
+# each example's own lockfile. CI tests the next tarball; this tests what is out there,
+# so a broken release or a framework update that breaks a recipe shows up on its own.
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  examples:
+    name: Example ${{ matrix.example }} with the npm release
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [react-markdown, next-ai-sdk, react-streamdown, nuxt, sveltekit, vanilla]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            examples/${{ matrix.example }}/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install, typecheck and build
+        working-directory: examples/${{ matrix.example }}
+        run: |
+          npm ci
+          if node -p "require('./package.json').scripts.typecheck ?? ''" | grep -q .; then npm run typecheck; fi
+          npm run build
+      - name: End-to-end tests
+        run: npx playwright test
+        env:
+          EXAMPLE: ${{ matrix.example }}
+
+  latest-frameworks:
+    name: Example ${{ matrix.example }} with the newest dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        example: [react-markdown, next-ai-sdk, react-streamdown, nuxt, sveltekit, vanilla]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install the newest versions the ranges allow, then build
+        working-directory: examples/${{ matrix.example }}
+        run: |
+          rm package-lock.json
+          npm install
+          if node -p "require('./package.json').scripts.typecheck ?? ''" | grep -q .; then npm run typecheck; fi
+          npm run build
+      - name: End-to-end tests
+        run: npx playwright test
+        env:
+          EXAMPLE: ${{ matrix.example }}

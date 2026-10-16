@@ -5,10 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#020504" />
-    <title>smooth-stream-text - even out an LLM text stream</title>
+    <title>smooth-stream-text - adaptive pacing for streamed LLM text</title>
     <meta
       name="description"
-      content="Buffer bursty LLM output and release it at a visually even rate, then reveal it as a left-to-right wave. Zero dependencies, headless first." />
+      content="Adaptive text-stream smoothing for AI chat interfaces. Keep your Markdown renderer and pace incoming text with a zero-dependency headless core for React, Vue, Svelte and Web Components." />
+    <link rel="canonical" href="https://smooth-stream-text.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="smooth-stream-text" />
+    <meta property="og:url" content="https://smooth-stream-text.vercel.app/" />
+    <meta property="og:title" content="smooth-stream-text - adaptive pacing for streamed LLM text" />
+    <meta
+      property="og:description"
+      content="The same answer streamed twice through the same renderer: once as it arrives, once paced. Try the settings live." />
+    <meta property="og:image" content="https://smooth-stream-text.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Two panes of the same streamed answer: jumpy on the left, even on the right." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Documentation index for language models" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "smooth-stream-text",
+        "description": "Adaptive text-stream smoothing for AI chat interfaces. Keep your Markdown renderer and pace incoming text with a zero-dependency headless core.",
+        "url": "https://smooth-stream-text.vercel.app/",
+        "codeRepository": "https://github.com/crmapache/smooth-stream-text",
+        "programmingLanguage": "TypeScript",
+        "runtimePlatform": ["Browser", "Node.js"],
+        "license": "https://opensource.org/licenses/MIT",
+        "author": { "@type": "Person", "name": "Maksim Zolotoi" }
+      }
+    </script>
+    <!-- Privacy-friendly page counts (self-hosted Umami, no cookies), production domain only. -->
+    <script
+      defer
+      src="https://analytics.mzpizote.com/script.js"
+      data-website-id="1ca1a0aa-b24c-4d45-8c2d-656c1453e435"
+      data-domains="smooth-stream-text.vercel.app"
+      data-do-not-track="true"></script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -61,6 +98,8 @@
         <a
           class="icon-btn"
           href="https://github.com/crmapache/smooth-stream-text"
+          data-umami-event="outbound"
+          data-umami-event-target="github"
           title="Source on GitHub"
           aria-label="Source on GitHub"
           rel="noreferrer">
@@ -72,6 +111,8 @@
         <a
           class="icon-btn"
           href="https://www.npmjs.com/package/smooth-stream-text"
+          data-umami-event="outbound"
+          data-umami-event-target="npm"
           title="Package on npm"
           aria-label="Package on npm"
           rel="noreferrer">
@@ -106,12 +147,18 @@
             twice: once as it arrives, once smoothed.
           </p>
           <div class="hero-actions">
-            <button id="install" type="button" class="btn btn-glass install" aria-label="Copy the install command">
+            <button
+              id="install"
+              type="button"
+              class="btn btn-glass install"
+              aria-label="Copy the install command"
+              data-umami-event="copy-install"
+              data-umami-event-page="playground">
               <code>npm i smooth-stream-text</code>
               <svg class="i i-sm install-copy" aria-hidden="true"><use href="#i-copy" /></svg>
               <svg class="i i-sm install-done" aria-hidden="true"><use href="#i-check" /></svg>
             </button>
-            <a class="btn-text" href="https://github.com/crmapache/smooth-stream-text#readme" rel="noreferrer">
+            <a class="btn-text" href="/docs/" data-umami-event="open-docs">
               Read the docs
               <svg class="i" aria-hidden="true"><use href="#i-arrow" /></svg>
             </a>
@@ -183,6 +230,47 @@
         </div>
       </section>
     </main>
+
+    <section class="about wrap" aria-labelledby="about-title">
+      <h2 id="about-title" class="about-title">What it is</h2>
+      <div class="about-grid">
+        <div>
+          <p>
+            <strong>smooth-stream-text</strong> paces streamed text on the client. You hand it the answer received so
+            far and whether it is finished; it returns a prefix that grows at an even, adaptive rate, which you render
+            with the Markdown renderer you already use. The rate follows the backlog, so there is no speed to tune per
+            model.
+          </p>
+          <p>
+            The core has no dependencies and runs without a DOM. React, Vue and Svelte bindings and a
+            <code>&lt;smooth-stream-text&gt;</code> Web Component are included. A fade-in reveal is optional.
+          </p>
+        </div>
+        <div>
+          <p>
+            <strong>It fits</strong> when text arrives in bursts, you want to keep your renderer, and history must
+            appear at once while only new answers are paced. Cuts never split an emoji or leave a half-written link or
+            <code>**</code> on screen.
+          </p>
+          <p>
+            <strong>It does not fit</strong> for static Markdown, network retries, or a CSS typing effect, and you do
+            not need it if one layer already paces your text well.
+          </p>
+        </div>
+        <nav aria-label="Documentation">
+          <ul class="about-links">
+            <li><a href="/docs/getting-started">Getting started</a></li>
+            <li><a href="/docs/react">React</a></li>
+            <li><a href="/docs/integrations/ai-sdk">AI SDK</a></li>
+            <li><a href="/docs/vue">Vue and Nuxt</a></li>
+            <li><a href="/docs/svelte">Svelte and SvelteKit</a></li>
+            <li><a href="/docs/dom">Plain JavaScript and Web Component</a></li>
+            <li><a href="/docs/api">API reference</a></li>
+            <li><a href="/docs/benchmarks">Benchmarks</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
 
     <footer class="foot wrap">
       <span class="mark sm"

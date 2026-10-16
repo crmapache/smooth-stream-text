@@ -1,0 +1,48 @@
+name: Release
+
+# Publishes to npm when a version tag is pushed, and only then: pushing docs or code
+# to main never publishes anything. npm trusted publishing (OIDC) authenticates the
+# workflow, so no npm token is stored, and the package gets a provenance statement
+# that links it to this repository, this workflow and the tagged commit.
+#
+# To release: update CHANGELOG.md and the version in package.json, commit, then
+#   git tag v1.2.3 && git push origin v1.2.3
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
+      - name: The tag matches package.json
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - name: The changelog has an entry for this version
+        run: node scripts/release-notes.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/notes.md"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:package
+      - run: npm run check:docs
+      - run: node scripts/build-skill.mjs --check
+      - name: Publish with provenance
+        run: npm publish --provenance --access public
+      - name: GitHub release from the changelog entry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/notes.md" --verify-tag

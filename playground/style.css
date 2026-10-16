@@ -1293,6 +1293,91 @@ input[type='range']:focus-visible::-moz-range-thumb {
 }
 
 /* ============================================================
+   About: what the package is, readable without running the demo
+   ============================================================ */
+
+.about {
+  margin-top: 72px;
+}
+
+.about-title {
+  margin: 0 0 22px;
+  font-family: var(--cond);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 32px 48px;
+}
+
+.about p {
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.about strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.about code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--gold-hi);
+}
+
+.about-links {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-links a {
+  display: block;
+  padding: 6px 10px;
+  margin: 0 -10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mint);
+  transition:
+    color 0.25s,
+    background-color 0.25s;
+}
+
+.about-links a:hover {
+  color: var(--mint-hi);
+  background: var(--lit-fill);
+}
+
+.about-links a:active {
+  color: color-mix(in srgb, var(--mint) 65%, var(--bg));
+  background: var(--tile);
+  transition-duration: 0.05s;
+}
+
+.about-links a:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ============================================================
    Footer
    ============================================================ */
 

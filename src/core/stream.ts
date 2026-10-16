@@ -106,6 +106,11 @@ export function createSmoothStream(options?: PacingOptions): SmoothStream {
       },
       opts,
     )
+    // Under a hold at the live edge the rate stays up, because the held text still
+    // counts as pending. Progress past the end of what has arrived is no position
+    // a hold could be waiting for; kept, it would surface as the next chunk
+    // appearing all at once after a pause.
+    if (pacer.exact > source.length) pacer = { rate: pacer.rate, exact: source.length }
 
     // When whole words are the unit, the last word of a live stream may still be
     // growing, so it is held like any other unfinished construct until the

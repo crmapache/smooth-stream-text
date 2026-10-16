@@ -1,0 +1,21 @@
+{
+  "name": "smooth-stream-text-benchmarks",
+  "private": true,
+  "type": "module",
+  "description": "Reproducible comparison of client-side pacing, fixed-rate typing and server-side smoothing on recorded and synthetic LLM streams.",
+  "scripts": {
+    "traces": "node scripts/make-traces.mjs",
+    "bench:core": "node scripts/bench-core.mjs",
+    "bench:browser": "node scripts/bench-browser.mjs",
+    "bench:size": "node scripts/bench-size.mjs",
+    "report": "node scripts/report.mjs",
+    "bench": "npm run bench:core && npm run bench:browser && npm run bench:size && npm run report"
+  },
+  "dependencies": {
+    "ai": "^7.0.142",
+    "esbuild": "^0.28.2",
+    "marked": "^18.1.1",
+    "playwright": "^1.64.1",
+    "smooth-stream-text": "file:.."
+  }
+}

@@ -1,0 +1,130 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  line-height: 1.6;
+  --border: color-mix(in srgb, currentColor 18%, transparent);
+  --muted: color-mix(in srgb, currentColor 6%, transparent);
+  --accent: #3b5bdb;
+}
+
+html {
+  /* Keeps anything scrolled into view clear of the fixed composer. */
+  scroll-padding-bottom: 96px;
+}
+
+body {
+  margin: 0;
+}
+
+.chat {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 120px;
+}
+
+h1 {
+  font-size: 18px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.user p {
+  margin: 0 0 0 auto;
+  width: fit-content;
+  max-width: 80%;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: var(--muted);
+}
+
+.answer {
+  overflow-wrap: anywhere;
+}
+
+.answer pre {
+  overflow-x: auto;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--muted);
+}
+
+.answer table {
+  border-collapse: collapse;
+}
+
+.answer th,
+.answer td {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+}
+
+.composer {
+  position: fixed;
+  inset: auto 0 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  background: Canvas;
+}
+
+.composer label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.composer input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+}
+
+button {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: Canvas;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--muted);
+}
+
+button:active:not(:disabled) {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.show-all {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

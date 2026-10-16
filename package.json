@@ -1,7 +1,7 @@
 {
   "name": "smooth-stream-text",
-  "version": "0.2.0",
-  "description": "Smooth out bursty LLM text streams and reveal them as a left-to-right wave. Headless core with zero dependencies, plus React, Vue, Svelte and Web Component wrappers.",
+  "version": "0.2.1",
+  "description": "Adaptive client-side pacing for streamed LLM text. Keep your Markdown renderer; the answer appears at an even rate. Zero-dependency headless core with React, Vue, Svelte and Web Component bindings and an optional fade-in reveal.",
   "author": "Maksim Zolotoi",
   "license": "MIT",
   "type": "module",
@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/crmapache/smooth-stream-text/issues"
   },
-  "homepage": "https://smooth-stream-text.vercel.app",
+  "homepage": "https://smooth-stream-text.vercel.app/docs/",
   "keywords": [
     "streaming-text",
     "smooth-streaming",
@@ -30,7 +30,18 @@
     "vue",
     "svelte",
     "web-component",
-    "animation"
+    "animation",
+    "ai-sdk",
+    "vercel-ai-sdk",
+    "react-hooks",
+    "nextjs",
+    "nuxt",
+    "sveltekit",
+    "streamdown",
+    "react-markdown",
+    "chat-ui",
+    "streaming",
+    "sse"
   ],
   "sideEffects": [
     "**/web-component/**",
@@ -125,6 +136,7 @@
   "files": [
     "dist",
     "README.md",
+    "INTEGRATION.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
@@ -133,13 +145,17 @@
     "dev": "vite",
     "build:playground": "vite build",
     "preview": "vite preview",
+    "dev:docs": "vitepress dev website --port 5194 --strictPort",
+    "preview:docs": "vitepress preview website --port 5195",
+    "build:site": "node scripts/build-site.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build && npm test && npm run check:package",
-    "check:package": "publint && attw --pack . --exclude-entrypoints styles.css"
+    "prepublishOnly": "npm run build && npm test && npm run check:package && npm run check:docs",
+    "check:package": "publint && attw --pack . --exclude-entrypoints styles.css",
+    "check:docs": "node scripts/check-docs.mjs"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -156,6 +172,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.1",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^20.11.0",
     "@types/react": "^19.0.0",
@@ -172,6 +189,7 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "vite": "^8.2.0",
+    "vitepress": "^1.6.4",
     "vitest": "^4.1.10",
     "vue": "^3.5.0"
   },

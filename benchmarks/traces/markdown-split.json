@@ -1,0 +1,1328 @@
+{
+ "name": "markdown-split",
+ "description": "Markdown with links, bold, inline code and a table, cut at random offsets, with a 400 ms pause after one chunk in eight.",
+ "chunks": [
+  {
+   "t": 400,
+   "delta": "## St"
+  },
+  {
+   "t": 425,
+   "delta": "art f"
+  },
+  {
+   "t": 450,
+   "delta": "rom what th"
+  },
+  {
+   "t": 475,
+   "delta": "e URL promis"
+  },
+  {
+   "t": 875,
+   "delta": "es\n\nChoos"
+  },
+  {
+   "t": 900,
+   "delta": "e heade"
+  },
+  {
+   "t": 925,
+   "delta": "rs per "
+  },
+  {
+   "t": 950,
+   "delta": "class of res"
+  },
+  {
+   "t": 975,
+   "delta": "ponse, not per"
+  },
+  {
+   "t": 1000,
+   "delta": " file. The d"
+  },
+  {
+   "t": 1400,
+   "delta": "ec"
+  },
+  {
+   "t": 1425,
+   "delta": "iding quest"
+  },
+  {
+   "t": 1450,
+   "delta": "ion is whether"
+  },
+  {
+   "t": 1475,
+   "delta": " a URL's con"
+  },
+  {
+   "t": 1875,
+   "delta": "tent can ever "
+  },
+  {
+   "t": 1900,
+   "delta": "ch"
+  },
+  {
+   "t": 1925,
+   "delta": "ang"
+  },
+  {
+   "t": 2325,
+   "delta": "e. A"
+  },
+  {
+   "t": 2350,
+   "delta": " filenam"
+  },
+  {
+   "t": 2375,
+   "delta": "e wi"
+  },
+  {
+   "t": 2400,
+   "delta": "th "
+  },
+  {
+   "t": 2425,
+   "delta": "a "
+  },
+  {
+   "t": 2450,
+   "delta": "content hash "
+  },
+  {
+   "t": 2475,
+   "delta": "(`app"
+  },
+  {
+   "t": 2500,
+   "delta": ".3f9a1c.js"
+  },
+  {
+   "t": 2900,
+   "delta": "`) is immu"
+  },
+  {
+   "t": 2925,
+   "delta": "table"
+  },
+  {
+   "t": 2950,
+   "delta": ": a ne"
+  },
+  {
+   "t": 2975,
+   "delta": "w b"
+  },
+  {
+   "t": 3000,
+   "delta": "uild pro"
+  },
+  {
+   "t": 3025,
+   "delta": "duces "
+  },
+  {
+   "t": 3050,
+   "delta": "a n"
+  },
+  {
+   "t": 3075,
+   "delta": "ew"
+  },
+  {
+   "t": 3100,
+   "delta": " UR"
+  },
+  {
+   "t": 3125,
+   "delta": "L, so c"
+  },
+  {
+   "t": 3150,
+   "delta": "ache"
+  },
+  {
+   "t": 3175,
+   "delta": "s c"
+  },
+  {
+   "t": 3200,
+   "delta": "an keep t"
+  },
+  {
+   "t": 3225,
+   "delta": "he old one"
+  },
+  {
+   "t": 3250,
+   "delta": " forever. A st"
+  },
+  {
+   "t": 3275,
+   "delta": "able URL (`/`,"
+  },
+  {
+   "t": 3300,
+   "delta": " `/api/"
+  },
+  {
+   "t": 3325,
+   "delta": "me`"
+  },
+  {
+   "t": 3350,
+   "delta": ") mus"
+  },
+  {
+   "t": 3750,
+   "delta": "t "
+  },
+  {
+   "t": 3775,
+   "delta": "either be reva"
+  },
+  {
+   "t": 3800,
+   "delta": "lidated or cac"
+  },
+  {
+   "t": 3825,
+   "delta": "hed o"
+  },
+  {
+   "t": 3850,
+   "delta": "nly brief"
+  },
+  {
+   "t": 3875,
+   "delta": "ly.\n\n-"
+  },
+  {
+   "t": 3900,
+   "delta": " **Hashe"
+  },
+  {
+   "t": 3925,
+   "delta": "d static asse"
+  },
+  {
+   "t": 3950,
+   "delta": "ts** (bundl"
+  },
+  {
+   "t": 3975,
+   "delta": "ed JS, CS"
+  },
+  {
+   "t": 4000,
+   "delta": "S, fonts, im"
+  },
+  {
+   "t": 4025,
+   "delta": "ages)"
+  },
+  {
+   "t": 4050,
+   "delta": ": cache f"
+  },
+  {
+   "t": 4075,
+   "delta": "or a year and "
+  },
+  {
+   "t": 4475,
+   "delta": "ma"
+  },
+  {
+   "t": 4500,
+   "delta": "rk th"
+  },
+  {
+   "t": 4525,
+   "delta": "em `"
+  },
+  {
+   "t": 4925,
+   "delta": "immutable`"
+  },
+  {
+   "t": 4950,
+   "delta": " so brows"
+  },
+  {
+   "t": 4975,
+   "delta": "ers skip rev"
+  },
+  {
+   "t": 5000,
+   "delta": "alid"
+  },
+  {
+   "t": 5400,
+   "delta": "atio"
+  },
+  {
+   "t": 5425,
+   "delta": "n o"
+  },
+  {
+   "t": 5450,
+   "delta": "n reloa"
+  },
+  {
+   "t": 5475,
+   "delta": "d.\n- **HT"
+  },
+  {
+   "t": 5500,
+   "delta": "ML documents**"
+  },
+  {
+   "t": 5525,
+   "delta": ": use `"
+  },
+  {
+   "t": 5550,
+   "delta": "no-ca"
+  },
+  {
+   "t": 5575,
+   "delta": "che`, w"
+  },
+  {
+   "t": 5600,
+   "delta": "hich "
+  },
+  {
+   "t": 5625,
+   "delta": "means \"store"
+  },
+  {
+   "t": 5650,
+   "delta": " it, bu"
+  },
+  {
+   "t": 5675,
+   "delta": "t c"
+  },
+  {
+   "t": 5700,
+   "delta": "heck wit"
+  },
+  {
+   "t": 5725,
+   "delta": "h th"
+  },
+  {
+   "t": 6125,
+   "delta": "e server firs"
+  },
+  {
+   "t": 6150,
+   "delta": "t.\" With an `"
+  },
+  {
+   "t": 6175,
+   "delta": "ETag`, th"
+  },
+  {
+   "t": 6200,
+   "delta": "at c"
+  },
+  {
+   "t": 6225,
+   "delta": "heck"
+  },
+  {
+   "t": 6625,
+   "delta": " is a "
+  },
+  {
+   "t": 6650,
+   "delta": "che"
+  },
+  {
+   "t": 6675,
+   "delta": "ap `304 Not"
+  },
+  {
+   "t": 6700,
+   "delta": " Modified"
+  },
+  {
+   "t": 6725,
+   "delta": "`.\n- **Persona"
+  },
+  {
+   "t": 6750,
+   "delta": "lized response"
+  },
+  {
+   "t": 6775,
+   "delta": "s*"
+  },
+  {
+   "t": 6800,
+   "delta": "*: use `priva"
+  },
+  {
+   "t": 6825,
+   "delta": "te` so CDNs an"
+  },
+  {
+   "t": 6850,
+   "delta": "d proxies ne"
+  },
+  {
+   "t": 6875,
+   "delta": "ver store "
+  },
+  {
+   "t": 6900,
+   "delta": "them."
+  },
+  {
+   "t": 6925,
+   "delta": " Use `no-sto"
+  },
+  {
+   "t": 6950,
+   "delta": "re` if t"
+  },
+  {
+   "t": 7350,
+   "delta": "he d"
+  },
+  {
+   "t": 7750,
+   "delta": "ata shoul"
+  },
+  {
+   "t": 7775,
+   "delta": "dn'"
+  },
+  {
+   "t": 7800,
+   "delta": "t be stored"
+  },
+  {
+   "t": 7825,
+   "delta": " anywhere.\n"
+  },
+  {
+   "t": 7850,
+   "delta": "- **Publi"
+  },
+  {
+   "t": 7875,
+   "delta": "c data th"
+  },
+  {
+   "t": 7900,
+   "delta": "at changes s"
+  },
+  {
+   "t": 7925,
+   "delta": "lowly**: a"
+  },
+  {
+   "t": 7950,
+   "delta": " short `max-a"
+  },
+  {
+   "t": 7975,
+   "delta": "ge` plus"
+  },
+  {
+   "t": 8000,
+   "delta": " `stal"
+  },
+  {
+   "t": 8025,
+   "delta": "e-while-reva"
+  },
+  {
+   "t": 8050,
+   "delta": "lidat"
+  },
+  {
+   "t": 8075,
+   "delta": "e` ke"
+  },
+  {
+   "t": 8100,
+   "delta": "eps responses"
+  },
+  {
+   "t": 8125,
+   "delta": " fas"
+  },
+  {
+   "t": 8150,
+   "delta": "t wit"
+  },
+  {
+   "t": 8550,
+   "delta": "hou"
+  },
+  {
+   "t": 8575,
+   "delta": "t "
+  },
+  {
+   "t": 8600,
+   "delta": "serving ver"
+  },
+  {
+   "t": 9000,
+   "delta": "y ol"
+  },
+  {
+   "t": 9025,
+   "delta": "d d"
+  },
+  {
+   "t": 9050,
+   "delta": "ata.\n-"
+  },
+  {
+   "t": 9075,
+   "delta": " *"
+  },
+  {
+   "t": 9100,
+   "delta": "*Responses be"
+  },
+  {
+   "t": 9125,
+   "delta": "hind a CD"
+  },
+  {
+   "t": 9150,
+   "delta": "N*"
+  },
+  {
+   "t": 9175,
+   "delta": "*: add `s-"
+  },
+  {
+   "t": 9200,
+   "delta": "ma"
+  },
+  {
+   "t": 9600,
+   "delta": "xag"
+  },
+  {
+   "t": 9625,
+   "delta": "e` to g"
+  },
+  {
+   "t": 9650,
+   "delta": "ive the e"
+  },
+  {
+   "t": 10050,
+   "delta": "dge a differen"
+  },
+  {
+   "t": 10075,
+   "delta": "t "
+  },
+  {
+   "t": 10475,
+   "delta": "lifetime "
+  },
+  {
+   "t": 10500,
+   "delta": "than browsers"
+  },
+  {
+   "t": 10525,
+   "delta": ", so a purge t"
+  },
+  {
+   "t": 10550,
+   "delta": "akes effec"
+  },
+  {
+   "t": 10575,
+   "delta": "t "
+  },
+  {
+   "t": 10600,
+   "delta": "withou"
+  },
+  {
+   "t": 10625,
+   "delta": "t waiti"
+  },
+  {
+   "t": 10650,
+   "delta": "ng on us"
+  },
+  {
+   "t": 10675,
+   "delta": "ers' cac"
+  },
+  {
+   "t": 11075,
+   "delta": "hes"
+  },
+  {
+   "t": 11100,
+   "delta": ".\n\n"
+  },
+  {
+   "t": 11125,
+   "delta": "## P"
+  },
+  {
+   "t": 11150,
+   "delta": "ut it into "
+  },
+  {
+   "t": 11175,
+   "delta": "practi"
+  },
+  {
+   "t": 11200,
+   "delta": "ce\n\n| Re"
+  },
+  {
+   "t": 11225,
+   "delta": "sponse | "
+  },
+  {
+   "t": 11250,
+   "delta": "Cach"
+  },
+  {
+   "t": 11275,
+   "delta": "e-Cont"
+  },
+  {
+   "t": 11300,
+   "delta": "rol "
+  },
+  {
+   "t": 11325,
+   "delta": "| Validat"
+  },
+  {
+   "t": 11350,
+   "delta": "or "
+  },
+  {
+   "t": 11375,
+   "delta": "|\n|---|---|---"
+  },
+  {
+   "t": 11400,
+   "delta": "|\n| "
+  },
+  {
+   "t": 11425,
+   "delta": "`/assets/*"
+  },
+  {
+   "t": 11450,
+   "delta": ".[hash].j"
+  },
+  {
+   "t": 11475,
+   "delta": "s`"
+  },
+  {
+   "t": 11500,
+   "delta": " | `public, m"
+  },
+  {
+   "t": 11525,
+   "delta": "ax-age=31536"
+  },
+  {
+   "t": 11550,
+   "delta": "000, i"
+  },
+  {
+   "t": 11575,
+   "delta": "mmu"
+  },
+  {
+   "t": 11600,
+   "delta": "table` | not n"
+  },
+  {
+   "t": 11625,
+   "delta": "ee"
+  },
+  {
+   "t": 12025,
+   "delta": "ded "
+  },
+  {
+   "t": 12050,
+   "delta": "|\n| `i"
+  },
+  {
+   "t": 12075,
+   "delta": "ndex.html` "
+  },
+  {
+   "t": 12100,
+   "delta": "| `no-c"
+  },
+  {
+   "t": 12125,
+   "delta": "ache` | `ETa"
+  },
+  {
+   "t": 12150,
+   "delta": "g`"
+  },
+  {
+   "t": 12175,
+   "delta": " |\n"
+  },
+  {
+   "t": 12575,
+   "delta": "| `/api/me` | "
+  },
+  {
+   "t": 12600,
+   "delta": "`privat"
+  },
+  {
+   "t": 13000,
+   "delta": "e, no-cac"
+  },
+  {
+   "t": 13025,
+   "delta": "he` |"
+  },
+  {
+   "t": 13050,
+   "delta": " `ETag"
+  },
+  {
+   "t": 13075,
+   "delta": "` |\n| `/api"
+  },
+  {
+   "t": 13100,
+   "delta": "/products` |"
+  },
+  {
+   "t": 13125,
+   "delta": " `public,"
+  },
+  {
+   "t": 13525,
+   "delta": " max-age"
+  },
+  {
+   "t": 13550,
+   "delta": "=60, s"
+  },
+  {
+   "t": 13575,
+   "delta": "ta"
+  },
+  {
+   "t": 13600,
+   "delta": "le"
+  },
+  {
+   "t": 14000,
+   "delta": "-wh"
+  },
+  {
+   "t": 14025,
+   "delta": "ile-re"
+  },
+  {
+   "t": 14050,
+   "delta": "va"
+  },
+  {
+   "t": 14075,
+   "delta": "lid"
+  },
+  {
+   "t": 14100,
+   "delta": "ate"
+  },
+  {
+   "t": 14125,
+   "delta": "=300` | `ETa"
+  },
+  {
+   "t": 14150,
+   "delta": "g` |\n| `/a"
+  },
+  {
+   "t": 14175,
+   "delta": "ccount/expor"
+  },
+  {
+   "t": 14200,
+   "delta": "t` | `no-st"
+  },
+  {
+   "t": 14225,
+   "delta": "ore"
+  },
+  {
+   "t": 14250,
+   "delta": "` "
+  },
+  {
+   "t": 14275,
+   "delta": "| none |"
+  },
+  {
+   "t": 14300,
+   "delta": "\n\nIn an Expres"
+  },
+  {
+   "t": 14325,
+   "delta": "s app:\n\n``"
+  },
+  {
+   "t": 14350,
+   "delta": "`js\napp.use('"
+  },
+  {
+   "t": 14375,
+   "delta": "/asset"
+  },
+  {
+   "t": 14400,
+   "delta": "s', express."
+  },
+  {
+   "t": 14425,
+   "delta": "static('di"
+  },
+  {
+   "t": 14450,
+   "delta": "st/assets', {\n"
+  },
+  {
+   "t": 14475,
+   "delta": "  immu"
+  },
+  {
+   "t": 14500,
+   "delta": "table: tru"
+  },
+  {
+   "t": 14525,
+   "delta": "e,\n  maxAge"
+  },
+  {
+   "t": 14550,
+   "delta": ": '1"
+  },
+  {
+   "t": 14575,
+   "delta": "y',\n}));\n\nap"
+  },
+  {
+   "t": 14600,
+   "delta": "p.get('/api"
+  },
+  {
+   "t": 14625,
+   "delta": "/products',"
+  },
+  {
+   "t": 14650,
+   "delta": " (req, res) ="
+  },
+  {
+   "t": 14675,
+   "delta": "> {\n "
+  },
+  {
+   "t": 14700,
+   "delta": " res.set('Cac"
+  },
+  {
+   "t": 14725,
+   "delta": "he-Control"
+  },
+  {
+   "t": 15125,
+   "delta": "', 'public, m"
+  },
+  {
+   "t": 15150,
+   "delta": "ax-age="
+  },
+  {
+   "t": 15175,
+   "delta": "60, stale-wh"
+  },
+  {
+   "t": 15200,
+   "delta": "ile-reval"
+  },
+  {
+   "t": 15225,
+   "delta": "idate=30"
+  },
+  {
+   "t": 15250,
+   "delta": "0')"
+  },
+  {
+   "t": 15275,
+   "delta": ";\n  res.json("
+  },
+  {
+   "t": 15300,
+   "delta": "products)"
+  },
+  {
+   "t": 15325,
+   "delta": ";\n});"
+  },
+  {
+   "t": 15350,
+   "delta": "\n\n/"
+  },
+  {
+   "t": 15375,
+   "delta": "/ SPA fallbac"
+  },
+  {
+   "t": 15400,
+   "delta": "k: always "
+  },
+  {
+   "t": 15425,
+   "delta": "revalidate th"
+  },
+  {
+   "t": 15450,
+   "delta": "e HTML s"
+  },
+  {
+   "t": 15475,
+   "delta": "hell\napp.use("
+  },
+  {
+   "t": 15500,
+   "delta": "(req,"
+  },
+  {
+   "t": 15525,
+   "delta": " res) =>"
+  },
+  {
+   "t": 15550,
+   "delta": " {\n  res.se"
+  },
+  {
+   "t": 15575,
+   "delta": "t('Cache-Cont"
+  },
+  {
+   "t": 15600,
+   "delta": "rol', 'no-cach"
+  },
+  {
+   "t": 16000,
+   "delta": "e');\n  res."
+  },
+  {
+   "t": 16025,
+   "delta": "sendFile('i"
+  },
+  {
+   "t": 16050,
+   "delta": "ndex.html', "
+  },
+  {
+   "t": 16075,
+   "delta": "{ r"
+  },
+  {
+   "t": 16475,
+   "delta": "oot: 'dist' }"
+  },
+  {
+   "t": 16500,
+   "delta": ");\n"
+  },
+  {
+   "t": 16900,
+   "delta": "});\n```\n\n"
+  },
+  {
+   "t": 16925,
+   "delta": "Common traps:"
+  },
+  {
+   "t": 16950,
+   "delta": "\n\n- "
+  },
+  {
+   "t": 16975,
+   "delta": "**Long-cached"
+  },
+  {
+   "t": 17000,
+   "delta": " H"
+  },
+  {
+   "t": 17025,
+   "delta": "TML.** Nev"
+  },
+  {
+   "t": 17050,
+   "delta": "er give HTML a"
+  },
+  {
+   "t": 17075,
+   "delta": " long "
+  },
+  {
+   "t": 17100,
+   "delta": "`max-age`. Us"
+  },
+  {
+   "t": 17125,
+   "delta": "ers get "
+  },
+  {
+   "t": 17150,
+   "delta": "stuck"
+  },
+  {
+   "t": 17175,
+   "delta": " on an old p"
+  },
+  {
+   "t": 17200,
+   "delta": "age th"
+  },
+  {
+   "t": 17600,
+   "delta": "at referenc"
+  },
+  {
+   "t": 17625,
+   "delta": "es a"
+  },
+  {
+   "t": 17650,
+   "delta": "sse"
+  },
+  {
+   "t": 17675,
+   "delta": "t hashes yo"
+  },
+  {
+   "t": 17700,
+   "delta": "u've "
+  },
+  {
+   "t": 17725,
+   "delta": "alread"
+  },
+  {
+   "t": 18125,
+   "delta": "y dele"
+  },
+  {
+   "t": 18150,
+   "delta": "ted.\n"
+  },
+  {
+   "t": 18175,
+   "delta": "- **Conf"
+  },
+  {
+   "t": 18200,
+   "delta": "using `n"
+  },
+  {
+   "t": 18600,
+   "delta": "o-cache` and "
+  },
+  {
+   "t": 18625,
+   "delta": "`no"
+  },
+  {
+   "t": 19025,
+   "delta": "-store`.**"
+  },
+  {
+   "t": 19050,
+   "delta": " `n"
+  },
+  {
+   "t": 19075,
+   "delta": "o-"
+  },
+  {
+   "t": 19100,
+   "delta": "cache` doesn't"
+  },
+  {
+   "t": 19125,
+   "delta": " mean \"don't "
+  },
+  {
+   "t": 19150,
+   "delta": "cac"
+  },
+  {
+   "t": 19175,
+   "delta": "he.\" `no-stor"
+  },
+  {
+   "t": 19200,
+   "delta": "e` doe"
+  },
+  {
+   "t": 19225,
+   "delta": "s.\n- **Mi"
+  },
+  {
+   "t": 19250,
+   "delta": "ssing `Va"
+  },
+  {
+   "t": 19275,
+   "delta": "ry`.** If a"
+  },
+  {
+   "t": 19300,
+   "delta": " resp"
+  },
+  {
+   "t": 19700,
+   "delta": "onse depends "
+  },
+  {
+   "t": 19725,
+   "delta": "on a requ"
+  },
+  {
+   "t": 19750,
+   "delta": "est header l"
+  },
+  {
+   "t": 19775,
+   "delta": "ike `Accept-La"
+  },
+  {
+   "t": 19800,
+   "delta": "ng"
+  },
+  {
+   "t": 20200,
+   "delta": "ua"
+  },
+  {
+   "t": 20225,
+   "delta": "ge`,"
+  },
+  {
+   "t": 20250,
+   "delta": " s"
+  },
+  {
+   "t": 20275,
+   "delta": "end a mat"
+  },
+  {
+   "t": 20300,
+   "delta": "ching `Vary`"
+  },
+  {
+   "t": 20325,
+   "delta": ". Otherwise"
+  },
+  {
+   "t": 20350,
+   "delta": " a cache can"
+  },
+  {
+   "t": 20375,
+   "delta": " serve o"
+  },
+  {
+   "t": 20400,
+   "delta": "ne user"
+  },
+  {
+   "t": 20425,
+   "delta": "'s vari"
+  },
+  {
+   "t": 20450,
+   "delta": "ant to ano"
+  },
+  {
+   "t": 20475,
+   "delta": "ther."
+  },
+  {
+   "t": 20500,
+   "delta": "\n- **Un"
+  },
+  {
+   "t": 20900,
+   "delta": "ver"
+  },
+  {
+   "t": 20925,
+   "delta": "ifi"
+  },
+  {
+   "t": 20950,
+   "delta": "ed headers.*"
+  },
+  {
+   "t": 20975,
+   "delta": "* Fr"
+  },
+  {
+   "t": 21000,
+   "delta": "amewor"
+  },
+  {
+   "t": 21025,
+   "delta": "ks and CDN"
+  },
+  {
+   "t": 21050,
+   "delta": "s of"
+  },
+  {
+   "t": 21075,
+   "delta": "ten ove"
+  },
+  {
+   "t": 21100,
+   "delta": "rride what y"
+  },
+  {
+   "t": 21125,
+   "delta": "ou set, so"
+  },
+  {
+   "t": 21525,
+   "delta": " check t"
+  },
+  {
+   "t": 21550,
+   "delta": "he a"
+  },
+  {
+   "t": 21575,
+   "delta": "ctual he"
+  },
+  {
+   "t": 21600,
+   "delta": "aders wit"
+  },
+  {
+   "t": 21625,
+   "delta": "h `cur"
+  },
+  {
+   "t": 21650,
+   "delta": "l -I` o"
+  },
+  {
+   "t": 21675,
+   "delta": "r the D"
+  },
+  {
+   "t": 21700,
+   "delta": "evTools Ne"
+  },
+  {
+   "t": 21725,
+   "delta": "twork "
+  },
+  {
+   "t": 21750,
+   "delta": "pan"
+  },
+  {
+   "t": 21775,
+   "delta": "el.\n\nFor"
+  },
+  {
+   "t": 21800,
+   "delta": " the full li"
+  },
+  {
+   "t": 21825,
+   "delta": "st of dir"
+  },
+  {
+   "t": 21850,
+   "delta": "ectives, see ["
+  },
+  {
+   "t": 21875,
+   "delta": "MDN's Cache-C"
+  },
+  {
+   "t": 21900,
+   "delta": "ontrol refere"
+  },
+  {
+   "t": 22300,
+   "delta": "nc"
+  },
+  {
+   "t": 22325,
+   "delta": "e](http"
+  },
+  {
+   "t": 22350,
+   "delta": "s://devel"
+  },
+  {
+   "t": 22375,
+   "delta": "oper.mozilla.o"
+  },
+  {
+   "t": 22400,
+   "delta": "rg/en-U"
+  },
+  {
+   "t": 22425,
+   "delta": "S/docs/Web/HTT"
+  },
+  {
+   "t": 22450,
+   "delta": "P/"
+  },
+  {
+   "t": 22475,
+   "delta": "Headers/Cache"
+  },
+  {
+   "t": 22500,
+   "delta": "-Control)."
+  }
+ ],
+ "source": "synthetic, scripts/make-traces.mjs",
+ "synthetic": true
+}
