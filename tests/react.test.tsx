@@ -2,7 +2,7 @@
 import { act, render, cleanup } from '@testing-library/react'
 import { StrictMode, createRef } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import {
   Reveal,
   RevealProvider,
@@ -625,6 +625,10 @@ describe('settings that change at runtime', () => {
 
 describe('RevealProvider resetKey', () => {
   it('starts a new message on a fresh queue, even for a paragraph mounted with the new key', () => {
+    // Delays are measured from the clock at each render. Frozen, they compare slot positions
+    // rather than how much real time happened to pass between two renders.
+    const now = vi.spyOn(performance, 'now').mockReturnValue(1000)
+    onTestFinished(() => now.mockRestore())
     const message = (key: number, id: string, text: string) => (
       <RevealProvider resetKey={key}>
         <Reveal key={id} initialText="">
@@ -645,7 +649,9 @@ describe('RevealProvider resetKey', () => {
     const before = delays()
     rerender(message(2, 'new', 'a new answer, and more'))
     const after = delays().slice(before.length)
-    expect(parseFloat(after[0])).toBeGreaterThanOrEqual(parseFloat(before.at(-1)!))
+    // A slot handed out again would come at least one stagger (36 ms) earlier; the tolerance
+    // only absorbs floating-point rounding once the queue is held at maxWaveLagMs.
+    expect(parseFloat(after[0])).toBeGreaterThanOrEqual(parseFloat(before.at(-1)!) - 0.001)
   })
 
   it('takes its slots once under StrictMode, which mounts every paragraph twice', () => {
