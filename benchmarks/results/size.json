@@ -1,7 +1,7 @@
 {
  "meta": {
   "date": "2026-10-16",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "bundler": "esbuild 0.28.2, minified, ESM, target es2020, react/vue/svelte external"
  },
  "results": [
