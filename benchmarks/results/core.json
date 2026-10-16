@@ -3,9 +3,9 @@
   "date": "2026-10-16",
   "node": "v24.3.0",
   "frameMs": 16.666666666666668,
-  "build": "v0.2.1",
+  "build": "v0.2.2",
   "versions": {
-   "smooth-stream-text": "0.2.1",
+   "smooth-stream-text": "0.2.2",
    "ai": "7.0.142"
   },
   "traces": [
