@@ -88,7 +88,9 @@ peak at a few hundred on a fast stream and are gone once the answer settles.
 
 These benchmarks found a bug: after a pause inside a held construct, the next chunk
 appeared all at once. It is fixed in 0.2.1 (see the [changelog](/changelog)), and the
-results below include the fix.
+results below include the fix. They also showed that importing only the React or Vue
+hooks bundled the reveal as well, about twice the size of the core; that is fixed in
+0.2.2.
 
 ## Results
 

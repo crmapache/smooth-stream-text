@@ -1,7 +1,7 @@
 # Integrating smooth-stream-text
 
 A short guide that ships inside the package, for people and coding assistants working
-offline. It covers version 0.2.1. The full documentation, with a page per framework and
+offline. It covers version 0.2.2. The full documentation, with a page per framework and
 runnable examples, is at https://smooth-stream-text.vercel.app/docs/ (plain Markdown:
 https://smooth-stream-text.vercel.app/llms.txt).
 

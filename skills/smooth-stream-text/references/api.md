@@ -4,9 +4,9 @@
 
 > Complete API reference for smooth-stream-text 0.2 - entry points, the headless core, pacing and reveal options with defaults, the DOM handle, React hooks and components, Vue, Svelte and the Web Component.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/api
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/api
 
-This page documents version 0.2.1, the current release on npm.
+This page documents version 0.2.2, the current release on npm.
 
 ## Entry points
 

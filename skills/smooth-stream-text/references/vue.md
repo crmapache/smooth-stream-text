@@ -4,7 +4,7 @@
 
 > Pace streamed LLM text in Vue 3 and Nuxt with useSmoothStream and keep your own Markdown rendering. Refs and getters, the SmoothText component, KeepAlive, and server-rendered history in Nuxt.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/vue
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/vue
 
 ```ts
 import { useSmoothStream, SmoothText, Reveal, RevealProvider } from 'smooth-stream-text/vue'

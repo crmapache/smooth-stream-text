@@ -4,7 +4,7 @@
 
 > Pace and reveal streamed text without a framework using createSmoothText, or with the <smooth-stream-text> custom element in plain HTML, Angular, Solid, Astro or any framework that renders custom elements.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/dom
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/dom
 
 Two ways to use the package without React, Vue or Svelte: the imperative DOM handle,
 and a custom element that wraps the same handle.

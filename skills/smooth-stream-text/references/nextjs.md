@@ -4,7 +4,7 @@
 
 > Use smooth-stream-text in the Next.js App Router. Client boundaries, server-rendered conversation history that does not replay, Cache Components, hydration and remounts.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/nextjs
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/integrations/nextjs
 
 Verified with Next.js 16.4 (App Router, Cache Components on) and React 19.3.
 

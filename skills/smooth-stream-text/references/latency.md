@@ -4,7 +4,7 @@
 
 > What pacing costs in time, how the tail of an answer drains, the difference between transport done, pacing done and reveal settled, background tabs, Show all, and why two smoothing layers add up.
 >
-> smooth-stream-text 0.2.1. HTML version: https://smooth-stream-text.vercel.app/docs/concepts/latency
+> smooth-stream-text 0.2.2. HTML version: https://smooth-stream-text.vercel.app/docs/concepts/latency
 
 Pacing trades a small, steady delay for an even flow. This page explains where that
 delay comes from, how long the end of an answer takes, and how to control both.

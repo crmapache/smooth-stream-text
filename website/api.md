@@ -5,7 +5,7 @@ description: Complete API reference for smooth-stream-text 0.2 - entry points, t
 
 # API reference
 
-This page documents version 0.2.1, the current release on npm.
+This page documents version 0.2.2, the current release on npm.
 
 ## Entry points
 
